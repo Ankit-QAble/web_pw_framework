@@ -1,0 +1,26 @@
+{
+  "validUsers": [
+    {
+      "username": "56565656",
+      "password": "QAble@2020",
+      "email": "admin@example.com",
+      "firstName": "Admin",
+      "lastName": "User",
+      "address": {
+        "street": "123 Admin Street",
+        "city": "New York",
+        "country": "USA"
+      }
+    }
+  ],
+  "invalidUsers": [
+    {
+      "username": "invalid@example.com",
+      "password": "wrongpassword",
+      "expectedError": "Invalid username or password"
+    }
+  ]
+
+
+  
+}

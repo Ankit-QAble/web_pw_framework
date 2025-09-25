@@ -1,0 +1,45 @@
+{
+  "name": "playwright-typescript-framework",
+  "version": "1.0.0",
+  "description": "Playwright TypeScript Web Automation Framework with Allure Reporting",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui",
+    "test:dev": "cross-env NODE_ENV=development npx playwright test",
+    "test:preprod": "cross-env NODE_ENV=preprod npx playwright test",
+    "test:prod": "cross-env NODE_ENV=production npx playwright test",
+    "switch-env": "node scripts/switch-env.js",
+    "report": "npx allure serve allure-results",
+    "report:generate": "npx allure generate allure-results --clean",
+    "install:browsers": "npx playwright install",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "automation",
+    "testing",
+    "allure"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "allure-commandline": "^2.24.0",
+    "allure-playwright": "^2.9.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "cross-env": "^7.0.3"
+  }
+}

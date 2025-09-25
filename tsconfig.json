@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "baseUrl": ".",
+    "paths": {
+      "@framework/*": ["framework/*"],
+      "@test/*": ["test/*"],
+      "@pages/*": ["test/pages/*"],
+      "@locators/*": ["test/locators/*"],
+      "@utils/*": ["framework/utils/*"]
+    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": [
+    "framework/**/*",
+    "test/**/*",
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "allure-results",
+    "allure-report"
+  ]
+}
