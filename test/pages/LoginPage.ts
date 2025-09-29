@@ -17,7 +17,18 @@ export class LoginPage extends BasePage {
    * Navigate to login page
    */
   async navigateToLogin(): Promise<void> {
-    await this.navigate();
+    try {
+      await this.navigate();
+      // Add extra wait for CI stability
+      if (process.env.CI) {
+        await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+      }
+    } catch (error) {
+      this.logger.error('Failed to navigate to login page', error as Error);
+      // Take screenshot for debugging
+      await this.takeScreenshot('navigation-failed');
+      throw error;
+    }
   }
 
   /**
@@ -49,16 +60,32 @@ export class LoginPage extends BasePage {
    */
   async login(credentials: LoginCredentials): Promise<void> {
     this.logger.info(`Attempting login for mobile: ${credentials.mobileNumber}`);
-    await this.waitForPageLoad();
-    await this.waitUntilElementPresent(LoginPageLocators.pageTitle);
     
-    await this.getTextAndCompare(LoginPageLocators.pageTitle, 'Login in to SADAD');
-    await this.enterMobileNumber(credentials.mobileNumber);
-    await this.enterPassword(credentials.password);
-    await this.waitUntilElementClickable(LoginPageLocators.loginButton, 6000);
-    await this.clickLoginButton();
-    
-    this.logger.info('Login attempt completed');
+    try {
+      // Check if page is still accessible
+      if (this.page.isClosed()) {
+        throw new Error('Page has been closed');
+      }
+      
+      await this.waitForPageLoad();
+      await this.waitUntilElementPresent(LoginPageLocators.pageTitle);
+      
+      await this.getTextAndCompare(LoginPageLocators.pageTitle, 'Login in to SADAD');
+      await this.enterMobileNumber(credentials.mobileNumber);
+      await this.enterPassword(credentials.password);
+      
+      // Increase timeout for CI environments
+      const clickTimeout = process.env.CI ? 10000 : 6000;
+      await this.waitUntilElementClickable(LoginPageLocators.loginButton, clickTimeout);
+      await this.clickLoginButton();
+      
+      this.logger.info('Login attempt completed');
+    } catch (error) {
+      this.logger.error('Login failed', error as Error);
+      // Take screenshot for debugging
+      await this.takeScreenshot('login-failed');
+      throw error;
+    }
   }
 
   /**

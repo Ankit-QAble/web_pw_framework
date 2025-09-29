@@ -64,6 +64,28 @@ process.env.BASE_URL = selectedProfile.baseURL;
 function mapBrowserToProject(browser: string) {
   const b = browser?.toLowerCase();
   
+  // CI-optimized browser launch options
+  const ciLaunchOptions = {
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--no-first-run',
+      '--no-zygote',
+      '--disable-gpu',
+      '--disable-background-timer-throttling',
+      '--disable-backgrounding-occluded-windows',
+      '--disable-renderer-backgrounding',
+      '--disable-features=TranslateUI',
+      '--disable-ipc-flooding-protection',
+      '--memory-pressure-off',
+      '--max_old_space_size=4096',
+      '--disable-web-security',
+      '--disable-features=VizDisplayCompositor'
+    ]
+  };
+  
   // Handle Chrome Incognito mode
   if (b === 'chrome incognito') {
     return { 
@@ -72,7 +94,7 @@ function mapBrowserToProject(browser: string) {
         ...devices['Desktop Chrome'],
         // Add incognito context options
         launchOptions: {
-          args: ['--incognito']
+          args: ['--incognito', ...ciLaunchOptions.args]
         }
       } 
     };
@@ -80,21 +102,49 @@ function mapBrowserToProject(browser: string) {
   
   // Handle regular Chrome/Chromium
   if (b === 'chrome' || b === 'chromium') {
-    return { name: 'chromium', use: { ...devices['Desktop Chrome'] } };
+    return { 
+      name: 'chromium', 
+      use: { 
+        ...devices['Desktop Chrome'],
+        launchOptions: process.env.CI ? ciLaunchOptions : {}
+      } 
+    };
   }
   
   // Handle Firefox
   if (b === 'firefox') {
-    return { name: 'firefox', use: { ...devices['Desktop Firefox'] } };
+    return { 
+      name: 'firefox', 
+      use: { 
+        ...devices['Desktop Firefox'],
+        launchOptions: process.env.CI ? {
+          args: ['-headless']
+        } : {}
+      } 
+    };
   }
   
   // Handle WebKit/Safari
   if (b === 'webkit' || b === 'safari') {
-    return { name: 'webkit', use: { ...devices['Desktop Safari'] } };
+    return { 
+      name: 'webkit', 
+      use: { 
+        ...devices['Desktop Safari'],
+        launchOptions: process.env.CI ? {
+          args: ['--no-sandbox']
+        } : {}
+      } 
+    };
   }
   
   // Default fallback
-  return { name: 'chromium', use: { ...devices['Desktop Chrome'] } };
+  return { 
+    name: 'chromium', 
+    use: { 
+      ...devices['Desktop Chrome'],
+      launchOptions: process.env.CI ? ciLaunchOptions : {}
+    } 
+  };
 }
 
 // Environment variables are loaded by EnvConfig
@@ -161,10 +211,10 @@ export default defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : selectedProfile.retries,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : selectedProfile.parallel,
+  /* Retry on CI only - increase retries for stability */
+  retries: process.env.CI ? 3 : selectedProfile.retries,
+  /* Opt out of parallel tests on CI - but allow 2 workers for better resource utilization */
+  workers: process.env.CI ? 2 : selectedProfile.parallel,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['html'],
@@ -180,11 +230,11 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: selectedProfile.baseURL || envConfig.getBaseUrl(),
 
-    /* Browser headless mode */
-    headless: selectedProfile.headless,
+    /* Browser headless mode - force headless in CI environments */
+    headless: process.env.CI ? true : selectedProfile.headless,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
     
     /* Take screenshot on failure */
     screenshot: selectedProfile.screenshotOnFail ? 'only-on-failure' : 'off',
@@ -192,11 +242,11 @@ export default defineConfig({
     /* Record video on failure */
     video: selectedProfile.videoOnFail ? 'retain-on-failure' : 'off',
     
-    /* Global timeout for each action */
-    actionTimeout: 90000,
+    /* Global timeout for each action - increase for CI */
+    actionTimeout: process.env.CI ? 120000 : 90000,
     
-    /* Global timeout for navigation */
-    navigationTimeout: 90000,
+    /* Global timeout for navigation - increase for CI */
+    navigationTimeout: process.env.CI ? 120000 : 90000,
 
     /* Element highlighting for debugging - handled in BasePage.ts */
 

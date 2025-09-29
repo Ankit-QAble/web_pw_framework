@@ -17,6 +17,7 @@
     "report:open": "npx allure open allure-report",
     "test:critical": "cross-env NODE_ENV=preprod npx playwright test --grep \"@critical\" && npx allure generate allure-results --clean && npx allure open",
     "install:browsers": "npx playwright install",
+    "diagnose:jenkins": "node scripts/diagnose-jenkins.js",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write ."
   },

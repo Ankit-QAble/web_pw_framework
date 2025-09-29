@@ -17,6 +17,11 @@ test.describe('Login Page Tests', () => {
   let loginPage: LoginPage;
 
   test.beforeEach(async ({ page }, testInfo) => {
+    // Add extra stability for CI environments
+    if (process.env.CI) {
+      await page.waitForLoadState('networkidle', { timeout: 30000 });
+    }
+    
     loginPage = new LoginPage(page, LOGIN_URL, testInfo);
     await loginPage.navigateToLogin();
   });
