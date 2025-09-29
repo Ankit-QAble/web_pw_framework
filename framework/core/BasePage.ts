@@ -81,7 +81,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @param value The value to fill
    */
-  protected async fill(selector: Locator, value: string): Promise<void> {
+  protected async fill(selector: string | Locator, value: string): Promise<void> {
     const locator = this.getLocator(selector);
     this.logger.info(`Filling element: ${selector} with value: ${value}`);
   
