@@ -28,6 +28,43 @@ export abstract class BasePage {
     }
     return selector;
   }
+  /** Apply a temporary red highlight by saving previous inline style in dataset._prevStyle. */
+protected async highlight(locator: Locator): Promise<void> {
+  // Check if element highlighting is enabled
+  const shouldHighlight = (global as any).selectedProfile?.elementHighlight;
+  
+  if (!shouldHighlight) {
+    return; // Skip highlighting if disabled
+  }
+  
+  await locator.evaluate((el) => {
+    const elh = el as any;
+    // save previous inline style so we can restore later
+    elh.setAttribute('data-_prevStyle', elh.getAttribute('style') || '');
+    elh.style.backgroundColor = 'yellow';
+    elh.style.border = '2px solid red';
+    elh.style.outline = 'none';
+    elh.style.transition = 'background-color 120ms ease, border 120ms ease';
+    elh.scrollIntoView({ block: 'center', inline: 'center', behavior: 'auto' });
+  }).catch(() => { /* ignore if element detached */ });
+}
+
+/** Restore previous inline style saved by `highlight`. Safe to call anytime. */
+protected async unhighlight(locator: Locator): Promise<void> {
+  // Check if element highlighting is enabled
+  const shouldHighlight = (global as any).selectedProfile?.elementHighlight;
+  
+  if (!shouldHighlight) {
+    return; // Skip unhighlighting if disabled
+  }
+  
+  await locator.evaluate((el) => {
+    const elh = el as any;
+    const prev = elh.getAttribute('data-_prevStyle') || '';
+    elh.setAttribute('style', prev);
+    elh.removeAttribute('data-_prevStyle');
+  }).catch(() => { /* ignore if element detached or already removed */ });
+}
   
   /**
    * Click on an element
@@ -44,10 +81,18 @@ export abstract class BasePage {
    * @param selector The selector string or locator object
    * @param value The value to fill
    */
-  protected async fill(selector: string | Locator, value: string): Promise<void> {
+  protected async fill(selector: Locator, value: string): Promise<void> {
     const locator = this.getLocator(selector);
     this.logger.info(`Filling element: ${selector} with value: ${value}`);
-    await locator.fill(value);
+  
+    await this.highlight(locator);
+    try {
+      await locator.fill(value);
+      // optional small pause so the highlight is visible during the action
+      if (this.page) await this.page.waitForTimeout(150);
+    } finally {
+      await this.unhighlight(locator);
+    }
   }
   
   /**
@@ -78,7 +123,27 @@ export abstract class BasePage {
   protected async waitForVisible(selector: string | Locator, timeout?: number): Promise<void> {
     const locator = this.getLocator(selector);
     this.logger.info(`Waiting for element to be visible: ${selector}`);
-    await locator.waitFor({ state: 'visible', timeout });
+    try {
+      await locator.waitFor({ state: 'visible', timeout });
+      this.logger.info(`Element is now visible: ${selector}`);
+    } catch (error) {
+      const message = `Element not visible within ${timeout ?? 30000}ms: ${selector}`;
+      this.logger.error(message, error as Error);
+      
+      // Take screenshot for debugging
+      await this.takeScreenshot(`element-not-visible-${Date.now()}`);
+      
+      // Check if element exists in DOM
+      const isAttached = await locator.count() > 0;
+      this.logger.info(`Element exists in DOM: ${isAttached}`);
+      
+      if (isAttached) {
+        const isVisible = await locator.isVisible();
+        this.logger.info(`Element is visible: ${isVisible}`);
+      }
+      
+      throw new Error(message);
+    }
   }
 
   /**
@@ -92,7 +157,7 @@ export abstract class BasePage {
     try {
       await locator.waitFor({ state: 'attached', timeout });
     } catch (error) {
-      const message = `Element not present within ${timeout ?? 30000}ms: ${selector}`;
+      const message = `Element not present within ${timeout ?? 90000}ms: ${selector}`;
       this.logger.error(message, error as Error);
       throw new Error(message);
     }
@@ -153,8 +218,18 @@ export abstract class BasePage {
    * Wait for page to load completely
    */
   async waitForPageLoad(): Promise<void> {
-    await this.page.waitForLoadState('networkidle');
-    this.logger.info('Page loaded successfully');
+    // Wait for DOM content to be loaded first
+    await this.page.waitForLoadState('domcontentloaded');
+    this.logger.info('DOM content loaded');
+    
+    // Try to wait for network idle, but don't fail if it times out
+    try {
+      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+      this.logger.info('Network idle - page loaded successfully');
+    } catch (error) {
+      // Network idle timeout is expected for pages with continuous network activity
+      this.logger.info('Network idle timeout (expected for pages with continuous activity). DOM is ready.');
+    }
   }
 
   /**
@@ -253,11 +328,11 @@ export abstract class BasePage {
   }
 
   /**
-   * Wait for a specified timeout
+   * Wait for a specified timeout (static wait - cannot be interrupted)
    */
   async waitForTimeout(timeout: number): Promise<void> {
     this.logger.info(`Waiting for ${timeout}ms`);
-    await this.page.waitForTimeout(timeout);
+    return new Promise(resolve => setTimeout(resolve, timeout));
   }
 
   /**
@@ -286,9 +361,7 @@ export abstract class BasePage {
    * @returns True if text matches, false otherwise
    */
   async getTextAndCompare(selector: string | Locator, expectedText: string, exactMatch: boolean = true): Promise<boolean> {
-    const locator = this.getLocator(selector);
     const actualText = await this.getText(selector);
-    
     this.logger.info(`Comparing text for element: ${selector}`);
     this.logger.info(`Expected: "${expectedText}"`);
     this.logger.info(`Actual: "${actualText}"`);

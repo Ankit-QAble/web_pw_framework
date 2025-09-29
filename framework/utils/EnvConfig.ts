@@ -42,7 +42,9 @@ export class EnvConfig {
     }
 
     // Store all environment variables in config object
-    this.config = { ...process.env };
+    this.config = Object.fromEntries(
+      Object.entries(process.env).map(([key, value]) => [key, value || ''])
+    );
   }
   
   /**
@@ -77,6 +79,85 @@ export class EnvConfig {
     // Re-initialize the instance to load the new environment
     EnvConfig.instance = new EnvConfig();
     console.log(`Switched to ${env} environment`);
+  }
+
+  /**
+   * Get SMTP configuration
+   */
+  public getSmtpConfig(): {
+    smtp: boolean;
+    host: string;
+    port: number;
+    auth: {
+      user: string;
+      pass: string;
+    };
+  } {
+    return {
+      smtp: true,
+      host: this.get('SMTP_HOST', 'smtp.gmail.com'),
+      port: parseInt(this.get('SMTP_PORT', '587')),
+      auth: {
+        user: this.get('SMTP_USER', 'qable.gamer@gmail.com'),
+        pass: this.get('SMTP_PASS', 'wwch ebob wwmh vqua'),
+      },
+    };
+  }
+
+  /**
+   * Generate dynamic email configuration based on test results
+   * @param testStats - Real-time test execution statistics
+   * @param environment - Environment name
+   */
+  public getDynamicEmailConfig(testStats?: { passed: number, failed: number, skipped: number, total: number }, environment?: string): {
+    email: boolean;
+    to: string[];
+    subject: string;
+    body: string;
+  } {
+    const env = environment || this.getEnvironment();
+    const baseEmails = this.getBaseEmails(env);
+    
+    // Generate dynamic subject based on test results
+    const passRate = testStats && testStats.total > 0 ? ((testStats.passed / testStats.total) * 100).toFixed(1) : '0';
+    const status = testStats && testStats.failed > 0 ? '❌ FAILED' : '✅ PASSED';
+    const subject = `${status} Automation Test Report - ${env.toUpperCase()} (${passRate}% Pass Rate)`;
+
+    // Generate dynamic body based on test results
+    let body = `Test execution completed for ${env} environment.\n\n`;
+    if (testStats) {
+      body += `📊 Test Results Summary:
+• Total Tests: ${testStats.total}
+• Passed: ${testStats.passed}
+• Failed: ${testStats.failed}
+• Skipped: ${testStats.skipped}
+• Pass Rate: ${passRate}%
+
+Generated at: ${new Date().toLocaleString()}`;
+    }
+
+    return {
+      email: true,
+      to: baseEmails,
+      subject,
+      body,
+    };
+  }
+
+  /**
+   * Get base email recipients by environment
+   */
+  private getBaseEmails(environment: string): string[] {
+    const emailEnvVar = environment === 'preprod' ? 'EMAIL_TO_PREPROD' : 'EMAIL_TO_DEV';
+    const defaultEmails = environment === 'preprod' 
+      ? ['ankit.patel@sadad.qa'] 
+      : ['patelankitr123@gmail.com'];
+    
+    const envEmails = this.get(emailEnvVar);
+    if (envEmails) {
+      return envEmails.split(',').map(email => email.trim()).filter(email => email);
+    }
+    return defaultEmails;
   }
 }
 

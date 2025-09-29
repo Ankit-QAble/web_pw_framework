@@ -5,6 +5,7 @@ import { LoginPageLocators } from '../locators/LoginPageLocators';
 export interface LoginCredentials {
   mobileNumber: string;
   password: string;
+  otp: string;
 }
 
 export class LoginPage extends BasePage {
@@ -17,7 +18,6 @@ export class LoginPage extends BasePage {
    */
   async navigateToLogin(): Promise<void> {
     await this.navigate();
-    await this.page.waitForLoadState('networkidle');
   }
 
   /**
@@ -49,8 +49,10 @@ export class LoginPage extends BasePage {
    */
   async login(credentials: LoginCredentials): Promise<void> {
     this.logger.info(`Attempting login for mobile: ${credentials.mobileNumber}`);
+    await this.waitForPageLoad();
+    await this.waitUntilElementPresent(LoginPageLocators.pageTitle);
     
-    await this.getTextAndCompare(LoginPageLocators.pageTitle, ' Merchant Panel ');
+    await this.getTextAndCompare(LoginPageLocators.pageTitle, 'Login in to SADAD');
     await this.enterMobileNumber(credentials.mobileNumber);
     await this.enterPassword(credentials.password);
     await this.waitUntilElementClickable(LoginPageLocators.loginButton, 6000);
@@ -64,11 +66,70 @@ export class LoginPage extends BasePage {
    */
   async verifyLoginPageElements(): Promise<void> {
     this.logger.info('Verifying login page elements');
+
     
-    await this.waitForVisible(LoginPageLocators.mobileNumberField);
-    await this.waitForVisible(LoginPageLocators.passwordField);
-    await this.waitForVisible(LoginPageLocators.loginButton);
+    
+    await this.waitForVisible(LoginPageLocators.mobileNumberField,10000);
+    await this.waitForVisible(LoginPageLocators.passwordField,10000);
+    await this.waitForVisible(LoginPageLocators.loginButton,10000);
     
     this.logger.info('All login page elements verified');
+    
+  }
+  async verifyEnterOTPPage(): Promise<void> {
+    this.logger.info('Verifying OTP page elements');
+    
+    try {
+      // Wait for OTP page to load with a longer timeout
+      await this.waitForVisible(LoginPageLocators.enterOTPTitle, 15000);
+      await this.getTextAndCompare(LoginPageLocators.enterOTPTitle, 'Enter 6 Digit Number');
+      this.logger.info('All OTP page elements verified');
+    } catch (error) {
+      this.logger.error('Failed to verify OTP page elements', error as Error);
+      
+      // Take screenshot for debugging
+      await this.takeScreenshot('otp-page-verification-failed');
+      
+      // Check current page state
+      const currentUrl = this.getCurrentUrl();
+      const pageTitle = await this.getTitle();
+      this.logger.info(`Current URL: ${currentUrl}`);
+      this.logger.info(`Page title: ${pageTitle}`);
+      
+      // Check if we're still on login page or if there's an error
+      const isLoginPageVisible = await this.isVisible(LoginPageLocators.pageTitle);
+      this.logger.info(`Login page still visible: ${isLoginPageVisible}`);
+      
+      if (isLoginPageVisible) {
+        this.logger.warn('Still on login page - OTP page may not have loaded');
+        // Check for error messages
+        const errorElements = await this.page.locator('[class*="error"], [class*="alert"], .error-message').count();
+        if (errorElements > 0) {
+          const errorText = await this.page.locator('[class*="error"], [class*="alert"], .error-message').first().textContent();
+          this.logger.error(`Error message found: ${errorText}`);
+        }
+      }
+      
+      throw error;
+    }
+  }
+  async enterOTP(): Promise<void> {
+    this.logger.info('Enter OTP');
+    const otpValue = "333333";
+    
+    // Enter each digit individually
+    for (let i = 1; i <= 6; i++) {
+      const otpInputSelector = `//div[@class='otp-box-main']/div/input[${i}]`;
+      const digit = otpValue[i - 1];
+      
+      this.logger.info(`Entering digit ${i}: ${digit}`);
+      await this.waitForVisible(otpInputSelector, 5000);
+      await this.fill(otpInputSelector, digit);
+      
+      // Small delay between inputs to ensure proper entry
+      await this.waitForTimeout(200);
+    }
+    
+    this.logger.info('OTP entered successfully');
   }
 }

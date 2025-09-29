@@ -13,7 +13,9 @@
     "test:prod": "cross-env NODE_ENV=production npx playwright test",
     "switch-env": "node scripts/switch-env.js",
     "report": "npx allure serve allure-results",
-    "report:generate": "npx allure generate allure-results --clean",
+    "report:generate": "node scripts/generate-report.js",
+    "report:open": "npx allure open allure-report",
+    "test:critical": "cross-env NODE_ENV=preprod npx playwright test --grep \"@critical\" && npx allure generate allure-results --clean && npx allure open",
     "install:browsers": "npx playwright install",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write ."
@@ -39,7 +41,9 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@types/nodemailer": "^7.0.1",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.6.1",
-    "cross-env": "^7.0.3"
+    "nodemailer": "^7.0.6"
   }
 }

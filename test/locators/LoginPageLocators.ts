@@ -1,6 +1,8 @@
 export const LoginPageLocators = {
-  mobileNumberField: '//input[@formcontrolname="email"]',
-  passwordField: '//input[@formcontrolname="password"]',
-  loginButton: '//button[@class="btn btn-primary btn-block login-btn"]',
-  pageTitle: '//div[@class="login-card"]/div[2]/div/h4'
+  mobileNumberField: '//input[@placeholder="Enter Number"]',
+  passwordField: '//input[@placeholder="Enter Password"]',
+  loginButton: '//button[@type="submit"]',
+  pageTitle: "//h2[normalize-space()='Login in to SADAD']",
+  enterOTPTitle: "//h2[normalize-space()='Enter 6 Digit Number']",
+  enterOTP: "//div[@class='otp-box-main']/div/input"
 };

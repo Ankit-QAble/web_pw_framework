@@ -5,27 +5,49 @@ import { envConfig } from './framework/utils/EnvConfig';
 // Select via RUN (preferred) or NODE_ENV. Defaults to 'development'.
 const PROFILES = {
   development: {
-    baseURL: 'http://devwebpanel.sadadqa.com:3004/auth/business-details',
-    browser: 'chromium', // 'chrome'|'chromium'|'firefox'|'webkit'
+    baseURL: 'http://devwebpanel.sadadqa.com:3004',
+    browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'
     headless: false,
-    parallel: 1, // workers
-    retries: 1,
+    parallel: 2, // workers
+    retries: 0,
     screenshotOnFail: true,
     videoOnFail: true,
+    elementHighlight: false,
+    reportEmail: {
+      email: false, // Set to true to enable email reporting and setup in utils/EmailService.ts
+      to: ['patelankitr123@gmail.com'],
+      subject: 'Automation Test Report',
+      body: 'Test execution completed for development environment',
+    },
+    reportSmtp: envConfig.getSmtpConfig(),
   },
   preprod: {
     baseURL: 'https://aks-panel.sadad.qa/auth/login',
-    browser: 'chrome',
+    browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
     headless: false,
-    parallel: 3,
-    retries: 2,
+    parallel: 1,
+    retries: 0,
     screenshotOnFail: true,
     videoOnFail: true,
+    elementHighlight: true,
     mobile: {
       mobile: { 
         isMobile: false, 
         device: 'pixel 9' },
-    }
+    },
+    report: {
+      name: 'allure-playwright',
+      outputFolder: 'allure-results',
+      suiteTitle: false,
+    },
+    reportEmail: {
+      email: true,
+      to: ['ankit.patel@sadad.qa'],
+      subject: 'Preprod Test Report - Allure Results',
+      body: 'Test execution completed for preprod environment. Allure report attached.',
+    },
+    reportSmtp: envConfig.getSmtpConfig(),
+
     
   },
 } as const;
@@ -36,17 +58,42 @@ const selectedProfile = PROFILES[selectedProfileName] || PROFILES.development;
 // Expose profile baseURL to rest of code via env for utilities
 process.env.BASE_URL = selectedProfile.baseURL;
 
+// Add selectedProfile to config for global setup/teardown
+(global as any).selectedProfile = selectedProfile;
+
 function mapBrowserToProject(browser: string) {
   const b = browser?.toLowerCase();
+  
+  // Handle Chrome Incognito mode
+  if (b === 'chrome incognito') {
+    return { 
+      name: 'chromium-incognito', 
+      use: { 
+        ...devices['Desktop Chrome'],
+        // Add incognito context options
+        launchOptions: {
+          args: ['--incognito']
+        }
+      } 
+    };
+  }
+  
+  // Handle regular Chrome/Chromium
   if (b === 'chrome' || b === 'chromium') {
     return { name: 'chromium', use: { ...devices['Desktop Chrome'] } };
   }
+  
+  // Handle Firefox
   if (b === 'firefox') {
     return { name: 'firefox', use: { ...devices['Desktop Firefox'] } };
   }
+  
+  // Handle WebKit/Safari
   if (b === 'webkit' || b === 'safari') {
     return { name: 'webkit', use: { ...devices['Desktop Safari'] } };
   }
+  
+  // Default fallback
   return { name: 'chromium', use: { ...devices['Desktop Chrome'] } };
 }
 
@@ -105,6 +152,11 @@ const computedProjects = ((selectedProfile as any).mobile?.mobile ?? (selectedPr
  */
 export default defineConfig({
   testDir: './test/specs',
+  /* Global timeout for each test */
+  timeout: 60000, // 1 minute
+  /* Global setup and teardown */
+  globalSetup: require.resolve('./framework/utils/globalSetup'),
+  globalTeardown: require.resolve('./framework/utils/globalTeardown'),
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -141,10 +193,12 @@ export default defineConfig({
     video: selectedProfile.videoOnFail ? 'retain-on-failure' : 'off',
     
     /* Global timeout for each action */
-    actionTimeout: 30000,
+    actionTimeout: 90000,
     
     /* Global timeout for navigation */
-    navigationTimeout: 30000,
+    navigationTimeout: 90000,
+
+    /* Element highlighting for debugging - handled in BasePage.ts */
 
     /* Optionally grant common permissions */
     //permissions: selectedProfile.autoGrantPermissions ? ['geolocation', 'notifications', 'camera', 'microphone'] : undefined,
