@@ -7,7 +7,7 @@ const PROFILES = {
   development: {
     baseURL: 'http://devwebpanel.sadadqa.com:3004',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'
-    headless: false,
+    headless: true,
     parallel: 2, // workers
     retries: 0,
     screenshotOnFail: true,
