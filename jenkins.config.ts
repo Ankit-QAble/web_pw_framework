@@ -56,7 +56,7 @@ export const jenkinsConfig = {
     actionTimeout: 120000,
     navigationTimeout: 120000,
     workers: 2, // Limited to 2 workers for stability
-    retries: 3, // More retries for flaky CI environment
+    retries: 0, // More retries for flaky CI environment
     headless: true, // Always headless in Jenkins
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
