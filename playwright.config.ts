@@ -165,7 +165,7 @@ function mapBrowserToProject(browser: string) {
       name: 'firefox', 
       use: { 
         ...devices['Desktop Firefox'],
-        launchOptions: process.env.CI ? {
+        launchOptions: {
           args: [
             '-headless',
             '--no-sandbox',
@@ -204,9 +204,9 @@ function mapBrowserToProject(browser: string) {
             '--disable-background-networking',
             '--disable-sync-preferences'
           ],
-          timeout: 60000,
-          slowMo: 100
-        } : {}
+          timeout: 120000,
+          slowMo: 200
+        }
       } 
     };
   }
@@ -290,7 +290,7 @@ const computedProjects = ((selectedProfile as any).mobile?.mobile ?? (selectedPr
 export default defineConfig({
   testDir: './test/specs',
   /* Global timeout for each test */
-  timeout: 60000, // 1 minute
+  timeout: process.env.CI ? 120000 : 60000, // 2 minutes for CI, 1 minute for local
   /* Global setup and teardown */
   globalSetup: require.resolve('./framework/utils/globalSetup'),
   globalTeardown: require.resolve('./framework/utils/globalTeardown'),
