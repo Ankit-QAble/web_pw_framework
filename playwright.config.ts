@@ -165,48 +165,15 @@ function mapBrowserToProject(browser: string) {
       name: 'firefox', 
       use: { 
         ...devices['Desktop Firefox'],
-        launchOptions: {
+        launchOptions: process.env.CI ? {
           args: [
             '-headless',
             '--no-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-gpu',
-            '--disable-background-timer-throttling',
-            '--disable-backgrounding-occluded-windows',
-            '--disable-renderer-backgrounding',
-            '--disable-features=TranslateUI',
-            '--disable-ipc-flooding-protection',
-            '--memory-pressure-off',
-            '--max_old_space_size=4096',
-            '--disable-web-security',
-            '--disable-features=VizDisplayCompositor',
-            '--disable-extensions',
-            '--disable-plugins',
-            '--disable-images',
-            '--disable-default-apps',
-            '--disable-sync',
-            '--disable-translate',
-            '--hide-scrollbars',
-            '--mute-audio',
-            '--no-default-browser-check',
-            '--disable-logging',
-            '--disable-permissions-api',
-            '--disable-presentation-api',
-            '--disable-print-preview',
-            '--disable-speech-api',
-            '--disable-file-system',
-            '--disable-client-side-phishing-detection',
-            '--disable-component-update',
-            '--disable-domain-reliability',
-            '--disable-features=AudioServiceOutOfProcess',
-            '--disable-hang-monitor',
-            '--disable-prompt-on-repost',
-            '--disable-background-networking',
-            '--disable-sync-preferences'
+            '--disable-gpu'
           ],
-          timeout: 120000,
-          slowMo: 200
-        }
+          timeout: 60000
+        } : {}
       } 
     };
   }

@@ -4,8 +4,9 @@ import { envConfig } from '../../framework/utils/EnvConfig';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const users = require('../data/users.json');
 
-// Real application URL and test data from environment config
-const LOGIN_URL = envConfig.getBaseUrl();
+// Real application URL and test data from profile config
+const LOGIN_URL = (global as any).selectedProfile?.baseURL;
+console.log(`🔍 LOGIN_URL from selectedProfile.baseURL: ${LOGIN_URL}`);
 const TEST_CREDENTIALS = {
   // Map username to the mobileNumber field expected by LoginPage methods
   mobileNumber: users.validUsers[0].username,
@@ -30,26 +31,33 @@ test.describe('Login Page Tests', () => {
     
     // Get retry count from config
     let retryCount = 0;
-    const maxRetries = (global as any).selectedProfile?.retries;
+    const maxRetries = (global as any).selectedProfile?.retries || 0;
     
-    while (retryCount < maxRetries) {
+    console.log(`🔍 Starting navigation with maxRetries: ${maxRetries}`);
+    
+    // Always attempt navigation at least once, even if maxRetries is 0
+    do {
       try {
+        console.log(`🔍 Calling navigateToLogin() - attempt ${retryCount + 1}`);
         await loginPage.navigateToLogin();
+        console.log(`🔍 navigateToLogin() completed successfully`);
         break; // Success, exit retry loop
       } catch (error) {
         retryCount++;
         const errorMessage = error instanceof Error ? error.message : String(error);
         console.log(`Navigation attempt ${retryCount} failed: ${errorMessage}`);
         
-        if (retryCount >= maxRetries) {
+        if (retryCount > maxRetries) {
           throw error; // Final attempt failed
         }
         
-        // Wait before retry
-        await page.waitForTimeout(2000);
-        console.log(`Retrying navigation (attempt ${retryCount + 1}/${maxRetries})...`);
+        // Wait before retry (only if we're going to retry)
+        if (retryCount <= maxRetries) {
+          await page.waitForTimeout(2000);
+          console.log(`Retrying navigation (attempt ${retryCount + 1}/${maxRetries + 1})...`);
+        }
       }
-    }
+    } while (retryCount <= maxRetries);
   });
   
   test('Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {

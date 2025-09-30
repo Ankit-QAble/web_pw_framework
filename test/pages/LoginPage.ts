@@ -11,8 +11,10 @@ export interface LoginCredentials {
 export class LoginPage extends BasePage {
   constructor(page: Page, url?: string, testInfo?: TestInfo) {
     // Use the URL from config or fallback to the provided URL
-    const defaultUrl = process.env.BASE_URL || 'https://aks-panel.sadad.qa/auth/login';
+    const defaultUrl = process.env.BASE_URL;
+    console.log(`🔍 LoginPage constructor - url param: ${url}, defaultUrl: ${defaultUrl}`);
     super(page, url || defaultUrl, testInfo);
+    console.log(`🔍 LoginPage constructor - final URL: ${this.url}`);
   }
 
   /**
@@ -21,67 +23,10 @@ export class LoginPage extends BasePage {
   async navigateToLogin(): Promise<void> {
     try {
       this.logger.info(`Navigating to: ${this.url}`);
-      
-      // Check if page is still open before navigation
-      if (this.page.isClosed()) {
-        throw new Error('Page is already closed before navigation');
-      }
-      
       await this.navigate();
-      
-      // Add extra wait for CI stability with longer timeout
-      if (process.env.CI) {
-        this.logger.info('CI environment detected - using extended timeout');
-        try {
-          // Check if page is still open before waiting for network idle
-          if (this.page.isClosed()) {
-            throw new Error('Page was closed during navigation');
-          }
-          
-          await this.page.waitForLoadState('networkidle', { timeout: 60000 });
-          this.logger.info('Network idle achieved');
-        } catch (networkError) {
-          this.logger.warn('Network idle timeout - checking if page is still functional');
-          
-          // Check if page is still accessible
-          if (this.page.isClosed()) {
-            this.logger.error('Page was closed during network idle wait');
-            throw new Error('Page was closed during network idle wait');
-          }
-          
-          try {
-            const currentUrl = this.page.url();
-            const pageTitle = await this.page.title();
-            this.logger.info(`Current URL: ${currentUrl}`);
-            this.logger.info(`Page title: ${pageTitle}`);
-            
-            // If we can get the title, the page is likely loaded
-            if (pageTitle && pageTitle !== '') {
-              this.logger.info('Page appears to be loaded despite network idle timeout');
-            } else {
-              throw networkError;
-            }
-          } catch (pageCheckError) {
-            this.logger.error('Page check failed after network idle timeout', pageCheckError as Error);
-            const errorMessage = pageCheckError instanceof Error ? pageCheckError.message : String(pageCheckError);
-            throw new Error(`Page became inaccessible: ${errorMessage}`);
-          }
-        }
-      }
     } catch (error) {
       this.logger.error('Failed to navigate to login page', error as Error);
-      
-      // Only take screenshot if page is still open
-      if (!this.page.isClosed()) {
-        try {
-          await this.takeScreenshot('navigation-failed');
-        } catch (screenshotError) {
-          this.logger.warn('Could not take screenshot - page may be closed', screenshotError as Error);
-        }
-      } else {
-        this.logger.warn('Cannot take screenshot - page is closed');
-      }
-      
+      await this.takeScreenshot('navigation-failed');
       throw error;
     }
   }
@@ -117,67 +62,8 @@ export class LoginPage extends BasePage {
     this.logger.info(`Attempting login for mobile: ${credentials.mobileNumber}`);
     
     try {
-      // Check if page is still accessible
-      if (this.page.isClosed()) {
-        throw new Error('Page has been closed');
-      }
-      
       await this.waitForPageLoad();
-      
-      // Firefox-specific handling for element detection
-      const browserName = this.page.context().browser()?.browserType().name();
-      this.logger.info(`Browser detected: ${browserName}`);
-      
-      // Try to find the page title with extended timeout for Firefox
-      const titleTimeout = browserName === 'firefox' ? 120000 : 90000;
-      try {
-        await this.waitUntilElementPresent(LoginPageLocators.pageTitle, titleTimeout);
-      } catch (titleError) {
-        this.logger.warn('Page title not found, checking page state...');
-        
-        // Check if page is still open
-        if (this.page.isClosed()) {
-          throw new Error('Page was closed during title wait');
-        }
-        
-        // Get current page info for debugging
-        const currentUrl = this.page.url();
-        const pageTitle = await this.page.title();
-        this.logger.info(`Current URL: ${currentUrl}`);
-        this.logger.info(`Page title: ${pageTitle}`);
-        
-        // Check if we're on the right page
-        if (!currentUrl.includes('login') && !currentUrl.includes('auth')) {
-          throw new Error(`Not on login page. Current URL: ${currentUrl}`);
-        }
-        
-        // Try alternative selectors for Firefox
-        const alternativeSelectors = [
-          'h2',
-          '[class*="title"]',
-          '[class*="heading"]',
-          'h1'
-        ];
-        
-        let foundElement = false;
-        for (const selector of alternativeSelectors) {
-          try {
-            const count = await this.page.locator(selector).count();
-            if (count > 0) {
-              const text = await this.page.locator(selector).first().textContent();
-              this.logger.info(`Found alternative element: ${selector} with text: ${text}`);
-              foundElement = true;
-              break;
-            }
-          } catch (altError) {
-            // Continue to next selector
-          }
-        }
-        
-        if (!foundElement) {
-          throw new Error(`No login elements found. Page may not have loaded properly. URL: ${currentUrl}, Title: ${pageTitle}`);
-        }
-      }
+      await this.waitUntilElementPresent(LoginPageLocators.pageTitle);
       
       await this.getTextAndCompare(LoginPageLocators.pageTitle, 'Login in to SADAD');
       await this.enterMobileNumber(credentials.mobileNumber);
@@ -191,18 +77,7 @@ export class LoginPage extends BasePage {
       this.logger.info('Login attempt completed');
     } catch (error) {
       this.logger.error('Login failed', error as Error);
-      
-      // Only take screenshot if page is still open
-      if (!this.page.isClosed()) {
-        try {
-          await this.takeScreenshot('login-failed');
-        } catch (screenshotError) {
-          this.logger.warn('Could not take screenshot - page may be closed', screenshotError as Error);
-        }
-      } else {
-        this.logger.warn('Cannot take screenshot - page is closed');
-      }
-      
+      await this.takeScreenshot('login-failed');
       throw error;
     }
   }
