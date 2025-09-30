@@ -123,7 +123,61 @@ export class LoginPage extends BasePage {
       }
       
       await this.waitForPageLoad();
-      await this.waitUntilElementPresent(LoginPageLocators.pageTitle);
+      
+      // Firefox-specific handling for element detection
+      const browserName = this.page.context().browser()?.browserType().name();
+      this.logger.info(`Browser detected: ${browserName}`);
+      
+      // Try to find the page title with extended timeout for Firefox
+      const titleTimeout = browserName === 'firefox' ? 120000 : 90000;
+      try {
+        await this.waitUntilElementPresent(LoginPageLocators.pageTitle, titleTimeout);
+      } catch (titleError) {
+        this.logger.warn('Page title not found, checking page state...');
+        
+        // Check if page is still open
+        if (this.page.isClosed()) {
+          throw new Error('Page was closed during title wait');
+        }
+        
+        // Get current page info for debugging
+        const currentUrl = this.page.url();
+        const pageTitle = await this.page.title();
+        this.logger.info(`Current URL: ${currentUrl}`);
+        this.logger.info(`Page title: ${pageTitle}`);
+        
+        // Check if we're on the right page
+        if (!currentUrl.includes('login') && !currentUrl.includes('auth')) {
+          throw new Error(`Not on login page. Current URL: ${currentUrl}`);
+        }
+        
+        // Try alternative selectors for Firefox
+        const alternativeSelectors = [
+          'h2',
+          '[class*="title"]',
+          '[class*="heading"]',
+          'h1'
+        ];
+        
+        let foundElement = false;
+        for (const selector of alternativeSelectors) {
+          try {
+            const count = await this.page.locator(selector).count();
+            if (count > 0) {
+              const text = await this.page.locator(selector).first().textContent();
+              this.logger.info(`Found alternative element: ${selector} with text: ${text}`);
+              foundElement = true;
+              break;
+            }
+          } catch (altError) {
+            // Continue to next selector
+          }
+        }
+        
+        if (!foundElement) {
+          throw new Error(`No login elements found. Page may not have loaded properly. URL: ${currentUrl}, Title: ${pageTitle}`);
+        }
+      }
       
       await this.getTextAndCompare(LoginPageLocators.pageTitle, 'Login in to SADAD');
       await this.enterMobileNumber(credentials.mobileNumber);
@@ -137,8 +191,18 @@ export class LoginPage extends BasePage {
       this.logger.info('Login attempt completed');
     } catch (error) {
       this.logger.error('Login failed', error as Error);
-      // Take screenshot for debugging
-      await this.takeScreenshot('login-failed');
+      
+      // Only take screenshot if page is still open
+      if (!this.page.isClosed()) {
+        try {
+          await this.takeScreenshot('login-failed');
+        } catch (screenshotError) {
+          this.logger.warn('Could not take screenshot - page may be closed', screenshotError as Error);
+        }
+      } else {
+        this.logger.warn('Cannot take screenshot - page is closed');
+      }
+      
       throw error;
     }
   }

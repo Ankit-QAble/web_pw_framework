@@ -166,7 +166,46 @@ function mapBrowserToProject(browser: string) {
       use: { 
         ...devices['Desktop Firefox'],
         launchOptions: process.env.CI ? {
-          args: ['-headless']
+          args: [
+            '-headless',
+            '--no-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--disable-background-timer-throttling',
+            '--disable-backgrounding-occluded-windows',
+            '--disable-renderer-backgrounding',
+            '--disable-features=TranslateUI',
+            '--disable-ipc-flooding-protection',
+            '--memory-pressure-off',
+            '--max_old_space_size=4096',
+            '--disable-web-security',
+            '--disable-features=VizDisplayCompositor',
+            '--disable-extensions',
+            '--disable-plugins',
+            '--disable-images',
+            '--disable-default-apps',
+            '--disable-sync',
+            '--disable-translate',
+            '--hide-scrollbars',
+            '--mute-audio',
+            '--no-default-browser-check',
+            '--disable-logging',
+            '--disable-permissions-api',
+            '--disable-presentation-api',
+            '--disable-print-preview',
+            '--disable-speech-api',
+            '--disable-file-system',
+            '--disable-client-side-phishing-detection',
+            '--disable-component-update',
+            '--disable-domain-reliability',
+            '--disable-features=AudioServiceOutOfProcess',
+            '--disable-hang-monitor',
+            '--disable-prompt-on-repost',
+            '--disable-background-networking',
+            '--disable-sync-preferences'
+          ],
+          timeout: 60000,
+          slowMo: 100
         } : {}
       } 
     };
@@ -260,9 +299,9 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only - increase retries for stability */
-  retries: process.env.CI ? 3 : selectedProfile.retries,
+  retries: selectedProfile.retries,
   /* Opt out of parallel tests on CI - but allow 2 workers for better resource utilization */
-  workers: process.env.CI ? 2 : selectedProfile.parallel,
+  workers: selectedProfile.parallel,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['html'],
