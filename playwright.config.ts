@@ -54,7 +54,15 @@ const PROFILES = {
 
 type ProfileName = keyof typeof PROFILES;
 const selectedProfileName: ProfileName = (process.env.RUN as ProfileName) || (process.env.NODE_ENV as ProfileName) || 'development';
-const selectedProfile = PROFILES[selectedProfileName] || PROFILES.development;
+const selectedProfile = { ...PROFILES[selectedProfileName] || PROFILES.development };
+
+// Override browser from command line if BROWSER environment variable is set
+const commandLineBrowser = process.env.BROWSER;
+if (commandLineBrowser) {
+  (selectedProfile as any).browser = commandLineBrowser;
+  console.log(`🔧 Browser overridden from command line: ${commandLineBrowser}`);
+}
+
 // Expose profile baseURL to rest of code via env for utilities
 process.env.BASE_URL = selectedProfile.baseURL;
 
@@ -231,7 +239,7 @@ export default defineConfig({
     baseURL: selectedProfile.baseURL || envConfig.getBaseUrl(),
 
     /* Browser headless mode - force headless in CI environments */
-    headless: process.env.CI ? true : selectedProfile.headless,
+    headless: process.env.HEADLESS === 'true' ? true : process.env.HEADLESS === 'false' ? false : (process.env.CI ? true : selectedProfile.headless),
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
