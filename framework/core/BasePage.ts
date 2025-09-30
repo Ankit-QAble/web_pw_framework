@@ -211,6 +211,11 @@ protected async unhighlight(locator: Locator): Promise<void> {
     }
     this.logger.info(`Navigating to: ${this.url}`);
     
+    // Check if page is still open before navigation
+    if (this.page.isClosed()) {
+      throw new Error('Page is closed before navigation attempt');
+    }
+    
     // Use longer timeout for CI environments
     const navigationTimeout = process.env.CI ? 120000 : 60000;
     
@@ -219,11 +224,27 @@ protected async unhighlight(locator: Locator): Promise<void> {
         waitUntil: 'domcontentloaded',
         timeout: navigationTimeout 
       });
+      
+      // Check if page is still open after navigation
+      if (this.page.isClosed()) {
+        throw new Error('Page was closed during navigation');
+      }
+      
       await this.waitForPageLoad();
     } catch (error) {
       this.logger.error(`Navigation failed to ${this.url}`, error as Error);
-      // Take screenshot for debugging
-      await this.takeScreenshot('navigation-error');
+      
+      // Only take screenshot if page is still open
+      if (!this.page.isClosed()) {
+        try {
+          await this.takeScreenshot('navigation-error');
+        } catch (screenshotError) {
+          this.logger.warn('Could not take screenshot - page may be closed', screenshotError as Error);
+        }
+      } else {
+        this.logger.warn('Cannot take screenshot - page is closed');
+      }
+      
       throw error;
     }
   }
@@ -232,9 +253,19 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * Wait for page to load completely
    */
   async waitForPageLoad(): Promise<void> {
+    // Check if page is still open before waiting
+    if (this.page.isClosed()) {
+      throw new Error('Page is closed before waiting for page load');
+    }
+    
     // Wait for DOM content to be loaded first
     await this.page.waitForLoadState('domcontentloaded');
     this.logger.info('DOM content loaded');
+    
+    // Check if page is still open after DOM content loaded
+    if (this.page.isClosed()) {
+      throw new Error('Page was closed after DOM content loaded');
+    }
     
     // Try to wait for network idle, but don't fail if it times out
     const networkIdleTimeout = process.env.CI ? 30000 : 10000;
@@ -245,6 +276,11 @@ protected async unhighlight(locator: Locator): Promise<void> {
       // Network idle timeout is expected for pages with continuous network activity
       this.logger.info('Network idle timeout (expected for pages with continuous activity). DOM is ready.');
       
+      // Check if page is still open after network idle timeout
+      if (this.page.isClosed()) {
+        throw new Error('Page was closed during network idle wait');
+      }
+      
       // In CI, try to verify the page is still functional
       if (process.env.CI) {
         try {
@@ -254,6 +290,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
           }
         } catch (titleError) {
           this.logger.warn('Could not get page title after network idle timeout');
+          // Don't throw here as the page might still be functional
         }
       }
     }

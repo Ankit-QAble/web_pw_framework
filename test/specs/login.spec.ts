@@ -19,11 +19,37 @@ test.describe('Login Page Tests', () => {
   test.beforeEach(async ({ page }, testInfo) => {
     // Add extra stability for CI environments
     if (process.env.CI) {
-      await page.waitForLoadState('networkidle', { timeout: 30000 });
+      try {
+        await page.waitForLoadState('networkidle', { timeout: 30000 });
+      } catch (error) {
+        console.log('Network idle timeout in beforeEach - continuing');
+      }
     }
     
     loginPage = new LoginPage(page, LOGIN_URL, testInfo);
-    await loginPage.navigateToLogin();
+    
+    // Retry navigation up to 3 times in CI
+    let retryCount = 0;
+    const maxRetries = process.env.CI ? 3 : 1;
+    
+    while (retryCount < maxRetries) {
+      try {
+        await loginPage.navigateToLogin();
+        break; // Success, exit retry loop
+      } catch (error) {
+        retryCount++;
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        console.log(`Navigation attempt ${retryCount} failed: ${errorMessage}`);
+        
+        if (retryCount >= maxRetries) {
+          throw error; // Final attempt failed
+        }
+        
+        // Wait before retry
+        await page.waitForTimeout(2000);
+        console.log(`Retrying navigation (attempt ${retryCount + 1}/${maxRetries})...`);
+      }
+    }
   });
   
   test('Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {

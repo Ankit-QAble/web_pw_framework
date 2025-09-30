@@ -21,34 +21,67 @@ export class LoginPage extends BasePage {
   async navigateToLogin(): Promise<void> {
     try {
       this.logger.info(`Navigating to: ${this.url}`);
+      
+      // Check if page is still open before navigation
+      if (this.page.isClosed()) {
+        throw new Error('Page is already closed before navigation');
+      }
+      
       await this.navigate();
       
       // Add extra wait for CI stability with longer timeout
       if (process.env.CI) {
         this.logger.info('CI environment detected - using extended timeout');
         try {
+          // Check if page is still open before waiting for network idle
+          if (this.page.isClosed()) {
+            throw new Error('Page was closed during navigation');
+          }
+          
           await this.page.waitForLoadState('networkidle', { timeout: 60000 });
           this.logger.info('Network idle achieved');
         } catch (networkError) {
           this.logger.warn('Network idle timeout - checking if page is still functional');
-          // Check if page is still accessible
-          const currentUrl = this.page.url();
-          const pageTitle = await this.page.title();
-          this.logger.info(`Current URL: ${currentUrl}`);
-          this.logger.info(`Page title: ${pageTitle}`);
           
-          // If we can get the title, the page is likely loaded
-          if (pageTitle && pageTitle !== '') {
-            this.logger.info('Page appears to be loaded despite network idle timeout');
-          } else {
-            throw networkError;
+          // Check if page is still accessible
+          if (this.page.isClosed()) {
+            this.logger.error('Page was closed during network idle wait');
+            throw new Error('Page was closed during network idle wait');
+          }
+          
+          try {
+            const currentUrl = this.page.url();
+            const pageTitle = await this.page.title();
+            this.logger.info(`Current URL: ${currentUrl}`);
+            this.logger.info(`Page title: ${pageTitle}`);
+            
+            // If we can get the title, the page is likely loaded
+            if (pageTitle && pageTitle !== '') {
+              this.logger.info('Page appears to be loaded despite network idle timeout');
+            } else {
+              throw networkError;
+            }
+          } catch (pageCheckError) {
+            this.logger.error('Page check failed after network idle timeout', pageCheckError as Error);
+            const errorMessage = pageCheckError instanceof Error ? pageCheckError.message : String(pageCheckError);
+            throw new Error(`Page became inaccessible: ${errorMessage}`);
           }
         }
       }
     } catch (error) {
       this.logger.error('Failed to navigate to login page', error as Error);
-      // Take screenshot for debugging
-      await this.takeScreenshot('navigation-failed');
+      
+      // Only take screenshot if page is still open
+      if (!this.page.isClosed()) {
+        try {
+          await this.takeScreenshot('navigation-failed');
+        } catch (screenshotError) {
+          this.logger.warn('Could not take screenshot - page may be closed', screenshotError as Error);
+        }
+      } else {
+        this.logger.warn('Cannot take screenshot - page is closed');
+      }
+      
       throw error;
     }
   }
