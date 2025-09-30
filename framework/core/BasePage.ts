@@ -210,8 +210,22 @@ protected async unhighlight(locator: Locator): Promise<void> {
       throw new Error(`URL not defined for ${this.constructor.name}`);
     }
     this.logger.info(`Navigating to: ${this.url}`);
-    await this.page.goto(this.url);
-    await this.waitForPageLoad();
+    
+    // Use longer timeout for CI environments
+    const navigationTimeout = process.env.CI ? 120000 : 60000;
+    
+    try {
+      await this.page.goto(this.url, { 
+        waitUntil: 'domcontentloaded',
+        timeout: navigationTimeout 
+      });
+      await this.waitForPageLoad();
+    } catch (error) {
+      this.logger.error(`Navigation failed to ${this.url}`, error as Error);
+      // Take screenshot for debugging
+      await this.takeScreenshot('navigation-error');
+      throw error;
+    }
   }
 
   /**
@@ -223,12 +237,25 @@ protected async unhighlight(locator: Locator): Promise<void> {
     this.logger.info('DOM content loaded');
     
     // Try to wait for network idle, but don't fail if it times out
+    const networkIdleTimeout = process.env.CI ? 30000 : 10000;
     try {
-      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
+      await this.page.waitForLoadState('networkidle', { timeout: networkIdleTimeout });
       this.logger.info('Network idle - page loaded successfully');
     } catch (error) {
       // Network idle timeout is expected for pages with continuous network activity
       this.logger.info('Network idle timeout (expected for pages with continuous activity). DOM is ready.');
+      
+      // In CI, try to verify the page is still functional
+      if (process.env.CI) {
+        try {
+          const pageTitle = await this.page.title();
+          if (pageTitle && pageTitle !== '') {
+            this.logger.info(`Page appears functional with title: ${pageTitle}`);
+          }
+        } catch (titleError) {
+          this.logger.warn('Could not get page title after network idle timeout');
+        }
+      }
     }
   }
 

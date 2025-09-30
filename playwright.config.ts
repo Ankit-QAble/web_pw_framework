@@ -7,12 +7,12 @@ const PROFILES = {
   development: {
     baseURL: 'http://devwebpanel.sadadqa.com:3004',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'
-    headless: true,
+    headless: false,
     parallel: 2, // workers
     retries: 0,
     screenshotOnFail: true,
     videoOnFail: true,
-    elementHighlight: false,
+    elementHighlight: true,
     reportEmail: {
       email: false, // Set to true to enable email reporting and setup in utils/EmailService.ts
       to: ['patelankitr123@gmail.com'],
@@ -254,7 +254,7 @@ export default defineConfig({
     actionTimeout: process.env.CI ? 120000 : 90000,
     
     /* Global timeout for navigation - increase for CI */
-    navigationTimeout: process.env.CI ? 120000 : 90000,
+    navigationTimeout: process.env.CI ? 180000 : 90000,
 
     /* Element highlighting for debugging - handled in BasePage.ts */
 

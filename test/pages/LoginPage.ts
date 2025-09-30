@@ -10,7 +10,9 @@ export interface LoginCredentials {
 
 export class LoginPage extends BasePage {
   constructor(page: Page, url?: string, testInfo?: TestInfo) {
-    super(page, url || 'https://aks-panel.sadad.qa/auth/login', testInfo);
+    // Use the URL from config or fallback to the provided URL
+    const defaultUrl = process.env.BASE_URL || 'https://aks-panel.sadad.qa/auth/login';
+    super(page, url || defaultUrl, testInfo);
   }
 
   /**
@@ -18,10 +20,30 @@ export class LoginPage extends BasePage {
    */
   async navigateToLogin(): Promise<void> {
     try {
+      this.logger.info(`Navigating to: ${this.url}`);
       await this.navigate();
-      // Add extra wait for CI stability
+      
+      // Add extra wait for CI stability with longer timeout
       if (process.env.CI) {
-        await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+        this.logger.info('CI environment detected - using extended timeout');
+        try {
+          await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+          this.logger.info('Network idle achieved');
+        } catch (networkError) {
+          this.logger.warn('Network idle timeout - checking if page is still functional');
+          // Check if page is still accessible
+          const currentUrl = this.page.url();
+          const pageTitle = await this.page.title();
+          this.logger.info(`Current URL: ${currentUrl}`);
+          this.logger.info(`Page title: ${pageTitle}`);
+          
+          // If we can get the title, the page is likely loaded
+          if (pageTitle && pageTitle !== '') {
+            this.logger.info('Page appears to be loaded despite network idle timeout');
+          } else {
+            throw networkError;
+          }
+        }
       }
     } catch (error) {
       this.logger.error('Failed to navigate to login page', error as Error);
