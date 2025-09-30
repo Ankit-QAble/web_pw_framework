@@ -28,9 +28,9 @@ test.describe('Login Page Tests', () => {
     
     loginPage = new LoginPage(page, LOGIN_URL, testInfo);
     
-    // Retry navigation up to 3 times in CI
+    // Get retry count from config
     let retryCount = 0;
-    const maxRetries = process.env.CI ? 3 : 1;
+    const maxRetries = (global as any).selectedProfile?.retries;
     
     while (retryCount < maxRetries) {
       try {
