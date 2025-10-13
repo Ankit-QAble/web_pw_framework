@@ -313,6 +313,27 @@ npm run report:generate
 - Videos: `test-results/`
 - Traces: `test-results/`
 
+### Email Reporting
+
+The framework includes email reporting functionality that automatically sends test results and reports via email.
+
+**Supported Email Providers:**
+- **Gmail**: Requires app-specific password
+- **Outlook/Office 365**: Supports regular password or app password
+- **Custom SMTP**: Any SMTP-compatible server
+
+**Configuration:**
+```bash
+# Set email provider
+export EMAIL_PROVIDER=outlook  # or gmail
+
+# Configure SMTP settings
+export SMTP_USER=your-email@outlook.com
+export SMTP_PASS=your-password
+```
+
+For detailed email configuration, see [Email Reporting Documentation](docs/EMAIL_REPORTING.md).
+
 ## 📝 Writing Tests
 
 ### Basic Test Structure
@@ -482,6 +503,66 @@ await logger.step('Step description', async () => {
   // Your test actions
 });
 ```
+
+## 🔧 Jenkins Diagnostic Tools
+
+The framework includes specialized diagnostic tools for Jenkins CI environments to help troubleshoot common issues.
+
+### Environment Diagnostic
+
+Check Jenkins environment setup, system resources, and dependencies:
+
+```bash
+# Run environment diagnostic
+npm run diagnose:jenkins
+```
+
+This script checks:
+- Environment variables (CI, JENKINS, BUILD_NUMBER, etc.)
+- System resources (memory, disk space)
+- Node.js and npm versions
+- Playwright installation and browser availability
+- Project structure and required files
+- Playwright cache directories and permissions
+
+### Browser Diagnostic
+
+Test browser behavior and page stability in Jenkins environment:
+
+```bash
+# Run browser diagnostic
+npm run diagnose:browser
+```
+
+This script performs:
+- Browser launch with Jenkins-optimized settings
+- Navigation testing with extended timeouts
+- Network idle validation
+- Page stability checks (50-second extended wait)
+- Element presence verification
+- Screenshot capability testing
+
+### Jenkins Troubleshooting
+
+For detailed Jenkins troubleshooting guidance, see:
+- `docs/JENKINS_TROUBLESHOOTING.md` - Comprehensive Jenkins setup and troubleshooting guide
+
+### Common Jenkins Issues
+
+1. **Browser Launch Failures**
+   - Use Jenkins-optimized browser arguments
+   - Check system resources and permissions
+   - Verify Playwright browser installation
+
+2. **Page Closure Issues**
+   - Extended timeouts for CI environments
+   - Network idle handling
+   - Resource cleanup
+
+3. **Environment Configuration**
+   - CI environment variables
+   - Cache directory permissions
+   - Node.js version compatibility
 
 ## 🔄 CI/CD Integration
 

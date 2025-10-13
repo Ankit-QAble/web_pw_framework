@@ -72,6 +72,22 @@ const PROFILES = {
 **Important**: Gmail will reject regular passwords with the error "Application-specific password required". You MUST use an App Password.
 
 #### Outlook/Office 365 Setup
+
+The framework now supports Outlook/Office 365 email providers with automatic configuration detection.
+
+**Option 1: Using Environment Variables (Recommended)**
+```bash
+# Set email provider to Outlook
+export EMAIL_PROVIDER=outlook
+
+# Configure Outlook SMTP settings
+export SMTP_HOST=smtp.office365.com
+export SMTP_PORT=587
+export SMTP_USER=your-email@outlook.com
+export SMTP_PASS=your-password
+```
+
+**Option 2: Direct Configuration in playwright.config.ts**
 ```typescript
 reportSmtp: {
   smtp: true,
@@ -83,6 +99,22 @@ reportSmtp: {
   },
 }
 ```
+
+**Outlook Authentication Options:**
+1. **Regular Password**: Use your Outlook account password
+2. **App Password**: For enhanced security, generate an app password:
+   - Go to [Microsoft Account Security](https://account.microsoft.com/security)
+   - Navigate to **Security** → **Advanced security options**
+   - Under **App passwords**, click **Create a new app password**
+   - Select **Mail** and generate a password
+   - Use this app password instead of your regular password
+
+**Supported Outlook Domains:**
+- `@outlook.com`
+- `@hotmail.com`
+- `@live.com`
+- `@office365.com`
+- Custom Office 365 domains
 
 #### Custom SMTP Server
 ```typescript
@@ -163,6 +195,57 @@ export SMTP_USER="custom-user"
 export SMTP_PASS="custom-password"
 ```
 
+## Email Provider Configuration
+
+The framework supports multiple email providers with automatic configuration:
+
+### Supported Providers
+
+1. **Gmail** (default)
+   - Provider: `gmail`
+   - Host: `smtp.gmail.com`
+   - Port: `587`
+   - Requires: App-specific password
+
+2. **Outlook/Office 365**
+   - Provider: `outlook`, `office365`, or `microsoft`
+   - Host: `smtp.office365.com`
+   - Port: `587`
+   - Supports: Regular password or app password
+
+### Switching Email Providers
+
+**Method 1: Environment Variable**
+```bash
+# Switch to Outlook
+export EMAIL_PROVIDER=outlook
+export SMTP_USER=your-email@outlook.com
+export SMTP_PASS=your-password
+
+# Switch to Gmail
+export EMAIL_PROVIDER=gmail
+export SMTP_USER=your-email@gmail.com
+export SMTP_PASS=your-app-password
+```
+
+**Method 2: .env File**
+```bash
+# .env file
+EMAIL_PROVIDER=outlook
+SMTP_USER=your-email@outlook.com
+SMTP_PASS=your-password
+```
+
+**Method 3: Programmatic Configuration**
+```typescript
+// In your test setup
+import { envConfig } from './framework/utils/EnvConfig';
+
+// The framework automatically detects the provider based on EMAIL_PROVIDER
+const providerConfig = envConfig.getEmailProviderConfig();
+console.log('Using email provider:', providerConfig.provider);
+```
+
 ## Troubleshooting
 
 ### Common Issues
@@ -172,6 +255,14 @@ export SMTP_PASS="custom-password"
      - This is a Gmail security requirement
      - You MUST use a Gmail App Password, not your regular password
      - Follow the Gmail setup steps above to generate an App Password
+   - **Error: "Invalid login" (Outlook)**
+     - Verify your Outlook email and password
+     - Try using an app password instead of your regular password
+     - Ensure 2-factor authentication is enabled if using app password
+   - **Error: "Connection timeout" (Outlook)**
+     - Check if your organization blocks SMTP connections
+     - Try using port 25 or 2525 as alternatives
+     - Verify firewall settings
    - Verify username and password
    - For Gmail, ensure you're using an app-specific password
    - Check if 2-factor authentication is enabled

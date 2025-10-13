@@ -1,5 +1,6 @@
 import { FullConfig } from '@playwright/test';
 import { emailService } from './EmailService';
+import { envConfig } from './EnvConfig';
 
 async function globalTeardown(config: FullConfig) {
   console.log('Sending test report email with Playwright report...');
@@ -11,11 +12,16 @@ async function globalTeardown(config: FullConfig) {
   if (selectedProfile?.reportEmail?.email && selectedProfile?.reportSmtp?.smtp) {
     console.log('Email configuration found, preparing Playwright report...');
     
+    // Get provider configuration
+    const providerConfig = envConfig.getEmailProviderConfig();
+    console.log('Email provider:', providerConfig.provider);
+    
     console.log('Attempting to send email with Playwright test report...');
     try {
       await emailService.sendTestReport(
         selectedProfile.reportEmail,
-        selectedProfile.reportSmtp
+        selectedProfile.reportSmtp,
+        providerConfig
       );
       console.log('Test report email sent successfully');
     } catch (error) {

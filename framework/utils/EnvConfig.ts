@@ -93,13 +93,29 @@ export class EnvConfig {
       pass: string;
     };
   } {
+    const provider = this.get('EMAIL_PROVIDER', 'gmail').toLowerCase();
+    
+    // Default Gmail configuration
+    let defaultHost = 'smtp.gmail.com';
+    let defaultPort = '587';
+    let defaultUser = 'qable.gamer@gmail.com';
+    let defaultPass = 'wwch ebob wwmh vqua';
+    
+    // Outlook/Office 365 configuration
+    if (provider === 'outlook' || provider === 'office365' || provider === 'microsoft') {
+      defaultHost = 'smtp.office365.com';
+      defaultPort = '587';
+      defaultUser = this.get('SMTP_USER', 'your-email@outlook.com');
+      defaultPass = this.get('SMTP_PASS', 'your-password');
+    }
+    
     return {
       smtp: true,
-      host: this.get('SMTP_HOST', 'smtp.gmail.com'),
-      port: parseInt(this.get('SMTP_PORT', '587')),
+      host: this.get('SMTP_HOST', defaultHost),
+      port: parseInt(this.get('SMTP_PORT', defaultPort)),
       auth: {
-        user: this.get('SMTP_USER', 'qable.gamer@gmail.com'),
-        pass: this.get('SMTP_PASS', 'wwch ebob wwmh vqua'),
+        user: this.get('SMTP_USER', defaultUser),
+        pass: this.get('SMTP_PASS', defaultPass),
       },
     };
   }
@@ -142,6 +158,41 @@ Generated at: ${new Date().toLocaleString()}`;
       subject,
       body,
     };
+  }
+
+  /**
+   * Get email provider configuration
+   */
+  public getEmailProviderConfig(): {
+    provider: string;
+    host: string;
+    port: number;
+    secure: boolean;
+    requiresAppPassword: boolean;
+  } {
+    const provider = this.get('EMAIL_PROVIDER', 'gmail').toLowerCase();
+    
+    switch (provider) {
+      case 'outlook':
+      case 'office365':
+      case 'microsoft':
+        return {
+          provider: 'outlook',
+          host: 'smtp.office365.com',
+          port: 587,
+          secure: false, // Use STARTTLS
+          requiresAppPassword: false, // Outlook uses regular password or app password
+        };
+      case 'gmail':
+      default:
+        return {
+          provider: 'gmail',
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false, // Use STARTTLS
+          requiresAppPassword: true, // Gmail requires app password
+        };
+    }
   }
 
   /**

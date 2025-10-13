@@ -35,27 +35,42 @@ export class EmailService {
   /**
    * Initialize email transporter with SMTP configuration
    */
-  public async initializeTransporter(smtpConfig: SmtpConfig): Promise<void> {
+  public async initializeTransporter(smtpConfig: SmtpConfig, providerConfig?: { provider: string; host: string; port: number; secure: boolean; requiresAppPassword: boolean }): Promise<void> {
     if (!smtpConfig.smtp) {
       throw new Error('SMTP configuration is disabled');
     }
 
-    this.transporter = nodemailer.createTransport({
-      host: smtpConfig.host,
-      port: smtpConfig.port,
-      secure: smtpConfig.port === 465, // true for 465, false for other ports
+    // Use provider-specific configuration if available
+    const config: any = {
+      host: providerConfig?.host || smtpConfig.host,
+      port: providerConfig?.port || smtpConfig.port,
+      secure: providerConfig?.secure !== undefined ? providerConfig.secure : (smtpConfig.port === 465),
       auth: {
         user: smtpConfig.auth.user,
         pass: smtpConfig.auth.pass,
       },
-    });
+    };
+
+    // Add provider-specific options
+    if (providerConfig?.provider === 'outlook') {
+      // Outlook/Office 365 specific configuration
+      config.tls = {
+        ciphers: 'SSLv3',
+        rejectUnauthorized: false
+      };
+    }
+
+    this.transporter = nodemailer.createTransport(config);
 
     // Verify connection configuration
     try {
       await this.transporter.verify();
-      console.log('SMTP connection verified successfully');
+      console.log(`SMTP connection verified successfully for ${providerConfig?.provider || 'default'} provider`);
     } catch (error) {
       console.error('SMTP connection failed:', error);
+      if (providerConfig?.requiresAppPassword) {
+        console.error('Note: This provider requires an app-specific password. Please check your email provider documentation.');
+      }
       throw error;
     }
   }
@@ -63,10 +78,11 @@ export class EmailService {
   /**
    * Send test report email with Allure report attachment
    */
-  public async sendTestReport(emailConfig: EmailConfig, smtpConfig: SmtpConfig): Promise<void> {
+  public async sendTestReport(emailConfig: EmailConfig, smtpConfig: SmtpConfig, providerConfig?: { provider: string; host: string; port: number; secure: boolean; requiresAppPassword: boolean }): Promise<void> {
     console.log('EmailService.sendTestReport called');
     console.log('Email config:', { email: emailConfig.email, to: emailConfig.to, subject: emailConfig.subject });
     console.log('SMTP config:', { smtp: smtpConfig.smtp, host: smtpConfig.host, port: smtpConfig.port, user: smtpConfig.auth.user });
+    console.log('Provider config:', providerConfig);
     
     if (!emailConfig.email) {
       console.log('Email reporting is disabled');
@@ -80,7 +96,7 @@ export class EmailService {
 
     if (!this.transporter) {
       console.log('Initializing SMTP transporter...');
-      await this.initializeTransporter(smtpConfig);
+      await this.initializeTransporter(smtpConfig, providerConfig);
     }
 
     const playwrightReportPath = path.join(process.cwd(), 'playwright-report', 'index.html');
@@ -326,13 +342,13 @@ export class EmailService {
   /**
    * Send simple notification email
    */
-  public async sendNotification(emailConfig: EmailConfig, smtpConfig: SmtpConfig, message: string): Promise<void> {
+  public async sendNotification(emailConfig: EmailConfig, smtpConfig: SmtpConfig, message: string, providerConfig?: { provider: string; host: string; port: number; secure: boolean; requiresAppPassword: boolean }): Promise<void> {
     if (!emailConfig.email) {
       return;
     }
 
     if (!this.transporter) {
-      await this.initializeTransporter(smtpConfig);
+      await this.initializeTransporter(smtpConfig, providerConfig);
     }
 
     const mailOptions = {

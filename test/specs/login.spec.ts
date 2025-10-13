@@ -1,18 +1,10 @@
 import { test, expect } from '../../framework/core/BaseTest';
 import { LoginPage } from '../pages/LoginPage';
 import { envConfig } from '../../framework/utils/EnvConfig';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const users = require('../data/users.json');
 
-// Real application URL and test data from profile config
+// Real application URL from profile config
 const LOGIN_URL = (global as any).selectedProfile?.baseURL;
 console.log(`🔍 LOGIN_URL from selectedProfile.baseURL: ${LOGIN_URL}`);
-const TEST_CREDENTIALS = {
-  // Map username to the mobileNumber field expected by LoginPage methods
-  mobileNumber: users.validUsers[0].username,
-  password: users.validUsers[0].password,
-  otp: users.validUsers[0].otp
-};
 
 test.describe('Login Page Tests', () => {
   let loginPage: LoginPage;
@@ -62,7 +54,7 @@ test.describe('Login Page Tests', () => {
   
   test('Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
     await logger.step('Enter valid credentials', async () => {
-      await loginPage.login(TEST_CREDENTIALS);
+      await loginPage.loginWithValidCredentials();
     });
 
   
@@ -75,39 +67,10 @@ test.describe('Login Page Tests', () => {
     });
   });
 
-  // test('#2 Enter valid credentials', { tag: ['@smoke'] }, async ({ logger }) => {
-  //   await logger.step('Enter valid credentials', async () => {
-  //     await loginPage.login(TEST_CREDENTIALS);
-  //   });
-  // });
-
-  // test('#3 Enter valid credentials', { tag: ['@smoke'] }, async ({ logger }) => {
-  //   await logger.step('Enter valid credentials', async () => {
-  //     await loginPage.login(TEST_CREDENTIALS);
-  //   });
-  // });
-
-  // test('#4 Enter valid credentials', { tag: ['@smoke'] }, async ({ logger }) => {
-  //   await logger.step('Enter valid credentials', async () => {
-  //     await loginPage.login(TEST_CREDENTIALS);
-  //   });
-  // });
-
-  // test('#5 Enter valid credentials', { tag: ['@smoke'] }, async ({ logger }) => {
-  //   await logger.step('Enter valid credentials', async () => {
-  //     await loginPage.login(TEST_CREDENTIALS);
-  //   });
-  // });
-
-  // test('#6 Enter valid credentials', { tag: ['@smoke'] }, async ({ logger }) => {
-  //   await logger.step('Enter valid credentials', async () => {
-  //     await loginPage.login(TEST_CREDENTIALS);
-  //   });
-  // });
 
   test('#7 Enter valid credentials', { tag: ['@critical'] }, async ({ logger }) => {
     await logger.step('Enter valid credentials', async () => {
-      await loginPage.login(TEST_CREDENTIALS);
+      await loginPage.loginWithValidCredentials();
     });
 
     await logger.step('Verify page loads and elements are visible', async () => {

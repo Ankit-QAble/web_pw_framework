@@ -1,6 +1,8 @@
 import { Page, TestInfo } from '@playwright/test';
 import { BasePage } from '../../framework/core/BasePage';
 import { LoginPageLocators } from '../locators/LoginPageLocators';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export interface LoginCredentials {
   mobileNumber: string;
@@ -9,12 +11,59 @@ export interface LoginCredentials {
 }
 
 export class LoginPage extends BasePage {
+  private userData: any;
+
   constructor(page: Page, url?: string, testInfo?: TestInfo) {
     // Use the URL from config or fallback to the provided URL
     const defaultUrl = process.env.BASE_URL;
     console.log(`🔍 LoginPage constructor - url param: ${url}, defaultUrl: ${defaultUrl}`);
     super(page, url || defaultUrl, testInfo);
     console.log(`🔍 LoginPage constructor - final URL: ${this.url}`);
+    
+    // Load user data from JSON file
+    this.loadUserData();
+  }
+
+  /**
+   * Load user data from users.json file
+   */
+  private loadUserData(): void {
+    try {
+      const userDataPath = path.join(process.cwd(), 'test', 'data', 'users.json');
+      const userDataContent = fs.readFileSync(userDataPath, 'utf8');
+      this.userData = JSON.parse(userDataContent);
+      this.logger.info('User data loaded successfully');
+    } catch (error) {
+      this.logger.error('Failed to load user data', error as Error);
+      throw new Error('Could not load user data from users.json');
+    }
+  }
+
+  /**
+   * Get valid user credentials
+   */
+  public getValidUserCredentials(): LoginCredentials {
+    if (!this.userData || !this.userData.validUsers || this.userData.validUsers.length === 0) {
+      throw new Error('No valid users found in users.json');
+    }
+    
+    const validUser = this.userData.validUsers[0];
+    return {
+      mobileNumber: validUser.username,
+      password: validUser.password,
+      otp: validUser.otp
+    };
+  }
+
+  /**
+   * Get invalid user credentials for negative testing
+   */
+  public getInvalidUserCredentials(): { username: string; password: string; expectedError: string } {
+    if (!this.userData || !this.userData.invalidUsers || this.userData.invalidUsers.length === 0) {
+      throw new Error('No invalid users found in users.json');
+    }
+    
+    return this.userData.invalidUsers[0];
   }
 
   /**
@@ -80,6 +129,14 @@ export class LoginPage extends BasePage {
       await this.takeScreenshot('login-failed');
       throw error;
     }
+  }
+
+  /**
+   * Perform complete login with valid credentials from users.json
+   */
+  async loginWithValidCredentials(): Promise<void> {
+    const credentials = this.getValidUserCredentials();
+    await this.login(credentials);
   }
 
   /**

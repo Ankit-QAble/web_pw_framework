@@ -8,7 +8,7 @@ const PROFILES = {
     baseURL: 'http://devwebpanel.sadadqa.com:3004',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'
     headless: false,
-    parallel: 2, // workers
+    parallel: 1, // workers
     retries: 0,
     screenshotOnFail: true,
     videoOnFail: true,
@@ -20,6 +20,53 @@ const PROFILES = {
       body: 'Test execution completed for development environment',
     },
     reportSmtp: envConfig.getSmtpConfig(),
+    grid: {
+      isGrid: true,
+      provider: 'browserstack', // 'lambdatest' | 'browserstack'
+      
+      // LambdaTest Configuration
+      lambdatest: {
+        user: 'ankitpatelsadad',
+        key: 'LT_3R7SNKvxrQqDBZTeI3vCIxIy6jv1Ike3YpMRghc0ER4XDH6',
+        capabilities: {
+          'LT:Options': {
+            platform: 'Windows 10',
+            browserName: 'Chrome',
+            browserVersion: 'latest',
+            resolution: '1920x1080',
+            name: 'Playwright Development Tests',
+            build: 'Development Build',
+            projectName: 'Web Framework',
+            console: true,
+            network: true,
+            visual: true,
+            video: true,
+          }
+        }
+      },
+      
+      // BrowserStack Configuration
+      browserstack: {
+        user: 'ankitpatel_4ZJ9iA',
+        key: 'xxscKnMDQvxks5d6eADR',
+        capabilities: {
+          'bstack:options': {
+            os: 'Windows',
+            osVersion: '10',
+            browserName: 'chrome',
+            browserVersion: 'latest',
+            resolution: '1920x1080',
+            projectName: 'Web Framework',
+            buildName: 'Development Build',
+            sessionName: 'Playwright Development Tests',
+            local: false,
+            networkLogs: true,
+            consoleLogs: 'info',
+            video: true,
+          }
+        }
+      }
+    }
   },
   preprod: {
     baseURL: 'https://aks-panel.sadad.qa/auth/login',
@@ -47,8 +94,53 @@ const PROFILES = {
       body: 'Test execution completed for preprod environment. Allure report attached.',
     },
     reportSmtp: envConfig.getSmtpConfig(),
-
-    
+    grid: {
+      isGrid: false,
+      provider: 'lambdatest', // 'lambdatest' | 'browserstack'
+      
+      // LambdaTest Configuration
+      lambdatest: {
+        user: 'ankitpatelsadad',
+        key: 'LT_3R7SNKvxrQqDBZTeI3vCIxIy6jv1Ike3YpMRghc0ER4XDH6',
+        capabilities: {
+          'LT:Options': {
+            platform: 'Windows 10',
+            browserName: 'Chrome',
+            browserVersion: 'latest',
+            resolution: '1920x1080',
+            name: 'Playwright Preprod Tests',
+            build: 'Preprod Build',
+            projectName: 'Web Framework',
+            console: true,
+            network: true,
+            visual: true,
+            video: true,
+          }
+        }
+      },
+      
+      // BrowserStack Configuration
+      browserstack: {
+        user: 'your-browserstack-username',
+        key: 'your-browserstack-access-key',
+        capabilities: {
+          'bstack:options': {
+            os: 'Windows',
+            osVersion: '10',
+            browserName: 'chrome',
+            browserVersion: 'latest',
+            resolution: '1920x1080',
+            projectName: 'Web Framework',
+            buildName: 'Preprod Build',
+            sessionName: 'Playwright Preprod Tests',
+            local: false,
+            networkLogs: true,
+            consoleLogs: 'info',
+            video: true,
+          }
+        }
+      }
+    }
   },
 } as const;
 
@@ -69,8 +161,87 @@ process.env.BASE_URL = selectedProfile.baseURL;
 // Add selectedProfile to config for global setup/teardown
 (global as any).selectedProfile = selectedProfile;
 
-function mapBrowserToProject(browser: string) {
+// Function to build grid capabilities based on provider
+function buildGridCapabilities(gridConfig: any, browser: string) {
+  const provider = gridConfig?.provider || 'lambdatest';
+  const providerConfig = gridConfig?.[provider];
+  
+  if (!providerConfig) {
+    throw new Error(`Grid provider '${provider}' configuration not found`);
+  }
+  
+  if (provider === 'lambdatest') {
+    const capabilities = providerConfig?.capabilities?.['LT:Options'] || {};
+    return {
+      browserName: capabilities.browserName || browser,
+      browserVersion: capabilities.browserVersion || 'latest',
+      'LT:Options': {
+        ...capabilities,
+        user: providerConfig.user,
+        accessKey: providerConfig.key,
+      }
+    };
+  }
+  
+  if (provider === 'browserstack') {
+    const capabilities = providerConfig?.capabilities?.['bstack:options'] || {};
+    return {
+      browser: capabilities.browserName || browser,
+      browser_version: capabilities.browserVersion || 'latest',
+      'bstack:options': {
+        ...capabilities,
+        userName: providerConfig.user,
+        accessKey: providerConfig.key,
+      }
+    };
+  }
+  
+  throw new Error(`Unsupported grid provider: ${provider}`);
+}
+
+function mapBrowserToProject(browser: string, gridConfig?: any) {
   const b = browser?.toLowerCase();
+  
+  // If grid is enabled, return grid configuration
+  if (gridConfig?.isGrid) {
+    const provider = gridConfig?.provider || 'lambdatest';
+    const providerConfig = gridConfig?.[provider];
+    const capabilities = buildGridCapabilities(gridConfig, b);
+    
+    let wsEndpoint: string;
+    let projectName: string;
+    
+    if (provider === 'lambdatest') {
+      // LambdaTest WebSocket endpoint
+      const capabilitiesStr = encodeURIComponent(JSON.stringify(capabilities));
+      wsEndpoint = `wss://cdp.lambdatest.com/playwright?capabilities=${capabilitiesStr}`;
+      projectName = 'lambdatest-grid';
+      
+      console.log(`   Provider: LambdaTest`);
+      console.log(`   WebSocket Endpoint: wss://cdp.lambdatest.com/playwright?capabilities=...`);
+      console.log(`   Credentials: Embedded in capabilities JSON (user: ${providerConfig.user})`);
+    } else if (provider === 'browserstack') {
+      // BrowserStack WebSocket endpoint
+      const capabilitiesStr = encodeURIComponent(JSON.stringify(capabilities));
+      wsEndpoint = `wss://cdp.browserstack.com/playwright?caps=${capabilitiesStr}`;
+      projectName = 'browserstack-grid';
+      
+      console.log(`   Provider: BrowserStack`);
+      console.log(`   WebSocket Endpoint: wss://cdp.browserstack.com/playwright?caps=...`);
+      console.log(`   Credentials: Embedded in capabilities JSON (user: ${providerConfig.user})`);
+    } else {
+      throw new Error(`Unsupported grid provider: ${provider}`);
+    }
+    
+    return {
+      name: projectName,
+      use: {
+        connectOptions: {
+          wsEndpoint: wsEndpoint,
+        }
+      }
+    };
+  }
   
   // CI-optimized browser launch options
   const ciLaunchOptions = {
@@ -241,6 +412,29 @@ function resolveMobileUse(mobile: any) {
   };
 }
 
+// Log grid configuration status
+if ((selectedProfile as any).grid?.isGrid) {
+  const gridConfig = (selectedProfile as any).grid;
+  const provider = gridConfig?.provider || 'lambdatest';
+  const providerConfig = gridConfig?.[provider];
+  
+  if (provider === 'lambdatest') {
+    const ltOptions = providerConfig?.capabilities?.['LT:Options'];
+    console.log('🌐 Grid Mode: ENABLED - Tests will run on LambdaTest');
+    console.log(`   Platform: ${ltOptions?.platform}`);
+    console.log(`   Browser: ${ltOptions?.browserName} ${ltOptions?.browserVersion}`);
+    console.log(`   Build: ${ltOptions?.build}`);
+  } else if (provider === 'browserstack') {
+    const bsOptions = providerConfig?.capabilities?.['bstack:options'];
+    console.log('🌐 Grid Mode: ENABLED - Tests will run on BrowserStack');
+    console.log(`   Platform: ${bsOptions?.os} ${bsOptions?.osVersion}`);
+    console.log(`   Browser: ${bsOptions?.browserName} ${bsOptions?.browserVersion}`);
+    console.log(`   Build: ${bsOptions?.buildName}`);
+  }
+} else {
+  console.log('💻 Grid Mode: DISABLED - Tests will run locally');
+}
+
 // Build projects conditionally: if mobile specified and isMobile==true, use that; else use desktop from profile
 const computedProjects = ((selectedProfile as any).mobile?.mobile ?? (selectedProfile as any).mobile)?.isMobile
   ? [
@@ -249,7 +443,7 @@ const computedProjects = ((selectedProfile as any).mobile?.mobile ?? (selectedPr
         use: resolveMobileUse((selectedProfile as any).mobile),
       },
     ]
-  : [mapBrowserToProject(selectedProfile.browser)];
+  : [mapBrowserToProject(selectedProfile.browser, (selectedProfile as any).grid)];
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -290,11 +484,11 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
     
-    /* Take screenshot on failure */
-    screenshot: selectedProfile.screenshotOnFail ? 'only-on-failure' : 'off',
+    /* Take screenshot on failure - disable on grid as LambdaTest handles it */
+    screenshot: (selectedProfile as any).grid?.isGrid ? 'off' : (selectedProfile.screenshotOnFail ? 'only-on-failure' : 'off'),
     
-    /* Record video on failure */
-    video: selectedProfile.videoOnFail ? 'retain-on-failure' : 'off',
+    /* Record video on failure - disable on grid as LambdaTest handles it */
+    video: (selectedProfile as any).grid?.isGrid ? 'off' : (selectedProfile.videoOnFail ? 'retain-on-failure' : 'off'),
     
     /* Global timeout for each action - increase for CI */
     actionTimeout: process.env.CI ? 120000 : 90000,
