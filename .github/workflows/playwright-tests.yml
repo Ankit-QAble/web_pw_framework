@@ -10,16 +10,16 @@ on:
       environment:
         description: 'Environment to run tests against'
         required: true
-        default: 'staging'
+        default: 'development'
         type: choice
         options:
           - development
           - staging
           - production
       test_tags:
-        description: 'Test tags to run (e.g., @smoke, @critical)'
+        description: 'Test tags to run (e.g., @smoke, @critical, @critical|@smoke)'
         required: false
-        default: '@smoke'
+        default: '@critical|@smoke'
 
 env:
   NODE_VERSION: '18'
@@ -55,8 +55,10 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.environment }}" != "" ]; then
             echo "NODE_ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+            echo "RUN=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
           else
-            echo "NODE_ENV=staging" >> $GITHUB_ENV
+            echo "NODE_ENV=development" >> $GITHUB_ENV
+            echo "RUN=development" >> $GITHUB_ENV
           fi
           
       - name: 🧪 Run Playwright tests
@@ -64,10 +66,11 @@ jobs:
           if [ "${{ github.event.inputs.test_tags }}" != "" ]; then
             npx playwright test --project=${{ matrix.browser }} --grep "${{ github.event.inputs.test_tags }}"
           else
-            npx playwright test --project=${{ matrix.browser }} --grep "@smoke"
+            npx playwright test --project=${{ matrix.browser }} --grep "@critical|@smoke"
           fi
         env:
           CI: true
+          RUN: ${{ env.RUN }}
           
       - name: 📊 Upload test results
         uses: actions/upload-artifact@v4
