@@ -22,7 +22,7 @@ const PROFILES = {
     reportSmtp: envConfig.getSmtpConfig(),
     grid: {
       isGrid: true,
-      provider: 'browserstack', // 'lambdatest' | 'browserstack'
+      provider: 'lambdatest', // 'lambdatest' | 'browserstack'
       
       // LambdaTest Configuration
       lambdatest: {
@@ -34,8 +34,8 @@ const PROFILES = {
             browserName: 'Chrome',
             browserVersion: 'latest',
             resolution: '1920x1080',
-            name: 'Playwright Development Tests',
-            build: 'Development Build',
+            name: 'Playwright Login Tests',
+            build: 'Login Test',
             projectName: 'Web Framework',
             console: true,
             network: true,

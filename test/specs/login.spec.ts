@@ -68,7 +68,7 @@ test.describe('Login Page Tests', () => {
   });
 
 
-  test('#7 Enter valid credentials', { tag: ['@critical'] }, async ({ logger }) => {
+  test('#7 Enter valid credentials @critical', { tag: ['@critical'] }, async ({ logger }) => {
     await logger.step('Enter valid credentials', async () => {
       await loginPage.loginWithValidCredentials();
     });

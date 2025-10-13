@@ -11,6 +11,8 @@ A comprehensive web automation framework built with Playwright and TypeScript, f
 - **Test Data Management**: JSON-based test data with random data generation
 - **Allure Reporting**: Beautiful test reports with screenshots and videos
 - **Multi-Browser Support**: Chrome, Firefox, Safari, and mobile browsers
+- **Cloud Testing**: Integrated support for BrowserStack and LambdaTest
+- **Tag-Based Test Filtering**: Run tests by tags (@smoke, @critical, etc.)
 - **Environment Configuration**: Support for multiple test environments
 - **Screenshot Management**: Automatic screenshots on failure and custom captures
 - **Logging System**: Comprehensive logging with different levels
@@ -40,7 +42,16 @@ web_pw_framework/
 │   └── data/
 │       ├── users.json           # Test user data
 │       └── environments.json    # Environment configurations
+├── scripts/
+│   ├── run-browserstack-tags.ps1 # BrowserStack tag runner (Windows)
+│   ├── switch-env.js            # Environment switcher utility
+│   └── generate-report.js       # Report generation utility
+├── docs/
+│   ├── BROWSERSTACK_SETUP.md    # BrowserStack setup guide
+│   ├── MULTI_PROVIDER_SETUP.md  # Multi-provider setup guide
+│   └── EMAIL_REPORTING.md       # Email reporting guide
 ├── playwright.config.ts         # Playwright configuration
+├── browserstack.yml            # BrowserStack configuration
 ├── tsconfig.json               # TypeScript configuration
 ├── package.json                # Dependencies and scripts
 └── README.md                   # This file
@@ -123,6 +134,99 @@ npm run switch-env production
 
 Each environment uses its own `.env.[environment]` file with specific configuration values.
 ```
+
+### Cloud Testing (BrowserStack/LambdaTest)
+
+The framework supports running tests on cloud platforms like BrowserStack and LambdaTest. Configuration is managed through `playwright.config.ts` profiles.
+
+#### Running Tests on BrowserStack
+
+```bash
+# Run all tests on BrowserStack
+npm run test:browserstack
+
+# Run only @smoke tagged tests on BrowserStack
+npm run test:browserstack:smoke
+
+# Run only @critical tagged tests on BrowserStack
+npm run test:browserstack:critical
+
+# Run both @smoke and @critical tagged tests
+npm run test:browserstack:tags
+```
+
+#### Running Tests on LambdaTest
+
+```bash
+# Run all tests on LambdaTest
+npm run test:lambdatest
+
+# Run only @smoke tagged tests
+npm run test:lambdatest:smoke
+
+# Run only @critical tagged tests
+npm run test:lambdatest:critical
+
+# Run both @smoke and @critical tagged tests
+npm run test:lambdatest:tags
+```
+
+#### Direct Commands (BrowserStack)
+
+```bash
+# Single tag (use equals sign for Windows compatibility)
+npx browserstack-node-sdk playwright test --grep="@smoke"
+npx browserstack-node-sdk playwright test --grep="@critical"
+```
+
+**⚠️ Windows Note:** Due to a BrowserStack SDK limitation on Windows, the pipe operator `|` in grep patterns doesn't work properly with the SDK. The `test:browserstack:tags` script uses a PowerShell workaround (`scripts/run-browserstack-tags.ps1`) that runs each tag sequentially.
+
+#### Available NPM Scripts for Cloud Testing
+
+| Script | Description |
+|--------|-------------|
+| `test:browserstack` | Run all tests on BrowserStack |
+| `test:browserstack:smoke` | Run @smoke tests on BrowserStack |
+| `test:browserstack:critical` | Run @critical tests on BrowserStack |
+| `test:browserstack:tags` | Run @smoke and @critical tests (uses PowerShell script) |
+| `test:lambdatest` | Run all tests on LambdaTest |
+| `test:lambdatest:smoke` | Run @smoke tests on LambdaTest |
+| `test:lambdatest:critical` | Run @critical tests on LambdaTest |
+| `test:lambdatest:tags` | Run @smoke and @critical tests on LambdaTest |
+
+For more details on cloud testing setup, see:
+- `docs/BROWSERSTACK_SETUP.md` - BrowserStack configuration guide
+- `docs/MULTI_PROVIDER_SETUP.md` - Multi-provider setup guide
+- `SWITCH_PROVIDER_GUIDE.md` - Quick reference for switching providers
+
+#### Troubleshooting Cloud Testing
+
+**Issue: Tests not running with tags on BrowserStack**
+
+**Solution:**
+1. Ensure tags are in the test **title**, not just in metadata:
+   ```typescript
+   // ✅ Correct
+   test('Login test @smoke', { tag: ['@smoke'] }, async () => { ... });
+   
+   // ❌ Incorrect
+   test('Login test', { tag: ['@smoke'] }, async () => { ... });
+   ```
+
+2. Use the equals sign syntax for single tags:
+   ```bash
+   npx browserstack-node-sdk playwright test --grep="@smoke"
+   ```
+
+3. For multiple tags on Windows, use the npm script:
+   ```bash
+   npm run test:browserstack:tags
+   ```
+
+4. Verify tests are found locally first:
+   ```bash
+   npx playwright test --list --grep "@smoke"
+   ```
 
 #### Environment Configuration Files
 
@@ -263,21 +367,26 @@ PROJECT="sadad-en-chromium-staging" npx playwright test "test/specs/login.spec.t
 
 ## Tagging tests and running by tag
 
-Add tags directly in the title of tests or suites:
+Add tags directly in the title of tests or suites. **Important:** For BrowserStack/LambdaTest compatibility, tags MUST be included in the test title, not just in the tag metadata.
 
 ```typescript
-// Single test tagged as @smoke
-test('Enter valid credentials @smoke', async ({ logger }) => {
+// ✅ Correct: Tag in test title (works everywhere)
+test('Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
   // ...
 });
 
-// Tag the whole suite
+// ✅ Tag the whole suite
 test.describe('Login Page Tests @smoke', () => {
   // tests...
 });
+
+// ❌ Incorrect: Tag only in metadata (doesn't work with --grep)
+test('Enter valid credentials', { tag: ['@smoke'] }, async ({ logger }) => {
+  // This won't be found by --grep "@smoke"
+});
 ```
 
-Run tests by tag:
+### Run tests by tag locally:
 
 - PowerShell
 ```powershell
@@ -293,6 +402,10 @@ $env:PROJECT="sadad-en-chromium-staging"; npx playwright test --grep "@smoke|@au
 ```powershell
 $env:PROJECT="sadad-en-chromium-staging"; npx playwright test --grep "@auth" --grep-invert "@slow"
 ```
+
+### Run tests by tag on cloud platforms:
+
+See the [Cloud Testing](#cloud-testing-browserstacklambdatest) section above for BrowserStack and LambdaTest commands.
 
 ## 📊 Reporting
 

@@ -346,7 +346,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
    */
   async waitForNavigation(): Promise<void> {
     this.logger.info('Waiting for navigation');
-    await this.page.waitForLoadState('networkidle');
+    // Wait for DOM to be ready instead of networkidle (more reliable)
+    await this.page.waitForLoadState('domcontentloaded');
+    this.logger.info('Navigation complete - DOM ready');
   }
 
   /**
