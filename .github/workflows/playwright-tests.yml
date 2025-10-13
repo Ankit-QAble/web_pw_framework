@@ -1,0 +1,138 @@
+name: Playwright Tests CI
+
+on:
+  push:
+    branches: [ main, develop, staging ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+      test_tags:
+        description: 'Test tags to run (e.g., @smoke, @critical)'
+        required: false
+        default: '@smoke'
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  test:
+    name: Run Playwright Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+        
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 📦 Install dependencies
+        run: npm ci
+        
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+        
+      - name: ⚙️ Set environment
+        run: |
+          if [ "${{ github.event.inputs.environment }}" != "" ]; then
+            echo "NODE_ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+          else
+            echo "NODE_ENV=staging" >> $GITHUB_ENV
+          fi
+          
+      - name: 🧪 Run Playwright tests
+        run: |
+          if [ "${{ github.event.inputs.test_tags }}" != "" ]; then
+            npx playwright test --project=${{ matrix.browser }} --grep "${{ github.event.inputs.test_tags }}"
+          else
+            npx playwright test --project=${{ matrix.browser }} --grep "@smoke"
+          fi
+        env:
+          CI: true
+          
+      - name: 📊 Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-results-${{ matrix.browser }}
+          path: |
+            playwright-report/
+            test-results/
+            screenshots/
+          retention-days: 30
+          
+      - name: 📈 Upload Allure results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-${{ matrix.browser }}
+          path: allure-results/
+          retention-days: 30
+
+  publish-report:
+    name: 📊 Publish Test Report
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: 📥 Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-results
+          
+      - name: 📊 Publish HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-test-report
+          path: all-results/
+          
+      - name: 💬 Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '## 🧪 Test Results\n\nPlaywright tests completed! Check the artifacts for detailed reports.\n\n[View Results](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})'
+            });
+
+  notify:
+    name: 📧 Send Notification
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: 📧 Send success notification
+        if: needs.test.result == 'success'
+        run: |
+          echo "✅ All tests passed!"
+          
+      - name: 📧 Send failure notification
+        if: needs.test.result == 'failure'
+        run: |
+          echo "❌ Tests failed! Check the logs."
+

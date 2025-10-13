@@ -1,0 +1,158 @@
+name: Manual Test Execution
+
+on:
+  workflow_dispatch:
+    inputs:
+      cloud_provider:
+        description: 'Cloud Provider'
+        required: true
+        type: choice
+        options:
+          - local
+          - lambdatest
+          - browserstack
+          - azure
+      test_tags:
+        description: 'Test tags (e.g., @smoke, @critical, @smoke|@critical)'
+        required: true
+        default: '@smoke'
+      browser:
+        description: 'Browser'
+        required: true
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit
+          - all
+      environment:
+        description: 'Environment'
+        required: true
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+      workers:
+        description: 'Number of parallel workers'
+        required: false
+        default: '5'
+
+jobs:
+  manual-test:
+    name: 🎯 Manual Test Execution
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: 📦 Install dependencies
+        run: npm ci
+        
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps
+        
+      - name: ⚙️ Configure environment
+        run: |
+          echo "NODE_ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+          
+      - name: ⚙️ Configure LambdaTest
+        if: github.event.inputs.cloud_provider == 'lambdatest'
+        run: |
+          echo "LT_USERNAME=${{ secrets.LT_USERNAME }}" >> $GITHUB_ENV
+          echo "LT_ACCESS_KEY=${{ secrets.LT_ACCESS_KEY }}" >> $GITHUB_ENV
+          
+      - name: ⚙️ Configure BrowserStack
+        if: github.event.inputs.cloud_provider == 'browserstack'
+        run: |
+          echo "BROWSERSTACK_USERNAME=${{ secrets.BROWSERSTACK_USERNAME }}" >> $GITHUB_ENV
+          echo "BROWSERSTACK_ACCESS_KEY=${{ secrets.BROWSERSTACK_ACCESS_KEY }}" >> $GITHUB_ENV
+          
+      - name: ⚙️ Configure Azure
+        if: github.event.inputs.cloud_provider == 'azure'
+        run: |
+          echo "PLAYWRIGHT_SERVICE_URL=${{ secrets.PLAYWRIGHT_SERVICE_URL }}" >> $GITHUB_ENV
+          echo "PLAYWRIGHT_SERVICE_ACCESS_TOKEN=${{ secrets.PLAYWRIGHT_SERVICE_ACCESS_TOKEN }}" >> $GITHUB_ENV
+          
+      - name: 🧪 Run tests - Local
+        if: github.event.inputs.cloud_provider == 'local'
+        run: |
+          if [ "${{ github.event.inputs.browser }}" == "all" ]; then
+            npx playwright test --grep "${{ github.event.inputs.test_tags }}" --workers=${{ github.event.inputs.workers }}
+          else
+            npx playwright test --project=${{ github.event.inputs.browser }} --grep "${{ github.event.inputs.test_tags }}" --workers=${{ github.event.inputs.workers }}
+          fi
+        env:
+          CI: true
+          
+      - name: 🧪 Run tests - LambdaTest
+        if: github.event.inputs.cloud_provider == 'lambdatest'
+        run: npx playwright test --grep "${{ github.event.inputs.test_tags }}"
+        env:
+          CI: true
+          LT_USERNAME: ${{ secrets.LT_USERNAME }}
+          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+          
+      - name: 🧪 Run tests - BrowserStack
+        if: github.event.inputs.cloud_provider == 'browserstack'
+        run: npx browserstack-node-sdk playwright test --grep="${{ github.event.inputs.test_tags }}"
+        env:
+          CI: true
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          
+      - name: 🧪 Run tests - Azure
+        if: github.event.inputs.cloud_provider == 'azure'
+        run: npx playwright test -c playwright.azure.config.ts --grep "${{ github.event.inputs.test_tags }}" --workers=${{ github.event.inputs.workers }}
+        env:
+          CI: true
+          PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
+          PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{ secrets.PLAYWRIGHT_SERVICE_ACCESS_TOKEN }}
+          
+      - name: 📊 Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-test-results
+          path: |
+            playwright-report/
+            test-results/
+            allure-results/
+            screenshots/
+          retention-days: 30
+          
+      - name: 📈 Generate Allure Report
+        if: always()
+        run: |
+          npm install -g allure-commandline
+          allure generate allure-results --clean -o allure-report
+          
+      - name: 📊 Publish Allure Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-report-manual
+          path: allure-report/
+          retention-days: 30
+          
+      - name: 💬 Post results summary
+        if: always()
+        run: |
+          echo "### 🎯 Manual Test Execution Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- 🌐 Provider: ${{ github.event.inputs.cloud_provider }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 🎭 Browser: ${{ github.event.inputs.browser }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 🌍 Environment: ${{ github.event.inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 🏷️ Tags: ${{ github.event.inputs.test_tags }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 👥 Workers: ${{ github.event.inputs.workers }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 Check artifacts for detailed reports" >> $GITHUB_STEP_SUMMARY
+

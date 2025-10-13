@@ -14,14 +14,14 @@ const PROFILES = {
     videoOnFail: true,
     elementHighlight: true,
     reportEmail: {
-      email: true, // Set to true to enable email reporting and setup in utils/EmailService.ts
+      email: false, // Set to true to enable email reporting and setup in utils/EmailService.ts
       to: ['patelankitr123@gmail.com'],
       subject: 'Automation Test Report',
       body: 'Test execution completed for development environment',
     },
     reportSmtp: envConfig.getSmtpConfig(),
     grid: {
-      isGrid: true,
+      isGrid: false,
       provider: 'lambdatest', // 'lambdatest' | 'browserstack'
       
       // LambdaTest Configuration

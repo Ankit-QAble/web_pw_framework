@@ -11,17 +11,26 @@ A comprehensive web automation framework built with Playwright and TypeScript, f
 - **Test Data Management**: JSON-based test data with random data generation
 - **Allure Reporting**: Beautiful test reports with screenshots and videos
 - **Multi-Browser Support**: Chrome, Firefox, Safari, and mobile browsers
-- **Cloud Testing**: Integrated support for BrowserStack and LambdaTest
+- **Cloud Testing**: Integrated support for BrowserStack, LambdaTest, and Azure Playwright Testing
 - **Tag-Based Test Filtering**: Run tests by tags (@smoke, @critical, etc.)
 - **Environment Configuration**: Support for multiple test environments
 - **Screenshot Management**: Automatic screenshots on failure and custom captures
 - **Logging System**: Comprehensive logging with different levels
+- **CI/CD Integration**: Ready-to-use GitHub Actions workflows for automated testing
 - **Code Quality**: ESLint and Prettier configuration
 
 ## 📁 Project Structure
 
 ```
 web_pw_framework/
+├── .github/
+│   └── workflows/               # GitHub Actions workflows
+│       ├── playwright-tests.yml         # Main CI pipeline
+│       ├── lambdatest-tests.yml        # LambdaTest cloud tests
+│       ├── browserstack-tests.yml      # BrowserStack cloud tests
+│       ├── azure-playwright-tests.yml  # Azure cloud tests
+│       ├── nightly-regression.yml      # Nightly regression
+│       └── manual-test-run.yml         # Manual test execution
 ├── framework/
 │   ├── core/
 │   │   ├── BasePage.ts          # Base page class with common methods
@@ -49,9 +58,16 @@ web_pw_framework/
 ├── docs/
 │   ├── BROWSERSTACK_SETUP.md    # BrowserStack setup guide
 │   ├── MULTI_PROVIDER_SETUP.md  # Multi-provider setup guide
+│   ├── AZURE_PLAYWRIGHT_SETUP.MD # Azure Playwright Testing guide
+│   ├── GITHUB_ACTIONS_SETUP.md  # GitHub Actions CI/CD guide
 │   └── EMAIL_REPORTING.md       # Email reporting guide
 ├── playwright.config.ts         # Playwright configuration
+├── playwright.azure.config.ts   # Azure Playwright Testing configuration
 ├── browserstack.yml            # BrowserStack configuration
+├── env.azure.example           # Azure environment variables example
+├── AZURE_QUICK_START.md        # Azure 5-minute quick start guide
+├── GITHUB_ACTIONS_QUICK_REFERENCE.md # GitHub Actions quick reference
+├── SWITCH_PROVIDER_GUIDE.md    # Cloud provider switching guide
 ├── tsconfig.json               # TypeScript configuration
 ├── package.json                # Dependencies and scripts
 └── README.md                   # This file
@@ -135,9 +151,9 @@ npm run switch-env production
 Each environment uses its own `.env.[environment]` file with specific configuration values.
 ```
 
-### Cloud Testing (BrowserStack/LambdaTest)
+### Cloud Testing (BrowserStack/LambdaTest/Azure)
 
-The framework supports running tests on cloud platforms like BrowserStack and LambdaTest. Configuration is managed through `playwright.config.ts` profiles.
+The framework supports running tests on cloud platforms like BrowserStack, LambdaTest, and Azure Playwright Testing. Configuration is managed through `playwright.config.ts` profiles.
 
 #### Running Tests on BrowserStack
 
@@ -177,26 +193,262 @@ npm run test:lambdatest:tags
 # Single tag (use equals sign for Windows compatibility)
 npx browserstack-node-sdk playwright test --grep="@smoke"
 npx browserstack-node-sdk playwright test --grep="@critical"
+
+# Multiple tags (see note below about Windows limitation)
+npx browserstack-node-sdk playwright test --grep="@smoke|@critical"
 ```
 
 **⚠️ Windows Note:** Due to a BrowserStack SDK limitation on Windows, the pipe operator `|` in grep patterns doesn't work properly with the SDK. The `test:browserstack:tags` script uses a PowerShell workaround (`scripts/run-browserstack-tags.ps1`) that runs each tag sequentially.
+
+#### Direct Commands (LambdaTest)
+
+```bash
+# Single tag
+npx playwright test --grep "@smoke"
+npx playwright test --grep "@critical"
+
+# Multiple tags (works on all platforms)
+npx playwright test --grep "@smoke|@critical"
+
+# PowerShell examples with specific test file
+npx playwright test "test/specs/login.spec.ts" --grep "@smoke"
+npx playwright test "test/specs/login.spec.ts" --grep "@critical"
+npx playwright test "test/specs/login.spec.ts" --grep "@smoke|@critical"
+
+# With specific project
+npx playwright test --grep "@smoke" --project=chromium
+npx playwright test --grep "@critical" --project="chrome:latest@Windows 11"
+```
+
+#### Running Tests on Azure Playwright Testing
+
+Microsoft Azure Playwright Testing provides scalable cloud-hosted browsers for running your Playwright tests with faster execution and parallel testing capabilities.
+
+**Prerequisites:**
+- Active Azure subscription ([Create one here](https://portal.azure.com/))
+- Azure CLI installed ([Installation Guide](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli))
+- Azure Playwright Testing workspace created
+
+**Step 1: Create Azure Playwright Testing Workspace**
+
+1. Navigate to [Azure Portal](https://portal.azure.com/)
+2. Search for **"Playwright Testing"** or **"Azure App Testing"**
+3. Click **"Create"** → **"Playwright Testing"**
+4. Fill in the details:
+   - **Workspace Name**: `my-playwright-workspace`
+   - **Region**: Choose closest region (e.g., `East US`, `West Europe`)
+   - **Subscription**: Select your subscription
+   - **Resource Group**: Create new or use existing
+5. Click **"Review + Create"** → **"Create"**
+6. Once created, go to your workspace and copy:
+   - **Service URL**: `https://<region>.api.playwright.microsoft.com`
+   - **Access Token** (from Settings → Access tokens)
+
+**Step 2: Configure Environment Variables**
+
+Create or update your `.env` file:
+
+```bash
+# Azure Playwright Testing Configuration
+PLAYWRIGHT_SERVICE_URL=https://<your-region>.api.playwright.microsoft.com
+PLAYWRIGHT_SERVICE_ACCESS_TOKEN=your-access-token-here
+
+# Or use Entra ID authentication (recommended for production)
+# PLAYWRIGHT_SERVICE_AUTH_TYPE=ENTRA_ID
+```
+
+**Step 3: Verify Azure Configuration**
+
+The `playwright.azure.config.ts` file is already included in this framework. It's configured to:
+- Use up to 20 parallel workers for fast execution
+- Connect to Azure cloud-hosted browsers via the service URL
+- Generate comprehensive test reports
+- Capture screenshots and videos on failure
+
+**Step 4: Authenticate with Azure**
+
+**Option A: Using Access Token (Quick Start)**
+
+```bash
+# Set environment variables
+export PLAYWRIGHT_SERVICE_URL=https://eastus.api.playwright.microsoft.com
+export PLAYWRIGHT_SERVICE_ACCESS_TOKEN=your-access-token
+
+# Run tests
+npm run test:azure
+```
+
+**Option B: Using Entra ID (Recommended for Production)**
+
+```bash
+# Login to Azure
+az login
+
+# Set environment variables
+export PLAYWRIGHT_SERVICE_URL=https://eastus.api.playwright.microsoft.com
+export PLAYWRIGHT_SERVICE_AUTH_TYPE=ENTRA_ID
+
+# Run tests
+npm run test:azure
+```
+
+**Step 5: Run Tests on Azure**
+
+```bash
+# Run all tests on Azure
+npm run test:azure
+
+# Run smoke tests
+npm run test:azure:smoke
+
+# Run critical tests
+npm run test:azure:critical
+
+# Run specific browser
+npm run test:azure:chromium
+
+# Run with grep pattern
+npx playwright test -c playwright.azure.config.ts --grep "@smoke"
+
+# Run specific test file
+npx playwright test -c playwright.azure.config.ts test/specs/login.spec.ts
+```
+
+**PowerShell Commands:**
+
+```powershell
+# Set environment variables
+$env:PLAYWRIGHT_SERVICE_URL="https://eastus.api.playwright.microsoft.com"
+$env:PLAYWRIGHT_SERVICE_ACCESS_TOKEN="your-access-token"
+
+# Run tests
+npm run test:azure
+
+# Run with tags
+npm run test:azure:smoke
+npm run test:azure:critical
+
+# Run specific project
+npm run test:azure:chromium
+```
+
+**Azure Benefits:**
+
+- ✅ **Scalable**: Run up to 50+ parallel workers
+- ✅ **Fast**: Cloud-hosted browsers with optimized infrastructure
+- ✅ **Global**: Multiple regions for faster execution
+- ✅ **Secure**: Enterprise-grade security with Entra ID
+- ✅ **Cost-effective**: Pay only for test minutes used
+- ✅ **Integrated**: Works with Azure DevOps and GitHub Actions
+
+**Viewing Test Results:**
+
+1. Test results are available in your Azure Playwright Testing workspace
+2. Navigate to [Azure Portal](https://portal.azure.com/)
+3. Go to your Playwright Testing workspace
+4. View test runs, reports, videos, and traces
+
+**Troubleshooting Azure Playwright Testing:**
+
+**Issue 1: Authentication Failed**
+```bash
+Error: Unable to authenticate with Azure Playwright Testing service
+```
+**Solution:**
+- Verify your `PLAYWRIGHT_SERVICE_URL` is correct
+- Check your access token hasn't expired
+- Try re-authenticating: `az login`
+
+**Issue 2: Service URL Not Set**
+```bash
+Error: PLAYWRIGHT_SERVICE_URL is not set
+```
+**Solution:**
+```bash
+export PLAYWRIGHT_SERVICE_URL=https://<your-region>.api.playwright.microsoft.com
+```
+
+**Issue 3: Package Not Installed**
+```bash
+Error: Cannot find module '@azure/microsoft-playwright-testing'
+```
+**Solution:**
+```bash
+npm install @azure/microsoft-playwright-testing --save-dev
+```
+
+**Azure Regions:**
+- East US: `https://eastus.api.playwright.microsoft.com`
+- West US: `https://westus.api.playwright.microsoft.com`
+- West Europe: `https://westeurope.api.playwright.microsoft.com`
+- UK South: `https://uksouth.api.playwright.microsoft.com`
+- Australia East: `https://australiaeast.api.playwright.microsoft.com`
+
+**Additional Resources:**
+- [Azure Playwright Testing Documentation](https://learn.microsoft.com/en-us/azure/playwright-testing/)
+- [Quickstart Guide](https://learn.microsoft.com/en-us/azure/playwright-testing/quickstart-run-end-to-end-tests)
+- [Configuration Options](https://learn.microsoft.com/en-us/azure/playwright-testing/how-to-use-service-config-file)
+- [Pricing Information](https://azure.microsoft.com/en-us/pricing/details/playwright-testing/)
+
+#### Complete Cloud Testing Examples
+
+**BrowserStack with Tags:**
+```powershell
+# PowerShell - Run smoke tests on BrowserStack
+npx browserstack-node-sdk playwright test --grep="@smoke"
+
+# PowerShell - Run critical tests on BrowserStack
+npx browserstack-node-sdk playwright test --grep="@critical"
+
+# PowerShell - Run multiple tags (use the helper script)
+npm run test:browserstack:tags
+```
+
+**LambdaTest with Tags:**
+```powershell
+# PowerShell - Run smoke tests on LambdaTest
+npx playwright test --grep "@smoke"
+
+# PowerShell - Run critical tests on LambdaTest
+npx playwright test --grep "@critical"
+
+# PowerShell - Run multiple tags on LambdaTest
+npx playwright test --grep "@smoke|@critical"
+
+# Bash/Git Bash - Run tests on LambdaTest
+npx playwright test --grep "@smoke"
+npx playwright test --grep "@critical"
+npx playwright test --grep "@smoke|@critical"
+```
 
 #### Available NPM Scripts for Cloud Testing
 
 | Script | Description |
 |--------|-------------|
+| **BrowserStack** | |
 | `test:browserstack` | Run all tests on BrowserStack |
 | `test:browserstack:smoke` | Run @smoke tests on BrowserStack |
 | `test:browserstack:critical` | Run @critical tests on BrowserStack |
 | `test:browserstack:tags` | Run @smoke and @critical tests (uses PowerShell script) |
+| **LambdaTest** | |
 | `test:lambdatest` | Run all tests on LambdaTest |
 | `test:lambdatest:smoke` | Run @smoke tests on LambdaTest |
 | `test:lambdatest:critical` | Run @critical tests on LambdaTest |
 | `test:lambdatest:tags` | Run @smoke and @critical tests on LambdaTest |
+| **Azure Playwright Testing** | |
+| `test:azure` | Run all tests on Azure |
+| `test:azure:smoke` | Run @smoke tests on Azure |
+| `test:azure:critical` | Run @critical tests on Azure |
+| `test:azure:tags` | Run @smoke and @critical tests on Azure |
+| `test:azure:chromium` | Run tests on Azure with Chromium |
+| `test:azure:firefox` | Run tests on Azure with Firefox |
+| `test:azure:webkit` | Run tests on Azure with WebKit |
 
 For more details on cloud testing setup, see:
 - `docs/BROWSERSTACK_SETUP.md` - BrowserStack configuration guide
 - `docs/MULTI_PROVIDER_SETUP.md` - Multi-provider setup guide
+- `docs/AZURE_PLAYWRIGHT_SETUP.md` - Azure Playwright Testing complete guide
+- `AZURE_QUICK_START.md` - Azure 5-minute quick start guide
 - `SWITCH_PROVIDER_GUIDE.md` - Quick reference for switching providers
 
 #### Troubleshooting Cloud Testing
@@ -550,15 +802,266 @@ Edit `test/data/environments.json` to add new environments:
 
 ### Test Data Management
 
+The framework supports loading test data from JSON files located in `test/data/`.
+
+#### Using the users.json Data File
+
+**Structure of users.json:**
+```json
+{
+  "validUsers": [
+    {
+      "username": "90336607",
+      "password": "QAble@2020",
+      "otp": "333333",
+      "firstName": "Admin",
+      "lastName": "User",
+      "address": {
+        "street": "123 Admin Street",
+        "city": "New York",
+        "country": "USA"
+      }
+    }
+  ],
+  "invalidUsers": [
+    {
+      "username": "invalid@example.com",
+      "password": "wrongpassword",
+      "expectedError": "Invalid username or password"
+    }
+  ]
+}
+```
+
+#### How to Use Test Data in Your Tests
+
+**Method 1: Direct JSON Import (Recommended)**
+
 ```typescript
-// Load test data from JSON
-const userData = await testData.loadFromFile('./test/data/users.json');
+import { test } from '../../framework/core/BaseTest';
+import { LoginPage } from '../pages/LoginPage';
+import userData from '../data/users.json';
 
-// Generate random data
-const randomUser = testData.generateRandomUser();
+test.describe('Login Tests', () => {
+  let loginPage: LoginPage;
 
-// Environment-specific data
-const envData = testData.getEnvironmentData('staging');
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    await loginPage.navigate();
+  });
+
+  test('should login with valid user @smoke', async ({ logger }) => {
+    // Access valid user data
+    const validUser = userData.validUsers[0];
+    
+    await logger.step('Login with valid credentials', async () => {
+      await loginPage.login(validUser.username, validUser.password);
+    });
+    
+    await logger.step('Verify login successful', async () => {
+      // Your assertions here
+    });
+  });
+
+  test('should show error for invalid user @negative', async ({ logger }) => {
+    // Access invalid user data
+    const invalidUser = userData.invalidUsers[0];
+    
+    await logger.step('Attempt login with invalid credentials', async () => {
+      await loginPage.login(invalidUser.username, invalidUser.password);
+    });
+    
+    await logger.step('Verify error message', async () => {
+      // Verify expectedError message is displayed
+    });
+  });
+
+  test('should use user profile data @smoke', async ({ logger }) => {
+    const user = userData.validUsers[0];
+    
+    // Access nested data
+    console.log(`User: ${user.firstName} ${user.lastName}`);
+    console.log(`Address: ${user.address.street}, ${user.address.city}`);
+    console.log(`OTP: ${user.otp}`);
+  });
+});
+```
+
+**Method 2: Using Node.js fs Module**
+
+```typescript
+import { test } from '../../framework/core/BaseTest';
+import { LoginPage } from '../pages/LoginPage';
+import * as fs from 'fs';
+import * as path from 'path';
+
+test.describe('Login Tests with Dynamic Data', () => {
+  let loginPage: LoginPage;
+  let testData: any;
+
+  test.beforeAll(() => {
+    // Load data dynamically
+    const dataPath = path.join(__dirname, '../data/users.json');
+    const rawData = fs.readFileSync(dataPath, 'utf-8');
+    testData = JSON.parse(rawData);
+  });
+
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    await loginPage.navigate();
+  });
+
+  test('should login with valid user', async () => {
+    const user = testData.validUsers[0];
+    await loginPage.login(user.username, user.password);
+  });
+});
+```
+
+**Method 3: Data-Driven Testing (Multiple Users)**
+
+```typescript
+import { test } from '../../framework/core/BaseTest';
+import { LoginPage } from '../pages/LoginPage';
+import userData from '../data/users.json';
+
+test.describe('Data-Driven Login Tests', () => {
+  // Test with all valid users
+  userData.validUsers.forEach((user, index) => {
+    test(`should login successfully - User ${index + 1} @smoke`, async ({ page, logger }) => {
+      const loginPage = new LoginPage(page);
+      await loginPage.navigate();
+      
+      await logger.step(`Login with user: ${user.username}`, async () => {
+        await loginPage.login(user.username, user.password);
+      });
+      
+      await logger.step('Verify login successful', async () => {
+        // Your assertions
+      });
+    });
+  });
+
+  // Test with all invalid users
+  userData.invalidUsers.forEach((user, index) => {
+    test(`should fail login - Invalid User ${index + 1} @negative`, async ({ page, logger }) => {
+      const loginPage = new LoginPage(page);
+      await loginPage.navigate();
+      
+      await logger.step('Attempt invalid login', async () => {
+        await loginPage.login(user.username, user.password);
+      });
+      
+      await logger.step('Verify error message', async () => {
+        // Verify user.expectedError is displayed
+      });
+    });
+  });
+});
+```
+
+**Method 4: Creating Helper Functions**
+
+```typescript
+// test/utils/DataHelper.ts
+import userData from '../data/users.json';
+
+export class DataHelper {
+  static getValidUser(index: number = 0) {
+    return userData.validUsers[index];
+  }
+
+  static getInvalidUser(index: number = 0) {
+    return userData.invalidUsers[index];
+  }
+
+  static getAllValidUsers() {
+    return userData.validUsers;
+  }
+
+  static getRandomValidUser() {
+    const users = userData.validUsers;
+    return users[Math.floor(Math.random() * users.length)];
+  }
+}
+
+// Usage in test
+import { test } from '../../framework/core/BaseTest';
+import { LoginPage } from '../pages/LoginPage';
+import { DataHelper } from '../utils/DataHelper';
+
+test('should login with helper @smoke', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const user = DataHelper.getValidUser(0);
+  
+  await loginPage.navigate();
+  await loginPage.login(user.username, user.password);
+});
+```
+
+#### Adding More Test Data
+
+To add more users, simply update `test/data/users.json`:
+
+```json
+{
+  "validUsers": [
+    {
+      "username": "90336607",
+      "password": "QAble@2020",
+      "otp": "333333",
+      "firstName": "Admin",
+      "lastName": "User"
+    },
+    {
+      "username": "90336608",
+      "password": "QAble@2021",
+      "otp": "444444",
+      "firstName": "Test",
+      "lastName": "User2"
+    }
+  ],
+  "invalidUsers": [
+    {
+      "username": "invalid@example.com",
+      "password": "wrongpassword",
+      "expectedError": "Invalid username or password"
+    }
+  ]
+}
+```
+
+#### Creating Additional Data Files
+
+You can create separate data files for different test scenarios:
+
+- `test/data/users.json` - User credentials
+- `test/data/products.json` - Product test data
+- `test/data/config.json` - Configuration data
+- `test/data/environments.json` - Environment-specific settings
+
+Example: `test/data/products.json`
+```json
+{
+  "products": [
+    {
+      "id": "PROD001",
+      "name": "Test Product",
+      "price": 99.99,
+      "category": "Electronics"
+    }
+  ]
+}
+```
+
+Usage:
+```typescript
+import productData from '../data/products.json';
+
+test('should add product to cart', async ({ page }) => {
+  const product = productData.products[0];
+  // Use product.id, product.name, etc.
+});
 ```
 
 ## 🎯 Best Practices
@@ -677,9 +1180,73 @@ For detailed Jenkins troubleshooting guidance, see:
    - Cache directory permissions
    - Node.js version compatibility
 
-## 🔄 CI/CD Integration
+## 🔄 CI/CD Integration - GitHub Actions
 
-### GitHub Actions Example
+This framework includes comprehensive GitHub Actions workflows for automated testing. See [`docs/GITHUB_ACTIONS_SETUP.md`](docs/GITHUB_ACTIONS_SETUP.md) for complete setup guide.
+
+### Available Workflows
+
+| Workflow | Purpose | Trigger |
+|----------|---------|---------|
+| **Playwright Tests CI** | Main CI pipeline | Push, PR, Manual |
+| **LambdaTest Tests** | Cloud testing on LambdaTest | Push, PR, Daily, Manual |
+| **BrowserStack Tests** | Cloud testing on BrowserStack | Push, PR, Daily, Manual |
+| **Azure Playwright** | Cloud testing on Azure | Push, PR, Daily, Manual |
+| **Nightly Regression** | Full regression suite | Daily, Manual |
+| **Manual Execution** | On-demand test runs | Manual |
+
+### Quick Setup
+
+1. **Set Repository Secrets** (Settings → Secrets → Actions):
+   ```
+   LT_USERNAME, LT_ACCESS_KEY                    # For LambdaTest
+   BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY # For BrowserStack
+   PLAYWRIGHT_SERVICE_URL, PLAYWRIGHT_SERVICE_ACCESS_TOKEN # For Azure
+   ```
+
+2. **Push workflows to GitHub:**
+   ```bash
+   git add .github/workflows/
+   git commit -m "Add GitHub Actions workflows"
+   git push origin main
+   ```
+
+3. **Run your first workflow:**
+   - Go to **Actions** tab
+   - Select **Manual Test Execution**
+   - Click **Run workflow**
+
+### Manual Workflow Execution
+
+```bash
+# Via GitHub CLI
+gh workflow run "Manual Test Execution" \
+  --field cloud_provider=lambdatest \
+  --field test_tags="@smoke" \
+  --field browser=chromium \
+  --field environment=staging
+
+# Run Azure tests
+gh workflow run "Azure Playwright Testing" \
+  --field test_tags="@smoke|@critical" \
+  --field workers=20
+```
+
+### Viewing Results
+
+- **GitHub UI:** Repository → Actions → Select Run
+- **Download Reports:** `gh run download <run-id>`
+- **Cloud Dashboards:**
+  - LambdaTest: https://automation.lambdatest.com/
+  - BrowserStack: https://automate.browserstack.com/
+  - Azure: https://portal.azure.com/
+
+### Documentation
+
+- 📚 **Complete Guide:** [`docs/GITHUB_ACTIONS_SETUP.md`](docs/GITHUB_ACTIONS_SETUP.md)
+- ⚡ **Quick Reference:** [`GITHUB_ACTIONS_QUICK_REFERENCE.md`](GITHUB_ACTIONS_QUICK_REFERENCE.md)
+
+### GitHub Actions Example (Legacy)
 
 ```yaml
 name: Playwright Tests

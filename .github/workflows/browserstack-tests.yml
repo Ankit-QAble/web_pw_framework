@@ -1,0 +1,92 @@
+name: BrowserStack Cloud Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run daily at 3 AM UTC
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      test_tags:
+        description: 'Test tags to run'
+        required: false
+        default: '@smoke'
+
+jobs:
+  browserstack:
+    name: 🚀 Run Tests on BrowserStack
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: 📦 Install dependencies
+        run: npm ci
+        
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps
+        
+      - name: ⚙️ Configure BrowserStack
+        run: |
+          echo "BROWSERSTACK_USERNAME=${{ secrets.BROWSERSTACK_USERNAME }}" >> $GITHUB_ENV
+          echo "BROWSERSTACK_ACCESS_KEY=${{ secrets.BROWSERSTACK_ACCESS_KEY }}" >> $GITHUB_ENV
+          
+      - name: 🧪 Run tests on BrowserStack
+        run: |
+          if [ "${{ github.event.inputs.test_tags }}" != "" ]; then
+            npx browserstack-node-sdk playwright test --grep="${{ github.event.inputs.test_tags }}"
+          else
+            npm run test:browserstack:smoke
+          fi
+        env:
+          CI: true
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          
+      - name: 📊 Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browserstack-results
+          path: |
+            playwright-report/
+            test-results/
+            allure-results/
+            screenshots/
+          retention-days: 30
+          
+      - name: 📈 Generate Allure Report
+        if: always()
+        run: |
+          npm install -g allure-commandline
+          allure generate allure-results --clean -o allure-report
+          
+      - name: 📊 Publish Allure Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-report-browserstack
+          path: allure-report/
+          retention-days: 30
+          
+      - name: 💬 Post results summary
+        if: always()
+        run: |
+          echo "### 🧪 BrowserStack Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- 🌐 Platform: BrowserStack" >> $GITHUB_STEP_SUMMARY
+          echo "- 🏷️ Tags: ${{ github.event.inputs.test_tags || '@smoke' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 View detailed results in BrowserStack dashboard" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔗 [BrowserStack Dashboard](https://automate.browserstack.com/)" >> $GITHUB_STEP_SUMMARY
+
