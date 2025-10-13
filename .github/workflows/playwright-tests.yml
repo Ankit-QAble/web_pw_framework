@@ -2,9 +2,9 @@ name: Playwright Tests CI
 
 on:
   push:
-    branches: [ main, develop, staging ]
+    branches: [ main, master, staging ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, master ]
   workflow_dispatch:
     inputs:
       environment:
