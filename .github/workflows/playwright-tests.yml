@@ -25,6 +25,12 @@ on:
         required: false
         default: '5'
 
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+  issues: write
+
 env:
   NODE_VERSION: '18'
 
@@ -71,13 +77,23 @@ jobs:
           WORKERS="${WORKERS:-5}"
           
           if [ "${{ github.event.inputs.test_tags }}" != "" ]; then
-            npx playwright test --project=${{ matrix.browser }} --grep "${{ github.event.inputs.test_tags }}" --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright
+            npx playwright test --project=${{ matrix.browser }} --grep "${{ github.event.inputs.test_tags }}" --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright,github
           else
-            npx playwright test --project=${{ matrix.browser }} --grep "@critical|@smoke" --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright
+            npx playwright test --project=${{ matrix.browser }} --grep "@critical|@smoke" --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright,github
           fi
         env:
           CI: true
           RUN: ${{ env.RUN }}
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: junit.xml
+          
+      - name: 📊 Publish Test Report to GitHub
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Playwright Tests Report - ${{ matrix.browser }}
+          path: junit.xml
+          reporter: jest-junit
+          fail-on-error: false
           
       - name: 📊 Upload test results
         uses: actions/upload-artifact@v4
