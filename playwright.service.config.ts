@@ -28,9 +28,14 @@ export default defineConfig(config, {
   retries: process.env.CI ? 2 : 1,
   
   use: {
-    // Connect to Azure Playwright Testing service
+    // Connect to Azure Playwright Testing service with authentication
     connectOptions: {
-      wsEndpoint: process.env.PLAYWRIGHT_SERVICE_URL,
+      wsEndpoint: `${process.env.PLAYWRIGHT_SERVICE_URL}?os=linux&runId=${Date.now()}-${process.env.USER || process.env.USERNAME || 'user'}`,
+      headers: {
+        'Authorization': `Bearer ${process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN}`,
+        'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
+      },
+      timeout: 30000,
     },
     
     // Extended timeouts for cloud
