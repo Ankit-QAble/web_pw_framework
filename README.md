@@ -4,6 +4,7 @@ A comprehensive web automation framework built with Playwright and TypeScript, f
 
 ## ⚡ What's New
 
+- ✅ **Azure Pipelines CI/CD** - Complete pipeline configuration for automated testing
 - ✅ **Azure Playwright Testing** - Fully configured and tested! Run with 20-50 parallel workers
 - ✅ **GitHub Actions CI/CD** - 6 comprehensive workflows for automated testing
 - ✅ **Test Data Management** - Complete guide for using JSON data files
@@ -23,7 +24,7 @@ A comprehensive web automation framework built with Playwright and TypeScript, f
 - **Environment Configuration**: Support for multiple test environments
 - **Screenshot Management**: Automatic screenshots on failure and custom captures
 - **Logging System**: Comprehensive logging with different levels
-- **CI/CD Integration**: Ready-to-use GitHub Actions workflows for automated testing
+- **CI/CD Integration**: Ready-to-use pipelines for GitHub Actions and Azure Pipelines
 - **Code Quality**: ESLint and Prettier configuration
 
 ## 📁 Project Structure
@@ -66,16 +67,19 @@ web_pw_framework/
 │   ├── BROWSERSTACK_SETUP.md    # BrowserStack setup guide
 │   ├── MULTI_PROVIDER_SETUP.md  # Multi-provider setup guide
 │   ├── AZURE_PLAYWRIGHT_SETUP.MD # Azure Playwright Testing guide
+│   ├── AZURE_PIPELINES_SETUP.md # Azure Pipelines CI/CD guide
 │   ├── GITHUB_ACTIONS_SETUP.md  # GitHub Actions CI/CD guide
 │   └── EMAIL_REPORTING.md       # Email reporting guide
 ├── playwright.config.ts         # Playwright configuration (default)
 ├── playwright.service.config.ts # Azure Playwright Testing service config (20-50 workers)
 ├── playwright.azure.config.ts   # Azure Playwright Testing config (alternative)
+├── azure-pipelines.yml         # Azure Pipelines CI/CD configuration
 ├── browserstack.yml            # BrowserStack configuration
 ├── env.azure.example           # Azure environment variables example
 ├── .env                        # Environment variables (not in git)
 ├── AZURE_QUICK_START.md        # Azure 5-minute quick start guide
 ├── AZURE_WORKING_GUIDE.md      # Azure working configuration guide
+├── AZURE_PIPELINES_QUICK_START.md # Azure Pipelines quick reference
 ├── GITHUB_ACTIONS_QUICK_REFERENCE.md # GitHub Actions quick reference
 ├── GITHUB_ACTIONS_SUMMARY.md   # GitHub Actions setup summary
 ├── SWITCH_PROVIDER_GUIDE.md    # Cloud provider switching guide
@@ -1330,11 +1334,56 @@ For detailed Jenkins troubleshooting guidance, see:
    - Cache directory permissions
    - Node.js version compatibility
 
-## 🔄 CI/CD Integration - GitHub Actions
+## 🔄 CI/CD Integration
+
+This framework supports multiple CI/CD platforms with pre-configured pipelines for automated testing.
+
+### GitHub Actions
 
 This framework includes comprehensive GitHub Actions workflows for automated testing. See [`docs/GITHUB_ACTIONS_SETUP.md`](docs/GITHUB_ACTIONS_SETUP.md) for complete setup guide.
 
-### Available Workflows
+### Azure Pipelines
+
+Azure Pipelines is fully configured and ready to use. The pipeline supports multi-stage testing, parallel execution, and comprehensive reporting.
+
+**Quick Setup:**
+
+1. **Create Pipeline in Azure DevOps:**
+   - Go to **Pipelines** → **New Pipeline**
+   - Select your repository
+   - Choose **Existing Azure Pipelines YAML file**
+   - Select `/azure-pipelines.yml`
+   - Click **Run**
+
+2. **Configure Pipeline Variables:**
+   ```
+   NODE_VERSION = 20.x
+   CI = true
+   PLAYWRIGHT_SERVICE_URL = your-azure-service-url (optional)
+   PLAYWRIGHT_SERVICE_ACCESS_TOKEN = your-token (optional)
+   ```
+
+3. **Pipeline Features:**
+   - ✅ Multi-stage testing (Smoke, Critical, Full Suite)
+   - ✅ Parallel execution across multiple browsers
+   - ✅ Automated Allure report generation
+   - ✅ Test results and artifacts publishing
+   - ✅ Azure Playwright Testing integration
+   - ✅ Scheduled runs and manual triggers
+
+**Pipeline Stages:**
+- **Setup**: Install dependencies and browsers
+- **Smoke Tests**: Run @smoke tagged tests on all browsers
+- **Critical Tests**: Run @critical tagged tests
+- **Full Tests**: Complete test suite execution
+- **Generate Reports**: Create Allure reports
+- **Azure Cloud Tests**: Optional cloud browser testing
+
+**Documentation:**
+- 📚 **Complete Guide:** [`docs/AZURE_PIPELINES_SETUP.md`](docs/AZURE_PIPELINES_SETUP.md)
+- ⚡ **Quick Start:** [`AZURE_PIPELINES_QUICK_START.md`](AZURE_PIPELINES_QUICK_START.md)
+
+### GitHub Actions - Available Workflows
 
 | Workflow | Purpose | Trigger |
 |----------|---------|---------|

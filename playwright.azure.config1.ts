@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { createAzurePlaywrightConfig, ServiceOS, ServiceAuth } from '@azure/playwright';
 import config from './playwright.config';
 import * as dotenv from 'dotenv';
 
@@ -25,13 +26,15 @@ dotenv.config();
 
 // Get Azure configuration from environment
 const azureServiceUrl = process.env.PLAYWRIGHT_SERVICE_URL;
+const azureAccessToken = process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN;
 
 if (!azureServiceUrl) {
   console.warn('⚠️  PLAYWRIGHT_SERVICE_URL not set. Tests will run locally.');
   console.warn('   Set it to use Azure cloud browsers: export PLAYWRIGHT_SERVICE_URL=https://<region>.api.playwright.microsoft.com');
 }
 
-export default defineConfig({
+// Base configuration
+const baseConfig = defineConfig({
   ...config,
   
   // Azure-specific settings
@@ -72,41 +75,46 @@ export default defineConfig({
         channel: 'chrome',
       },
     },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    {
-      name: 'mobile-chrome',
-      use: { 
-        ...devices['Pixel 5'],
-      },
-    },
-    {
-      name: 'mobile-safari',
-      use: { 
-        ...devices['iPhone 13'],
-      },
-    },
-    {
-      name: 'edge',
-      use: { 
-        ...devices['Desktop Edge'],
-        channel: 'msedge',
-      },
-    },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
+    // {
+    //   name: 'mobile-chrome',
+    //   use: { 
+    //     ...devices['Pixel 5'],
+    //   },
+    // },
+    // {
+    //   name: 'mobile-safari',
+    //   use: { 
+    //     ...devices['iPhone 13'],
+    //   },
+    // },
+    // {
+    //   name: 'edge',
+    //   use: { 
+    //     ...devices['Desktop Edge'],
+    //     channel: 'msedge',
+    //   },
+    // },
   ],
-  
-  // Azure service connection
-  ...(azureServiceUrl && {
-    // Connect to Azure Playwright Testing service
-    connectOptions: {
-      wsEndpoint: azureServiceUrl.replace('https://', 'wss://').replace('http://', 'ws://') + '/ws',
-    },
-  }),
 });
+
+// Export Azure configuration with cloud connection if service URL is set
+export default azureServiceUrl && azureAccessToken
+  ? defineConfig(
+      baseConfig,
+      createAzurePlaywrightConfig(baseConfig, {
+        serviceAuthType: ServiceAuth.ACCESS_TOKEN,
+        exposeNetwork: '<loopback>',
+        connectTimeout: 3 * 60 * 1000, // 3 minutes
+        os: ServiceOS.LINUX,
+      })
+    )
+  : baseConfig;
 
