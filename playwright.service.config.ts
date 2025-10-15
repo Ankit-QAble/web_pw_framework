@@ -19,5 +19,5 @@ export default defineConfig({
     }),
   },
   reporter: baseConfig.reporter,
-  workers: 10,
+  workers: 1,
 });
