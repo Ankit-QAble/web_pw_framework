@@ -1,23 +1,15 @@
-import { defineConfig, devices } from '@playwright/test';
-import * as dotenv from 'dotenv';
-import baseConfig from './playwright.config';
+import { defineConfig } from '@playwright/test';
+import { createAzurePlaywrightConfig, ServiceOS } from '@azure/playwright';
+import { DefaultAzureCredential } from '@azure/identity';
+import config from './playwright.config';
 
-dotenv.config();
-
-const wsEndpoint = process.env.PLAYWRIGHT_SERVICE_URL;
-const token = process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN;
-const gridEnabled = !!(wsEndpoint && token && process.env.PLAYWRIGHT_GRID_MODE === '1');
-
-export default defineConfig({
-  ...baseConfig,
-  use: {
-    ...baseConfig.use,
-    ...(gridEnabled && {
-      connectOptions: {
-        wsEndpoint: `${wsEndpoint}?auth=${token}`,
-      },
-    }),
-  },
-  reporter: baseConfig.reporter,
-  workers: 10,
-});
+/* Learn more about service configuration at https://aka.ms/pww/docs/config */
+export default defineConfig(
+  config,
+  createAzurePlaywrightConfig(config, {
+    exposeNetwork: '<loopback>',
+    connectTimeout: 3 * 60 * 1000, // 3 minutes
+    os: ServiceOS.LINUX,
+    credential: new DefaultAzureCredential(),
+  })
+);

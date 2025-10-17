@@ -1,0 +1,8 @@
+{
+  "label": "BrowserStack Integration",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Cross-browser testing with BrowserStack"
+  }
+}

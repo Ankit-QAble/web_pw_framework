@@ -1,0 +1,8 @@
+{
+  "label": "GitHub Actions",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "CI/CD workflows and automation with GitHub Actions"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Grid Setup",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Selenium Grid and multi-provider testing setup"
+  }
+}

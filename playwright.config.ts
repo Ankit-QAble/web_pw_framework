@@ -142,6 +142,80 @@ const PROFILES = {
       }
     }
   },
+  qable: {
+    baseURL: 'https://www.qable.io/blog',
+    browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
+    headless: false,
+    parallel: 1,
+    retries: 0,
+    screenshotOnFail: true,
+    videoOnFail: true,
+    elementHighlight: true,
+    mobile: {
+      mobile: { 
+        isMobile: false, 
+        device: 'pixel 9' },
+    },
+    report: {
+      name: 'allure-playwright',
+      outputFolder: 'allure-results',
+      suiteTitle: false,
+    },
+    reportEmail: {
+      email: true,
+      to: ['ankit.patel@sadad.qa'],
+      subject: 'Preprod Test Report - Allure Results',
+      body: 'Test execution completed for preprod environment. Allure report attached.',
+    },
+    reportSmtp: envConfig.getSmtpConfig(),
+    grid: {
+      isGrid: false,
+      provider: 'lambdatest', // 'lambdatest' | 'browserstack'
+      
+      // LambdaTest Configuration
+      lambdatest: {
+        user: 'ankitpatelsadad',
+        key: 'LT_3R7SNKvxrQqDBZTeI3vCIxIy6jv1Ike3YpMRghc0ER4XDH6',
+        capabilities: {
+          'LT:Options': {
+            platform: 'Windows 10',
+            browserName: 'Chrome',
+            browserVersion: 'latest',
+            resolution: '1920x1080',
+            name: 'Playwright Preprod Tests',
+            build: 'Preprod Build',
+            projectName: 'Web Framework',
+            console: true,
+            network: true,
+            visual: true,
+            video: true,
+          }
+        }
+      },
+      
+      // BrowserStack Configuration
+      browserstack: {
+        user: 'your-browserstack-username',
+        key: 'your-browserstack-access-key',
+        capabilities: {
+          'bstack:options': {
+            os: 'Windows',
+            osVersion: '10',
+            browserName: 'chrome',
+            browserVersion: 'latest',
+            resolution: '1920x1080',
+            projectName: 'Web Framework',
+            buildName: 'Preprod Build',
+            sessionName: 'Playwright Preprod Tests',
+            local: false,
+            networkLogs: true,
+            consoleLogs: 'info',
+            video: true,
+          }
+        }
+      }
+    }
+  },
 } as const;
 
 type ProfileName = keyof typeof PROFILES;
