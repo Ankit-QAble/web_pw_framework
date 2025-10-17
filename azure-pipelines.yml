@@ -53,7 +53,7 @@ jobs:
 
       # Run Playwright tests
       - script: |
-          npx playwright test --config=playwright.service.config.ts --reporter=list,html,junit
+          npx playwright test --config=playwright.service.config.ts
         displayName: 'Run Playwright Tests'
         continueOnError: true
 
