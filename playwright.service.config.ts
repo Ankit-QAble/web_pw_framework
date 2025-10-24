@@ -13,20 +13,33 @@ const wsEndpoint = process.env.PLAYWRIGHT_SERVICE_URL;
 const token = process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN;
 const gridEnabled = !!(wsEndpoint && token && process.env.PLAYWRIGHT_GRID_MODE === '1');
 
+// Build the final config object and export once at top-level.
+// Export declarations are not allowed inside blocks (if/else) in ESM/TS,
+// so we construct the merged config and export it once.
+let mergedConfig = config;
+
 if (useAzureService) {
   /* Learn more about service configuration at https://aka.ms/pww/docs/config */
-  export default defineConfig(
-    config,
-    createAzurePlaywrightConfig(config, {
-      exposeNetwork: '<loopback>',
-      connectTimeout: 3 * 60 * 1000, // 3 minutes
-      os: ServiceOS.LINUX,
-      credential: new DefaultAzureCredential(),
-    })
-  );
+  // Merge base config with the azure service config returned by helper.
+  const azureConfig = createAzurePlaywrightConfig(config, {
+    exposeNetwork: '<loopback>',
+    connectTimeout: 3 * 60 * 1000, // 3 minutes
+    os: ServiceOS.LINUX,
+    credential: new DefaultAzureCredential(),
+  });
+
+  // If azureConfig is a partial config, merge it with the base config.
+  mergedConfig = {
+    ...config,
+    ...azureConfig,
+    use: {
+      ...config.use,
+      ...(azureConfig?.use || {}),
+    },
+  };
 } else if (gridEnabled) {
   // Grid configuration using environment variables
-  export default defineConfig({
+  mergedConfig = {
     ...config,
     use: {
       ...config.use,
@@ -35,8 +48,10 @@ if (useAzureService) {
       },
     },
     workers: 1,
-  });
+  };
 } else {
   // Default configuration - just use the base config
-  export default defineConfig(config);
+  mergedConfig = config;
 }
+
+export default defineConfig(mergedConfig);
