@@ -15,6 +15,7 @@ The framework is built on a solid foundation of reusable components that provide
 - **Logger** - Comprehensive logging system with multiple levels
 - **ScreenshotHelper** - Advanced screenshot management and visual testing
 - **EmailService** - Automated email reporting with attachments
+- **DataHelper** - Simple and efficient JSON data loading and management
 - **EnvConfig** - Environment configuration management
 - **Global Setup/Teardown** - Test lifecycle management
 
@@ -450,6 +451,188 @@ const providerConfig = {
 await emailService.initializeTransporter(smtpConfig, providerConfig);
 ```
 
+### DataHelper Class
+
+The `DataHelper` class provides a simple and efficient way to load and access JSON test data files. It includes automatic caching to ensure optimal performance.
+
+#### Key Features
+
+- **Automatic Caching** - Data loaded once and cached for performance
+- **Type Safety** - Full TypeScript support with generics
+- **Simple API** - Direct access with clean syntax
+- **Global Access** - Use `testData` constant for direct data access
+
+#### Basic Usage
+
+```typescript
+import { DataHelper, testData } from '../../framework/utils/DataHelper';
+import { LoginPage } from '../pages/LoginPage';
+
+// Method 1: Using the DataHelper class
+test('login with credentials', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  
+  // Load JSON data
+  const users = DataHelper.loadJsonData('users.json');
+  
+  // Access data
+  await loginPage.login(
+    users.validUsers[0].username,
+    users.validUsers[0].password
+  );
+});
+
+// Method 2: Using the testData constant (RECOMMENDED)
+export class LoginPage extends BasePage {
+  constructor(page: Page, url?: string, testInfo?: TestInfo) {
+    super(page, url, testInfo);
+  }
+
+  async loginWithTestData(): Promise<void> {
+    // Direct access - no method calls needed!
+    const username = testData.validUsers[0].mobileNumber;
+    const password = testData.validUsers[0].password;
+    
+    await this.fill('#username', username);
+    await this.fill('#password', password);
+    await this.click('#login-btn');
+  }
+
+  async fillFormWithData(): Promise<void> {
+    // Access nested data easily
+    const firstName = testData.validUsers[0].firstName;
+    const lastName = testData.validUsers[0].lastName;
+    
+    await this.fill('#first-name', firstName);
+    await this.fill('#last-name', lastName);
+  }
+}
+```
+
+#### Advanced Usage
+
+```typescript
+// Load different data files
+const users = DataHelper.loadJsonData('users.json');
+const products = DataHelper.loadJsonData('products.json');
+const config = DataHelper.loadJsonData('config.json');
+
+// Use with type safety
+interface User {
+  username: string;
+  password: string;
+  email: string;
+}
+
+const typedUser = DataHelper.loadJsonData<User>('users.json');
+
+// Access specific properties
+const product = DataHelper.getData('products.json', 'electronics.laptops[0]');
+
+// Clear cache if needed (rarely necessary)
+DataHelper.clearCache();
+```
+
+#### Complete Example with Login Page
+
+```typescript
+import { Page, TestInfo } from '@playwright/test';
+import { BasePage } from '../../framework/core/BasePage';
+import { LoginPageLocators } from '../locators/LoginPageLocators';
+import { testData } from '../../framework/utils/DataHelper';
+
+export interface LoginCredentials {
+  mobileNumber: string;
+  password: string;
+  otp: string;
+}
+
+export class LoginPage extends BasePage {
+  constructor(page: Page, url?: string, testInfo?: TestInfo) {
+    super(page, url || defaultUrl, testInfo);
+  }
+
+  /**
+   * Get valid user credentials - using testData!
+   */
+  public getValidUserCredentials(): LoginCredentials {
+    const user = testData.validUsers[0];
+    console.log(`✅ Using user: ${user.mobileNumber}`);
+    return {
+      mobileNumber: user.mobileNumber,
+      password: user.password,
+      otp: user.otp
+    };
+  }
+
+  /**
+   * Get invalid user credentials
+   */
+  public getInvalidUserCredentials() {
+    return testData.invalidUsers[0];
+  }
+
+  /**
+   * Perform login with test data
+   */
+  async loginWithValidCredentials(): Promise<void> {
+    // Use testData directly
+    const user = testData.validUsers[0];
+    
+    await this.fill(LoginPageLocators.mobileNumberField, user.mobileNumber);
+    await this.fill(LoginPageLocators.passwordField, user.password);
+    await this.click(LoginPageLocators.loginButton);
+  }
+}
+```
+
+#### JSON Data Structure Example
+
+```json
+// test/data/users.json
+{
+  "validUsers": [
+    {
+      "mobileNumber": "90336607",
+      "password": "QAble@2020",
+      "otp": "333333",
+      "firstName": "Admin",
+      "lastName": "User",
+      "address": {
+        "street": "123 Admin Street",
+        "city": "New York",
+        "country": "USA"
+      }
+    }
+  ],
+  "invalidUsers": [
+    {
+      "username": "invalid@example.com",
+      "password": "wrongpassword",
+      "expectedError": "Invalid username or password"
+    }
+  ]
+}
+```
+
+#### Available Methods
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `loadJsonData<T>(fileName)` | Load JSON data with caching | `const data = DataHelper.loadJsonData('users.json')` |
+| `getData(fileName, path?)` | Get specific property | `const item = DataHelper.getData('config.json', 'api.endpoint')` |
+| `clearCache()` | Clear cached data | `DataHelper.clearCache()` |
+
+#### TestData Constant Properties
+
+The `testData` constant provides direct access to commonly used data:
+
+| Property | Description | Example |
+|----------|-------------|---------|
+| `testData.validUsers` | Array of valid test users | `testData.validUsers[0].mobileNumber` |
+| `testData.invalidUsers` | Array of invalid users | `testData.invalidUsers[0].username` |
+| `testData.users` | Complete users data object | `testData.users.validUsers[0]` |
+
 ### EnvConfig Class
 
 The `EnvConfig` class manages environment-specific configuration and settings.
@@ -637,6 +820,35 @@ await logger.step('Enter credentials', async () => {
 });
 
 logger.testEnd('Login Test', true);
+```
+
+### 5. Test Data Management
+
+```typescript
+// Good: Use testData for clean and simple data access
+import { testData } from '../../framework/utils/DataHelper';
+
+export class LoginPage extends BasePage {
+  async loginWithValidCredentials(): Promise<void> {
+    // Direct access to test data - clean and simple!
+    const user = testData.validUsers[0];
+    
+    await this.fill('#username', user.mobileNumber);
+    await this.fill('#password', user.password);
+    await this.click('#login-btn');
+  }
+
+  async performRegistration(): Promise<void> {
+    // Access nested data easily
+    const user = testData.validUsers[0];
+    const address = user.address;
+    
+    await this.fill('#firstName', user.firstName);
+    await this.fill('#lastName', user.lastName);
+    await this.fill('#street', address.street);
+    await this.fill('#city', address.city);
+  }
+}
 ```
 
 ## Configuration Examples

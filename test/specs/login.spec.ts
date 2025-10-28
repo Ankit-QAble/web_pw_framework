@@ -56,14 +56,8 @@ test.describe('Login Page Tests', () => {
     await logger.step('Enter valid credentials', async () => {
       await loginPage.loginWithValidCredentials();
     });
-
-  
-    await logger.step('Enter OTP', async () => {
-      await loginPage.enterOTP();
-    });
-
-    await logger.step('Take screenshot of login page', async () => {
-      await loginPage.takeScreenshot('login-page-loaded', 10);
+    await logger.step('Verify dashboard page', async () => {
+      await loginPage.verifyDashboardPage();
     });
   });
 });

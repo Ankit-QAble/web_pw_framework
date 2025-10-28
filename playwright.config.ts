@@ -5,7 +5,7 @@ import { envConfig } from './framework/utils/EnvConfig';
 // Select via RUN (preferred) or NODE_ENV. Defaults to 'development'.
 const PROFILES = {
   development: {
-    baseURL: 'http://qable.io',
+    baseURL: 'http://devwebpanel.sadadqa.com:3004/auth/login',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'
     headless: false,
     parallel: 1, // workers

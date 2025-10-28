@@ -1,8 +1,7 @@
 import { Page, TestInfo } from '@playwright/test';
 import { BasePage } from '../../framework/core/BasePage';
 import { LoginPageLocators } from '../locators/LoginPageLocators';
-import * as fs from 'fs';
-import * as path from 'path';
+import { testData } from '../../framework/utils/DataHelper';
 
 export interface LoginCredentials {
   mobileNumber: string;
@@ -11,59 +10,32 @@ export interface LoginCredentials {
 }
 
 export class LoginPage extends BasePage {
-  private userData: any;
-
   constructor(page: Page, url?: string, testInfo?: TestInfo) {
     // Use the URL from config or fallback to the provided URL
     const defaultUrl = process.env.BASE_URL;
     console.log(`🔍 LoginPage constructor - url param: ${url}, defaultUrl: ${defaultUrl}`);
     super(page, url || defaultUrl, testInfo);
     console.log(`🔍 LoginPage constructor - final URL: ${this.url}`);
-    
-    // Load user data from JSON file
-    this.loadUserData();
   }
 
   /**
-   * Load user data from users.json file
-   */
-  private loadUserData(): void {
-    try {
-      const userDataPath = path.join(process.cwd(), 'test', 'data', 'users.json');
-      const userDataContent = fs.readFileSync(userDataPath, 'utf8');
-      this.userData = JSON.parse(userDataContent);
-      this.logger.info('User data loaded successfully');
-    } catch (error) {
-      this.logger.error('Failed to load user data', error as Error);
-      throw new Error('Could not load user data from users.json');
-    }
-  }
-
-  /**
-   * Get valid user credentials
+   * Get valid user credentials - using testData!
    */
   public getValidUserCredentials(): LoginCredentials {
-    if (!this.userData || !this.userData.validUsers || this.userData.validUsers.length === 0) {
-      throw new Error('No valid users found in users.json');
-    }
-    
-    const validUser = this.userData.validUsers[0];
+    const user = testData.validUsers[0];
+    console.log(`✅ Using user: ${user.mobileNumber}`);
     return {
-      mobileNumber: validUser.username,
-      password: validUser.password,
-      otp: validUser.otp
+      mobileNumber: user.mobileNumber,
+      password: user.password,
+      otp: user.otp
     };
   }
 
   /**
-   * Get invalid user credentials for negative testing
+   * Get invalid user credentials
    */
-  public getInvalidUserCredentials(): { username: string; password: string; expectedError: string } {
-    if (!this.userData || !this.userData.invalidUsers || this.userData.invalidUsers.length === 0) {
-      throw new Error('No invalid users found in users.json');
-    }
-    
-    return this.userData.invalidUsers[0];
+  public getInvalidUserCredentials() {
+    return testData.invalidUsers[0];
   }
 
   /**
@@ -83,11 +55,14 @@ export class LoginPage extends BasePage {
   /**
    * Enter mobile number
    */
+  // async enterMobileNumber(mobileNumber: string): Promise<void> {
+  //   await this.fill(LoginPageLocators.mobileNumberField, mobileNumber);
+  //   this.logger.info(`Mobile number entered: ${mobileNumber}`);
+  // }
   async enterMobileNumber(mobileNumber: string): Promise<void> {
-    await this.fill(LoginPageLocators.mobileNumberField, mobileNumber);
-    this.logger.info(`Mobile number entered: ${mobileNumber}`);
+    await this.fill(LoginPageLocators.mobileNumberField, testData.validUsers[0].mobileNumber);
+    this.logger.info(`Mobile number entered: ${testData.validUsers[0].mobileNumber}`);
   }
-
   /**
    * Enter password
    */
@@ -122,8 +97,10 @@ export class LoginPage extends BasePage {
       const clickTimeout = process.env.CI ? 10000 : 6000;
       await this.waitUntilElementClickable(LoginPageLocators.loginButton, clickTimeout);
       await this.clickLoginButton();
+      await this.enterOTP(credentials.otp);
       
       this.logger.info('Login attempt completed');
+      await this.takeScreenshot('login-successfully-completed');
     } catch (error) {
       this.logger.error('Login failed', error as Error);
       await this.takeScreenshot('login-failed');
@@ -191,9 +168,9 @@ export class LoginPage extends BasePage {
       throw error;
     }
   }
-  async enterOTP(): Promise<void> {
+  async enterOTP(otp: string): Promise<void> {
     this.logger.info('Enter OTP');
-    const otpValue = "333333";
+    const otpValue = otp;
     
     // Enter each digit individually
     for (let i = 1; i <= 6; i++) {
@@ -209,5 +186,21 @@ export class LoginPage extends BasePage {
     }
     
     this.logger.info('OTP entered successfully');
+  }
+
+    /**
+   * Perform complete login with valid credentials from users.json
+   */
+    async verifyDashboardPage(): Promise<void> {
+      try {
+      await this.waitForVisible(LoginPageLocators.dashboardTitle,10000);
+      await this.getTextAndCompare(LoginPageLocators.dashboardTitle, 'Welcome to SADAD!');
+      await this.takeScreenshot('Login successfully completed');
+      this.logger.info('Login successfully completed');
+    } catch (error) {
+      this.logger.error('Failed to verify dashboard page', error as Error);
+      await this.takeScreenshot('login-failed');
+      throw error;
+    }
   }
 }

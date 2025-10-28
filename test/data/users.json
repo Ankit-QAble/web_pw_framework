@@ -1,7 +1,7 @@
 {
   "validUsers": [
     {
-      "username": "90336607",
+      "mobileNumber": "90336607",
       "password": "QAble@2020",
       "otp": "333333",
       "firstName": "Admin",
@@ -20,7 +20,4 @@
       "expectedError": "Invalid username or password"
     }
   ]
-
-
-  
 }
