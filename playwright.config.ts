@@ -5,7 +5,7 @@ import { envConfig } from './framework/utils/EnvConfig';
 // Select via RUN (preferred) or NODE_ENV. Defaults to 'development'.
 const PROFILES = {
   development: {
-    baseURL: 'http://devwebpanel.sadadqa.com:3004',
+    baseURL: 'http://qable.io',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'
     headless: false,
     parallel: 1, // workers
@@ -26,8 +26,8 @@ const PROFILES = {
       
       // LambdaTest Configuration
       lambdatest: {
-        user: 'ankitpatelsadad',
-        key: 'LT_3R7SNKvxrQqDBZTeI3vCIxIy6jv1Ike3YpMRghc0ER4XDH6',
+        user: 'ankitpatel',
+        key: '<YOUR_LAMBDATEST_ACCESS_KEY>',
         capabilities: {
           'LT:Options': {
             platform: 'Windows 10',
@@ -69,7 +69,7 @@ const PROFILES = {
     }
   },
   preprod: {
-    baseURL: 'https://aks-panel.sadad.qa/auth/login',
+    baseURL: 'https://qable.io',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
     headless: false,
     parallel: 1,
@@ -89,7 +89,7 @@ const PROFILES = {
     },
     reportEmail: {
       email: true,
-      to: ['ankit.patel@sadad.qa'],
+      to: ['ankitpatel@qable.io'],
       subject: 'Preprod Test Report - Allure Results',
       body: 'Test execution completed for preprod environment. Allure report attached.',
     },
@@ -100,8 +100,8 @@ const PROFILES = {
       
       // LambdaTest Configuration
       lambdatest: {
-        user: 'ankitpatelsadad',
-        key: 'LT_3R7SNKvxrQqDBZTeI3vCIxIy6jv1Ike3YpMRghc0ER4XDH6',
+        user: 'ankitpatel',
+        key: '<YOUR_LAMBDATEST_ACCESS_KEY>',
         capabilities: {
           'LT:Options': {
             platform: 'Windows 10',
@@ -163,7 +163,7 @@ const PROFILES = {
     },
     reportEmail: {
       email: true,
-      to: ['ankit.patel@sadad.qa'],
+      to: ['ankitpatel@qable.io'],
       subject: 'Preprod Test Report - Allure Results',
       body: 'Test execution completed for preprod environment. Allure report attached.',
     },
@@ -175,7 +175,7 @@ const PROFILES = {
       // LambdaTest Configuration
       lambdatest: {
         user: 'ankitpatelsadad',
-        key: 'LT_3R7SNKvxrQqDBZTeI3vCIxIy6jv1Ike3YpMRghc0ER4XDH6',
+        key: '<YOUR_LAMBDATEST_ACCESS_KEY>',
         capabilities: {
           'LT:Options': {
             platform: 'Windows 10',

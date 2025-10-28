@@ -91,7 +91,7 @@ PLAYWRIGHT_SERVICE_URL=wss://eastus.api.playwright.microsoft.com/playwrightworks
 PLAYWRIGHT_SERVICE_ACCESS_TOKEN=your-token-here
 NODE_ENV=development
 RUN=development
-BASE_URL=http://devwebpanel.sadadqa.com:3004
+BASE_URL=https://example.com
 ```
 
 ### Test Configuration:

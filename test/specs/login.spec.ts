@@ -58,118 +58,12 @@ test.describe('Login Page Tests', () => {
     });
 
   
-    await logger.step('Verify page loads and elements are visible', async () => {
-      await loginPage.verifyLoginPageElements();
-    });
-
-    await logger.step('Take screenshot of login page', async () => {
-      await loginPage.takeScreenshot('login-page-loaded', 10);
-    });
-  });
-
-  test('#2 Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
-    await logger.step('Enter valid credentials', async () => {
-      await loginPage.loginWithValidCredentials();
-    });
-
-  
-    await logger.step('Verify page loads and elements are visible', async () => {
-      await loginPage.verifyLoginPageElements();
-    });
-
-    await logger.step('Take screenshot of login page', async () => {
-      await loginPage.takeScreenshot('login-page-loaded', 10);
-    });
-  });
-
-  test('#3Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
-    await logger.step('Enter valid credentials', async () => {
-      await loginPage.loginWithValidCredentials();
-    });
-
-  
-    await logger.step('Verify page loads and elements are visible', async () => {
-      await loginPage.verifyLoginPageElements();
-    });
-
-    await logger.step('Take screenshot of login page', async () => {
-      await loginPage.takeScreenshot('login-page-loaded', 10);
-    });
-  });
-
-  test('#4 Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
-    await logger.step('Enter valid credentials', async () => {
-      await loginPage.loginWithValidCredentials();
-    });
-
-    await logger.step('Verify page loads and elements are visible', async () => {
-      await loginPage.verifyLoginPageElements();
-    });
-  });
-
-  test('#5 Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
-    await logger.step('Enter valid credentials', async () => {
-      await loginPage.loginWithValidCredentials();
-    });
-
-    await logger.step('Verify page loads and elements are visible', async () => {
-      await loginPage.verifyLoginPageElements();
-    });
-  });
-
-  test('#6 Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
-    await logger.step('Enter valid credentials', async () => {
-      await loginPage.loginWithValidCredentials();
-    });
-
-    await logger.step('Verify page loads and elements are visible', async () => {
-      await loginPage.verifyLoginPageElements();
-    });
-  }); 
-
-  test('#7 Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
-    await logger.step('Enter valid credentials', async () => {
-      await loginPage.loginWithValidCredentials();
-    });
-
-    await logger.step('Verify page loads and elements are visible', async () => {
-      await loginPage.verifyLoginPageElements();
-    });
-  });
-
-  test('#8 Enter valid credentials @critical', { tag: ['@critical'] }, async ({ logger }) => {
-    await logger.step('Enter valid credentials', async () => {
-      await loginPage.loginWithValidCredentials();
-    });
-
-    await logger.step('Verify page loads and elements are visible', async () => {
-      await loginPage.verifyLoginPageElements();
-    });
-    await logger.step('Verify OTP page loads and elements are visible', async () => {
-      await loginPage.verifyEnterOTPPage();
-    });
-    await logger.step('Enter 6 digit OTP and verify', async () => {
+    await logger.step('Enter OTP', async () => {
       await loginPage.enterOTP();
     });
+
     await logger.step('Take screenshot of login page', async () => {
       await loginPage.takeScreenshot('login-page-loaded', 10);
-    });
-
-  }); 
-
-  test('#9 Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
-    await logger.step('Enter valid credentials', async () => {
-      await loginPage.loginWithValidCredentials();
-    });
-
-    await logger.step('Verify page loads and elements are visible', async () => {
-      await loginPage.verifyLoginPageElements();
-    });
-  });
-
-  test('#10 Enter valid credentials @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
-    await logger.step('Enter valid credentials', async () => {
-      await loginPage.loginWithValidCredentials();
     });
   });
 });

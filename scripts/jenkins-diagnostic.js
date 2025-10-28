@@ -13,7 +13,8 @@ async function jenkinsDiagnostic() {
   console.log(`📍 Node version: ${process.version}`);
   console.log(`📍 Platform: ${process.platform}`);
   
-  const url = process.env.BASE_URL || 'http://devwebpanel.sadadqa.com:3004';
+  // Use example URL as a safe default to avoid leaking internal endpoints
+  const url = process.env.BASE_URL || 'https://example.com';
   console.log(`📍 Target URL: ${url}`);
   
   // Jenkins-optimized browser launch options

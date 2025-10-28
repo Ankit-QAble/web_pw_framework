@@ -141,3 +141,7 @@ temp/
 
 # Custom test data (if sensitive)
 # test/data/sensitive/
+
+# Generated results and built docs (sanitized locally before publishing)
+results.json
+docs-site/build/

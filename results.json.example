@@ -1,0 +1,6 @@
+{
+  "sanitized": true,
+  "note": "This is a sanitized placeholder. The original results.json has been removed from the public repository to avoid exposing internal endpoints and logs.",
+  "exampleBaseUrl": "https://example.com",
+  "howToRegenerate": "Run your test suite locally (npm test) to generate fresh results.json; do not commit it to the public repo."
+}
