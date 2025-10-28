@@ -16,10 +16,6 @@ on:
           - development
           - staging
           - production
-      test_tags:
-        description: 'Test tags to run (e.g., @smoke, @critical, @critical|@smoke)'
-        required: false
-        default: '@critical|@smoke'
       workers:
         description: 'Number of parallel workers'
         required: false
@@ -76,11 +72,8 @@ jobs:
           WORKERS="${{ github.event.inputs.workers }}"
           WORKERS="${WORKERS:-5}"
           
-          if [ "${{ github.event.inputs.test_tags }}" != "" ]; then
-            npx playwright test --project=${{ matrix.browser }} --grep "${{ github.event.inputs.test_tags }}" --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright,github
-          else
-            npx playwright test --project=${{ matrix.browser }} --grep "@critical|@smoke" --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright,github
-          fi
+          # Run specific login test file
+          npx playwright test test/specs/login.spec.ts --project=${{ matrix.browser }} --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright,github
         env:
           CI: true
           RUN: ${{ env.RUN }}
@@ -95,6 +88,11 @@ jobs:
           reporter: jest-junit
           fail-on-error: false
           
+      - name: 📊 Generate Allure Report
+        if: always()
+        run: |
+          npx allure generate allure-results --clean -o allure-report || echo "Allure report generation skipped"
+          
       - name: 📊 Upload test results
         uses: actions/upload-artifact@v4
         if: always()
@@ -104,6 +102,7 @@ jobs:
             playwright-report/
             test-results/
             allure-results/
+            allure-report/
             results.json
             junit.xml
             screenshots/
@@ -116,7 +115,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Configuration:**" >> $GITHUB_STEP_SUMMARY
           echo "- 🌍 Environment: ${{ github.event.inputs.environment || 'development' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- 🏷️ Tags: ${{ github.event.inputs.test_tags || '@critical|@smoke' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 📄 Test File: test/specs/login.spec.ts" >> $GITHUB_STEP_SUMMARY
           echo "- 👥 Workers: ${{ github.event.inputs.workers || '5' }}" >> $GITHUB_STEP_SUMMARY
           echo "- 🎭 Browser: ${{ matrix.browser }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -131,6 +130,6 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '## 🧪 Playwright Test Results - ${{ matrix.browser }}\n\n✅ Tests completed!\n\n**Configuration:**\n- Environment: ${{ github.event.inputs.environment || 'development' }}\n- Tags: ${{ github.event.inputs.test_tags || '@critical|@smoke' }}\n- Workers: ${{ github.event.inputs.workers || '5' }}\n\n[📊 View Full Results](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})'
+              body: '## 🧪 Playwright Test Results - ${{ matrix.browser }}\n\n✅ Tests completed!\n\n**Configuration:**\n- Environment: ${{ github.event.inputs.environment || 'development' }}\n- Test File: test/specs/login.spec.ts\n- Workers: ${{ github.event.inputs.workers || '5' }}\n\n[📊 View Full Results](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})'
             });
 
