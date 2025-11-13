@@ -1,5 +1,10 @@
 export const LoginPageLocators = {
-  mobileNumberField: 'input[type="text"]',
+  mobileNumberField: [
+    "//input[@formcontrolname='email']",
+    '#exampleFormControlInput1',
+    '.form-control.custom-input',
+    "input[type='text']"
+  ],
   passwordField: 'input[type="password"]',
   loginButton: '//button[@type="submit"]',
   pageTitle: "//h2[normalize-space()='Login in to SADAD']",

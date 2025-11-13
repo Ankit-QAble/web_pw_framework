@@ -142,9 +142,36 @@ export abstract class BaseTest {
   /**
    * Execute JavaScript in browser
    */
-  async executeScript(script: string): Promise<any> {
-    this.logger.info(`Executing script: ${script}`);
-    return await this.page.evaluate(script);
+  async executeScript<T>(
+    script: string | ((...args: any[]) => T),
+    ...args: any[]
+  ): Promise<T> {
+    const scriptDescription =
+      typeof script === 'string' ? script : script.name || 'anonymous function';
+
+    this.logger.info(`Executing script: ${scriptDescription}`);
+
+    if (typeof script === 'string') {
+      const trimmedScript = script.trim();
+      if (!trimmedScript) {
+        throw new Error('Script cannot be empty');
+      }
+
+      const withoutReturn = trimmedScript.startsWith('return ')
+        ? trimmedScript.replace(/^return\s+/, '')
+        : trimmedScript;
+
+      const expression = withoutReturn.replace(/;+\s*$/, '');
+
+      // Evaluate arbitrary expression within browser context
+      // eslint-disable-next-line no-new-func
+      return await this.page.evaluate(
+        (expr) => new Function(`return (${expr});`)(),
+        expression
+      );
+    }
+
+    return await this.page.evaluate(script as (...innerArgs: any[]) => T, ...args);
   }
 
   /**

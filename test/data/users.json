@@ -19,5 +19,21 @@
       "password": "wrongpassword",
       "expectedError": "Invalid username or password"
     }
-  ]
+  ],
+  "orangeHrm": {
+    "url": "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
+    "validUsers": [
+      {
+        "username": "Admin",
+        "password": "admin123"
+      }
+    ],
+    "invalidUsers": [
+      {
+        "username": "Admin",
+        "password": "incorrect",
+        "expectedError": "Invalid credentials"
+      }
+    ]
+  }
 }

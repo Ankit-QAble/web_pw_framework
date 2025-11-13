@@ -13,6 +13,15 @@ const PROFILES = {
     screenshotOnFail: true,
     videoOnFail: true,
     elementHighlight: true,
+    mobile: {
+      mobile: {
+        isMobile: true,
+        device: 'pixel 7'
+        //viewportWidth: 875,
+        //viewportHeight: 667,
+        // Or use a device name instead: device: 'pixel 7'
+      },
+    },
     reportEmail: {
       email: false, // Set to true to enable email reporting and setup in utils/EmailService.ts
       to: ['patelankitr123@gmail.com'],
@@ -26,8 +35,8 @@ const PROFILES = {
       
       // LambdaTest Configuration
       lambdatest: {
-        user: 'ankitpatel',
-        key: '<YOUR_LAMBDATEST_ACCESS_KEY>',
+        user: 'ankitpatelsadad',
+        key: 'LT_3R7SNKvxrQqDBZTeI3vCIxIy6jv1Ike3YpMRghc0ER4XDH6',
         capabilities: {
           'LT:Options': {
             platform: 'Windows 10',
@@ -69,7 +78,7 @@ const PROFILES = {
     }
   },
   preprod: {
-    baseURL: 'https://qable.io',
+    baseURL: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
     headless: false,
     parallel: 1,
@@ -227,6 +236,47 @@ const commandLineBrowser = process.env.BROWSER;
 if (commandLineBrowser) {
   (selectedProfile as any).browser = commandLineBrowser;
   console.log(`🔧 Browser overridden from command line: ${commandLineBrowser}`);
+}
+
+// Override mobile device from command line if MOBILE_DEVICE environment variable is set
+const commandLineMobileDevice = process.env.MOBILE_DEVICE;
+const commandLineViewportWidth = process.env.VIEWPORT_WIDTH;
+const commandLineViewportHeight = process.env.VIEWPORT_HEIGHT;
+
+if (commandLineMobileDevice || commandLineViewportWidth || commandLineViewportHeight) {
+  // Enable mobile mode if device is specified
+  if (commandLineMobileDevice) {
+    if (!(selectedProfile as any).mobile) {
+      (selectedProfile as any).mobile = { mobile: { isMobile: true } };
+    }
+    (selectedProfile as any).mobile.mobile.device = commandLineMobileDevice;
+    // Disable grid when mobile device is specified (mobile tests should run locally)
+    if ((selectedProfile as any).grid) {
+      (selectedProfile as any).grid.isGrid = false;
+      console.log(`📱 Disabled grid mode for mobile testing`);
+    }
+    console.log(`📱 Mobile device overridden from command line: ${commandLineMobileDevice}`);
+  }
+  
+  // Add custom viewport dimensions if specified
+  if (commandLineViewportWidth || commandLineViewportHeight) {
+    if (!(selectedProfile as any).mobile) {
+      (selectedProfile as any).mobile = { mobile: { isMobile: true } };
+    }
+    // Disable grid when using custom viewport (mobile mode)
+    if ((selectedProfile as any).grid && !commandLineMobileDevice) {
+      (selectedProfile as any).grid.isGrid = false;
+      console.log(`📱 Disabled grid mode for mobile viewport testing`);
+    }
+    if (commandLineViewportWidth) {
+      (selectedProfile as any).mobile.mobile.viewportWidth = parseInt(commandLineViewportWidth);
+      console.log(`📐 Viewport width set: ${commandLineViewportWidth}px`);
+    }
+    if (commandLineViewportHeight) {
+      (selectedProfile as any).mobile.mobile.viewportHeight = parseInt(commandLineViewportHeight);
+      console.log(`📐 Viewport height set: ${commandLineViewportHeight}px`);
+    }
+  }
 }
 
 // Expose profile baseURL to rest of code via env for utilities
@@ -458,7 +508,7 @@ const MOBILE_DEVICE_ALIASES: Record<string, keyof typeof devices> = {
   'pixel 9': 'Pixel 7',
   'samsung s9': 'Galaxy S9+',
   'galaxy s9+': 'Galaxy S9+',
-  'iphone 12': 'iPhone 12',
+  'iphone12': 'iPhone 12',
   'iphone 14 pro': 'iPhone 14 Pro',
   'ipad mini': 'iPad Mini',
 };
@@ -476,10 +526,30 @@ function resolveMobileUse(mobile: any) {
     }
   }
   // Exclude control fields when spreading overrides
-  const { isMobile: _ignoreIsMobile, device: _ignoreDevice, ...overrides } = m || {};
+  const { 
+    isMobile: _ignoreIsMobile, 
+    device: _ignoreDevice, 
+    viewportWidth: _ignoreVW,
+    viewportHeight: _ignoreVH,
+    ...overrides 
+  } = m || {};
+  
+  // Support custom viewport dimensions from environment or config
+  const customViewportWidth = process.env.VIEWPORT_WIDTH 
+    ? parseInt(process.env.VIEWPORT_WIDTH) 
+    : m?.viewportWidth;
+  const customViewportHeight = process.env.VIEWPORT_HEIGHT 
+    ? parseInt(process.env.VIEWPORT_HEIGHT) 
+    : m?.viewportHeight;
+  
+  const viewport: any = {};
+  if (customViewportWidth) viewport.width = customViewportWidth;
+  if (customViewportHeight) viewport.height = customViewportHeight;
+  
   return { 
     ...baseDevice,
     ...overrides,
+    ...(Object.keys(viewport).length > 0 ? { viewport } : {}),
     // enforce mobile characteristics
     isMobile: true,
     hasTouch: true,
@@ -510,7 +580,8 @@ if ((selectedProfile as any).grid?.isGrid) {
 }
 
 // Build projects conditionally: if mobile specified and isMobile==true, use that; else use desktop from profile
-const computedProjects = ((selectedProfile as any).mobile?.mobile ?? (selectedProfile as any).mobile)?.isMobile
+const isMobileMode = ((selectedProfile as any).mobile?.mobile ?? (selectedProfile as any).mobile)?.isMobile;
+const computedProjects = isMobileMode
   ? [
       {
         name: 'mobile-profile',
@@ -518,6 +589,18 @@ const computedProjects = ((selectedProfile as any).mobile?.mobile ?? (selectedPr
       },
     ]
   : [mapBrowserToProject(selectedProfile.browser, (selectedProfile as any).grid)];
+
+// Log mobile configuration if enabled
+if (isMobileMode) {
+  const mobileConfig = (selectedProfile as any).mobile?.mobile ?? (selectedProfile as any).mobile;
+  const deviceName = mobileConfig?.device || 'default';
+  const viewport = mobileConfig?.viewport || {};
+  console.log(`📱 Mobile Mode: ENABLED`);
+  console.log(`   Device: ${deviceName}`);
+  if (viewport.width || mobileConfig?.viewportWidth) {
+    console.log(`   Viewport: ${viewport.width || mobileConfig?.viewportWidth}x${viewport.height || mobileConfig?.viewportHeight}`);
+  }
+}
 
 /**
  * @see https://playwright.dev/docs/test-configuration

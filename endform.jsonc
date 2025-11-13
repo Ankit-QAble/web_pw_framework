@@ -1,0 +1,32 @@
+{
+  // Endform configuration for Playwright tests
+  // See: https://endform.dev/docs/reference/endform-config
+  
+  "testRunner": "playwright",
+  "testDir": "./test/specs",
+  "testMatch": "**/*.spec.ts",
+  
+  // Playwright configuration path
+  "config": "./playwright.config.ts",
+  
+  // Custom reporters that work with Endform
+  // Note: Endform collects blob reports and merges them automatically
+  "reporter": [
+    ["list"],
+    ["blob"],
+    ["allure-playwright", {
+      "detail": true,
+      "outputFolder": "allure-results",
+      "suiteTitle": false
+    }]
+  ],
+  
+  // Optional: Set maximum parallel workers
+  // "maxConcurrency": 10,
+  
+  // Optional: Filter by tags
+  // "testFilter": "@smoke",
+  
+  // Optional: Run only specific browsers
+  // "projects": ["chromium"]
+}

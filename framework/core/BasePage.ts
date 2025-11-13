@@ -2,6 +2,8 @@ import { Page, Locator, expect, TestInfo } from '@playwright/test';
 import { Logger } from '../utils/Logger';
 import { ScreenshotHelper } from '../utils/ScreenshotHelper';
 
+type SelectorDefinition = string | Locator | Array<string | Locator>;
+
 export abstract class BasePage {
   protected page: Page;
   protected logger: Logger;
@@ -22,7 +24,10 @@ export abstract class BasePage {
    * @param selector The selector string or locator object
    * @returns Locator object
    */
-  protected getLocator(selector: string | Locator): Locator {
+  protected async getLocator(selector: SelectorDefinition): Promise<Locator> {
+    if (Array.isArray(selector)) {
+      return await this.resolveAutoHealingSelector(selector);
+    }
     if (typeof selector === 'string') {
       return this.page.locator(selector);
     }
@@ -70,9 +75,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * Click on an element
    * @param selector The selector string or locator object
    */
-  protected async click(selector: string | Locator): Promise<void> {
-    const locator = this.getLocator(selector);
-    this.logger.info(`Clicking on element: ${selector}`);
+  protected async click(selector: SelectorDefinition): Promise<void> {
+    const locator = await this.getLocator(selector);
+    this.logger.info(`Clicking on element: ${this.describeSelector(selector)}`);
     await locator.click();
   }
   
@@ -81,9 +86,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @param value The value to fill
    */
-  protected async fill(selector: string | Locator, value: string): Promise<void> {
-    const locator = this.getLocator(selector);
-    this.logger.info(`Filling element: ${selector} with value: ${value}`);
+  protected async fill(selector: SelectorDefinition, value: string): Promise<void> {
+    const locator = await this.getLocator(selector);
+    this.logger.info(`Filling element: ${this.describeSelector(selector)} with value: ${value}`);
   
     await this.highlight(locator);
     try {
@@ -100,8 +105,8 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @returns True if element is visible
    */
-  protected async isVisible(selector: string | Locator): Promise<boolean> {
-    const locator = this.getLocator(selector);
+  protected async isVisible(selector: SelectorDefinition): Promise<boolean> {
+    const locator = await this.getLocator(selector);
     return await locator.isVisible();
   }
   
@@ -110,8 +115,8 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @returns Text content of the element
    */
-  protected async getText(selector: string | Locator): Promise<string> {
-    const locator = this.getLocator(selector);
+  protected async getText(selector: SelectorDefinition): Promise<string> {
+    const locator = await this.getLocator(selector);
     return await locator.textContent() || '';
   }
   
@@ -120,14 +125,14 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @param timeout Optional timeout in milliseconds
    */
-  protected async waitForVisible(selector: string | Locator, timeout?: number): Promise<void> {
-    const locator = this.getLocator(selector);
-    this.logger.info(`Waiting for element to be visible: ${selector}`);
+  protected async waitForVisible(selector: SelectorDefinition, timeout?: number): Promise<void> {
+    const locator = await this.getLocator(selector);
+    this.logger.info(`Waiting for element to be visible: ${this.describeSelector(selector)}`);
     try {
       await locator.waitFor({ state: 'visible', timeout });
-      this.logger.info(`Element is now visible: ${selector}`);
+      this.logger.info(`Element is now visible: ${this.describeSelector(selector)}`);
     } catch (error) {
-      const message = `Element not visible within ${timeout ?? 30000}ms: ${selector}`;
+      const message = `Element not visible within ${timeout ?? 30000}ms: ${this.describeSelector(selector)}`;
       this.logger.error(message, error as Error);
       
       // Take screenshot for debugging
@@ -151,13 +156,13 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @param timeout Optional timeout in milliseconds
    */
-  async waitUntilElementPresent(selector: string | Locator, timeout?: number): Promise<void> {
-    const locator = this.getLocator(selector);
-    this.logger.info(`Waiting until element is present: ${selector}`);
+  async waitUntilElementPresent(selector: SelectorDefinition, timeout?: number): Promise<void> {
+    const locator = await this.getLocator(selector);
+    this.logger.info(`Waiting until element is present: ${this.describeSelector(selector)}`);
     try {
       await locator.waitFor({ state: 'attached', timeout });
     } catch (error) {
-      const message = `Element not present within ${timeout ?? 90000}ms: ${selector}`;
+      const message = `Element not present within ${timeout ?? 90000}ms: ${this.describeSelector(selector)}`;
       this.logger.error(message, error as Error);
       throw new Error(message);
     }
@@ -168,14 +173,14 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @param timeout Optional timeout in milliseconds
    */
-  async waitUntilElementClickable(selector: string | Locator, timeout?: number): Promise<void> {
-    const locator = this.getLocator(selector);
-    this.logger.info(`Waiting until element is clickable: ${selector}`);
+  async waitUntilElementClickable(selector: SelectorDefinition, timeout?: number): Promise<void> {
+    const locator = await this.getLocator(selector);
+    this.logger.info(`Waiting until element is clickable: ${this.describeSelector(selector)}`);
     try {
       await locator.waitFor({ state: 'visible', timeout });
       await expect(locator).toBeEnabled({ timeout });
     } catch (error) {
-      const message = `Element not clickable within ${timeout ?? 30000}ms: ${selector}`;
+      const message = `Element not clickable within ${timeout ?? 30000}ms: ${this.describeSelector(selector)}`;
       this.logger.error(message, error as Error);
       throw new Error(message);
     }
@@ -186,8 +191,8 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @param message Optional assertion message
    */
-  protected async expectVisible(selector: string | Locator, message?: string): Promise<void> {
-    const locator = this.getLocator(selector);
+  protected async expectVisible(selector: SelectorDefinition, message?: string): Promise<void> {
+    const locator = await this.getLocator(selector);
     await expect(locator, message).toBeVisible();
   }
   
@@ -196,9 +201,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @param value The value to select
    */
-  protected async selectOption(selector: string | Locator, value: string): Promise<void> {
-    const locator = this.getLocator(selector);
-    this.logger.info(`Selecting option: ${value} from dropdown: ${selector}`);
+  protected async selectOption(selector: SelectorDefinition, value: string): Promise<void> {
+    const locator = await this.getLocator(selector);
+    this.logger.info(`Selecting option: ${value} from dropdown: ${this.describeSelector(selector)}`);
     await locator.selectOption(value);
   }
 
@@ -384,9 +389,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param exactMatch Whether to do exact match (default: true)
    * @returns True if text matches, false otherwise
    */
-  async getTextAndCompare(selector: string | Locator, expectedText: string, exactMatch: boolean = true): Promise<boolean> {
+  async getTextAndCompare(selector: SelectorDefinition, expectedText: string, exactMatch: boolean = true): Promise<boolean> {
     const actualText = await this.getText(selector);
-    this.logger.info(`Comparing text for element: ${selector}`);
+    this.logger.info(`Comparing text for element: ${this.describeSelector(selector)}`);
     this.logger.info(`Expected: "${expectedText}"`);
     this.logger.info(`Actual: "${actualText}"`);
     
@@ -407,11 +412,11 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param expectedText The text to compare against
    * @param exactMatch Whether to do exact match (default: true)
    */
-  async verifyText(selector: string | Locator, expectedText: string, exactMatch: boolean = true): Promise<void> {
-    const locator = this.getLocator(selector);
+  async verifyText(selector: SelectorDefinition, expectedText: string, exactMatch: boolean = true): Promise<void> {
+    const locator = await this.getLocator(selector);
     const actualText = await this.getText(selector);
     
-    this.logger.info(`Verifying text for element: ${selector}`);
+    this.logger.info(`Verifying text for element: ${this.describeSelector(selector)}`);
     this.logger.info(`Expected: "${expectedText}"`);
     this.logger.info(`Actual: "${actualText}"`);
     
@@ -422,5 +427,69 @@ protected async unhighlight(locator: Locator): Promise<void> {
     }
     
     this.logger.info(`Text verification passed`);
+  }
+
+  private describeSelector(selector: SelectorDefinition): string {
+    if (Array.isArray(selector)) {
+      return selector.map(item => this.describeSelector(item)).join(' | ');
+    }
+    if (typeof selector === 'string') {
+      return selector;
+    }
+    try {
+      return selector.toString();
+    } catch {
+      return '[Locator]';
+    }
+  }
+
+  private async resolveAutoHealingSelector(selectors: Array<string | Locator>): Promise<Locator> {
+    const failureMessages: string[] = [];
+
+    let fallbackLocator: Locator | null = null;
+
+    for (const candidate of selectors) {
+      const locator = typeof candidate === 'string' ? this.page.locator(candidate) : candidate;
+      try {
+        const count = await locator.count();
+        if (count === 0) {
+          failureMessages.push(`No elements found for selector: ${this.describeSelector(candidate)}`);
+          if (!fallbackLocator) {
+            fallbackLocator = locator;
+          }
+          continue;
+        }
+
+        const first = locator.first();
+        let isVisible = false;
+        try {
+          isVisible = await first.isVisible();
+        } catch {
+          isVisible = false;
+        }
+
+        if (isVisible) {
+          this.logger.info(`Auto-healing matched selector (visible): ${this.describeSelector(candidate)}`);
+        } else {
+          this.logger.info(`Auto-healing matched selector (not yet visible): ${this.describeSelector(candidate)}`);
+        }
+        return locator;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        failureMessages.push(`Error using selector ${this.describeSelector(candidate)}: ${message}`);
+      }
+    }
+
+    if (fallbackLocator) {
+      const fallbackDescription = this.describeSelector(fallbackLocator);
+      this.logger.warn(
+        `Auto-healing falling back to first matching selector without initial elements: ${fallbackDescription}`
+      );
+      return fallbackLocator;
+    }
+
+    const errorMessage = `Auto-healing failed. Tried selectors: ${failureMessages.join(' | ')}`;
+    this.logger.error(errorMessage);
+    throw new Error(errorMessage);
   }
 }

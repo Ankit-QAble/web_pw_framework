@@ -16,6 +16,7 @@ A Playwright-based TypeScript test framework with built-in support for multiple 
 - Node.js (recommended v18+)
 - npm (or yarn)
 - Git (optional)
+- Endform API key (for distributed testing with Endform)
 
 ## Install
 1. Install dependencies
@@ -45,11 +46,44 @@ npm test
 
 This runs `npx playwright test` and will execute the tests using the base Playwright config.
 
+### Running with Endform (Distributed Testing)
+
+[Endform](https://endform.dev) provides a distributed test runner optimized for Playwright that runs tests in isolated Firecracker MicroVMs for faster parallel execution.
+
+**Setup Endform:**
+
+1. Get your API key from https://endform.dev
+2. Store it as a GitHub Secret named `ENDFORM_API_KEY`
+3. For local testing, set environment variable:
+   ```powershell
+   $env:ENDFORM_API_KEY="ef_org_your_key_here"
+   ```
+
+**Run tests with Endform:**
+
+```powershell
+# Dry run to see what will be tested
+npm run test:endform:dry
+
+# Run tests distributed
+npm run test:endform
+```
+
+**How Endform works:**
+- Analyzes your test files and dependencies
+- Runs each test in an isolated machine (Firecracker MicroVM)
+- Collects playwright blob reports and merges them
+- Works with existing Allure reporters
+
+See [endform.jsonc](./endform.jsonc) for configuration details.
+
 Other useful scripts (from `package.json`):
 - `npm run test:headed` — run tests in headed mode
 - `npm run test:debug` — run tests in debug mode
 - `npm run test:ui` — open Playwright test UI
 - `npm run test:local` — same as `npm test`
+- `npm run test:endform` — run tests distributed with Endform
+- `npm run test:endform:dry` — dry run to preview Endform execution
 - `npm run test:azure:service` — run tests using `playwright.service.config.ts` (Azure service)
 - `npm run test:browserstack` — run tests via BrowserStack SDK
 - `npm run test:critical` — run `@critical` tests and generate/open Allure report
