@@ -1,4 +1,4 @@
-import { Page, Locator, expect, TestInfo } from '@playwright/test';
+import { Page, Locator, expect, TestInfo, FileChooser, Frame } from '@playwright/test';
 import { Logger } from '../utils/Logger';
 import { ScreenshotHelper } from '../utils/ScreenshotHelper';
 
@@ -74,10 +74,12 @@ protected async unhighlight(locator: Locator): Promise<void> {
   /**
    * Click on an element
    * @param selector The selector string or locator object
+   * @param timeout Optional timeout in milliseconds (default: 5000ms)
    */
-  protected async click(selector: SelectorDefinition): Promise<void> {
+  protected async click(selector: SelectorDefinition, timeout: number = 5000): Promise<void> {
     const locator = await this.getLocator(selector);
     this.logger.info(`Clicking on element: ${this.describeSelector(selector)}`);
+    //await locator.waitFor({ state: 'visible', timeout });
     await locator.click();
   }
   
@@ -85,11 +87,13 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * Fill a form field
    * @param selector The selector string or locator object
    * @param value The value to fill
+   * @param timeout Optional timeout in milliseconds (default: 5000ms)
    */
-  protected async fill(selector: SelectorDefinition, value: string): Promise<void> {
+  protected async fill(selector: SelectorDefinition, value: string, timeout: number = 5000): Promise<void> {
     const locator = await this.getLocator(selector);
     this.logger.info(`Filling element: ${this.describeSelector(selector)} with value: ${value}`);
   
+    await locator.waitFor({ state: 'visible', timeout });
     await this.highlight(locator);
     try {
       await locator.fill(value);
@@ -97,6 +101,85 @@ protected async unhighlight(locator: Locator): Promise<void> {
       if (this.page) await this.page.waitForTimeout(150);
     } finally {
       await this.unhighlight(locator);
+    }
+  }
+
+  /**
+   * Upload file(s) to a file input element
+   * @param selector The selector string or locator object for the file input
+   * @param filePath Single file path (string) or array of file paths
+   * @param timeout Optional timeout in milliseconds (default: 5000ms)
+   */
+  protected async uploadFile(selector: SelectorDefinition, filePath: string | string[], timeout: number = 5000): Promise<void> {
+    const locator = await this.getLocator(selector);
+    const files = Array.isArray(filePath) ? filePath : [filePath];
+    this.logger.info(`Uploading file(s) to element: ${this.describeSelector(selector)}`);
+    this.logger.info(`File(s) to upload: ${files.join(', ')}`);
+    
+    await locator.waitFor({ state: 'visible', timeout });
+    await this.highlight(locator);
+    try {
+      if (Array.isArray(filePath)) {
+        await locator.setInputFiles(filePath);
+        this.logger.info(`Successfully uploaded ${filePath.length} file(s)`);
+      } else {
+        await locator.setInputFiles(filePath);
+        this.logger.info(`Successfully uploaded file: ${filePath}`);
+      }
+      // optional small pause so the highlight is visible during the action
+      if (this.page) await this.page.waitForTimeout(150);
+    } catch (error) {
+      this.logger.error(`Failed to upload file(s): ${files.join(', ')}`, error as Error);
+      throw error;
+    } finally {
+      await this.unhighlight(locator);
+    }
+  }
+
+  /**
+   * Upload file(s) via button click that opens a file dialog
+   * Use this method when clicking a button opens Windows file manager or file chooser dialog
+   * @param buttonSelector The selector for the button that triggers the file dialog
+   * @param filePath Single file path (string) or array of file paths
+   * @param timeout Optional timeout in milliseconds for waiting file chooser (default: 10000ms)
+   */
+  protected async uploadFileViaButton(buttonSelector: SelectorDefinition, filePath: string | string[], timeout: number = 10000): Promise<void> {
+    const buttonLocator = await this.getLocator(buttonSelector);
+    const files = Array.isArray(filePath) ? filePath : [filePath];
+    this.logger.info(`Clicking upload button: ${this.describeSelector(buttonSelector)}`);
+    this.logger.info(`File(s) to upload: ${files.join(', ')}`);
+    
+    await buttonLocator.waitFor({ state: 'visible', timeout: 5000 });
+    await this.highlight(buttonLocator);
+    
+    try {
+      // Set up file chooser listener before clicking
+      const fileChooserPromise = this.page.waitForEvent('filechooser', { timeout });
+      
+      // Click the button that opens the file dialog
+      await buttonLocator.click();
+      
+      // Wait for file chooser dialog to appear
+      const fileChooser: FileChooser = await fileChooserPromise;
+      this.logger.info('File chooser dialog opened');
+      
+      // Set the files
+      if (Array.isArray(filePath)) {
+        await fileChooser.setFiles(filePath);
+        this.logger.info(`Successfully uploaded ${filePath.length} file(s) via file chooser`);
+      } else {
+        await fileChooser.setFiles(filePath);
+        this.logger.info(`Successfully uploaded file via file chooser: ${filePath}`);
+      }
+      
+      // optional small pause
+      if (this.page) await this.page.waitForTimeout(150);
+    } catch (error) {
+      this.logger.error(`Failed to upload file(s) via button: ${files.join(', ')}`, error as Error);
+      await this.takeScreenshot('file-upload-failed');
+      throw error;
+    } finally {
+      await this.unhighlight(buttonLocator);
     }
   }
   
@@ -208,6 +291,179 @@ protected async unhighlight(locator: Locator): Promise<void> {
   }
 
   /**
+   * Get iframe frame object by selector, name, or URL
+   * @param iframeSelector Selector for the iframe element, or frame name, or URL pattern
+   * @param timeout Optional timeout in milliseconds (default: 10000ms)
+   * @returns Frame object
+   */
+  protected async getFrame(iframeSelector: string | { name?: string; url?: string | RegExp }, timeout: number = 10000): Promise<Frame> {
+    this.logger.info(`Getting iframe: ${typeof iframeSelector === 'string' ? iframeSelector : JSON.stringify(iframeSelector)}`);
+    
+    let frame: Frame | null = null;
+    
+    try {
+      if (typeof iframeSelector === 'string') {
+        // If it's a string, treat it as a selector
+        const iframeLocator = this.page.locator(iframeSelector);
+        await iframeLocator.waitFor({ state: 'attached', timeout });
+        const iframeElement = await iframeLocator.elementHandle();
+        if (iframeElement) {
+          frame = await iframeElement.contentFrame();
+        }
+      } else {
+        // If it's an object, use name or URL
+        if (iframeSelector.name) {
+          frame = this.page.frame({ name: iframeSelector.name });
+        } else if (iframeSelector.url) {
+          frame = this.page.frame({ url: iframeSelector.url });
+        }
+      }
+      
+      if (!frame) {
+        throw new Error(`Iframe not found: ${typeof iframeSelector === 'string' ? iframeSelector : JSON.stringify(iframeSelector)}`);
+      }
+      
+      this.logger.info('Iframe found successfully');
+      return frame;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      this.logger.error(`Failed to get iframe: ${errorMessage}`);
+      throw new Error(`Failed to get iframe: ${errorMessage}`);
+    }
+  }
+
+  /**
+   * Click on an element inside an iframe
+   * @param iframeSelector Selector for the iframe element, or frame name, or URL pattern
+   * @param elementSelector Selector for the element inside the iframe
+   * @param timeout Optional timeout in milliseconds (default: 5000ms)
+   */
+  protected async clickInFrame(iframeSelector: string | { name?: string; url?: string | RegExp }, elementSelector: string, timeout: number = 5000): Promise<void> {
+    this.logger.info(`Clicking element in iframe: ${elementSelector}`);
+    
+    try {
+      const frame = await this.getFrame(iframeSelector, timeout);
+      const elementLocator = frame.locator(elementSelector);
+      
+      await elementLocator.waitFor({ state: 'visible', timeout });
+      await elementLocator.click();
+      
+      this.logger.info(`Successfully clicked element in iframe: ${elementSelector}`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      this.logger.error(`Failed to click element in iframe: ${errorMessage}`);
+      await this.takeScreenshot('iframe-click-failed');
+      throw new Error(`Failed to click element in iframe: ${errorMessage}`);
+    }
+  }
+
+  /**
+   * Fill an input field inside an iframe
+   * @param iframeSelector Selector for the iframe element, or frame name, or URL pattern
+   * @param elementSelector Selector for the input element inside the iframe
+   * @param value The value to fill
+   * @param timeout Optional timeout in milliseconds (default: 5000ms)
+   */
+  protected async fillInFrame(iframeSelector: string | { name?: string; url?: string | RegExp }, elementSelector: string, value: string, timeout: number = 5000): Promise<void> {
+    this.logger.info(`Filling element in iframe: ${elementSelector} with value: ${value}`);
+    
+    try {
+      const frame = await this.getFrame(iframeSelector, timeout);
+      const elementLocator = frame.locator(elementSelector);
+      
+      await elementLocator.waitFor({ state: 'visible', timeout });
+      await elementLocator.fill(value);
+      
+      this.logger.info(`Successfully filled element in iframe: ${elementSelector}`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      this.logger.error(`Failed to fill element in iframe: ${errorMessage}`);
+      await this.takeScreenshot('iframe-fill-failed');
+      throw new Error(`Failed to fill element in iframe: ${errorMessage}`);
+    }
+  }
+
+  /**
+   * Wait for element to be visible inside an iframe
+   * @param iframeSelector Selector for the iframe element, or frame name, or URL pattern
+   * @param elementSelector Selector for the element inside the iframe
+   * @param timeout Optional timeout in milliseconds (default: 5000ms)
+   */
+  protected async waitForVisibleInFrame(iframeSelector: string | { name?: string; url?: string | RegExp }, elementSelector: string, timeout: number = 5000): Promise<void> {
+    this.logger.info(`Waiting for element to be visible in iframe: ${elementSelector}`);
+    
+    try {
+      const frame = await this.getFrame(iframeSelector, timeout);
+      const elementLocator = frame.locator(elementSelector);
+      
+      await elementLocator.waitFor({ state: 'visible', timeout });
+      this.logger.info(`Element is now visible in iframe: ${elementSelector}`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      this.logger.error(`Element not visible in iframe: ${errorMessage}`);
+      await this.takeScreenshot('iframe-element-not-visible');
+      throw new Error(`Element not visible in iframe: ${errorMessage}`);
+    }
+  }
+
+  /**
+   * Upload file(s) via button click inside an iframe that opens a file dialog
+   * Use this method when clicking a button inside an iframe opens Windows file manager or file chooser dialog
+   * @param iframeSelector Selector for the iframe element, or frame name, or URL pattern
+   * @param buttonSelector Selector for the button inside the iframe that triggers the file dialog
+   * @param filePath Single file path (string) or array of file paths
+   * @param timeout Optional timeout in milliseconds for waiting file chooser (default: 10000ms)
+   */
+  protected async uploadFileViaButtonInFrame(iframeSelector: string | { name?: string; url?: string | RegExp }, buttonSelector: string, filePath: string | string[], timeout: number = 10000): Promise<void> {
+    const files = Array.isArray(filePath) ? filePath : [filePath];
+    this.logger.info(`Uploading file(s) via button click inside iframe`);
+    this.logger.info(`Iframe: ${typeof iframeSelector === 'string' ? iframeSelector : JSON.stringify(iframeSelector)}`);
+    this.logger.info(`Button: ${buttonSelector}`);
+    this.logger.info(`File(s) to upload: ${files.join(', ')}`);
+    
+    try {
+      // Get the iframe frame object
+      const frame = await this.getFrame(iframeSelector, timeout);
+      
+      // Get the button locator inside the iframe
+      const buttonLocator = frame.locator(buttonSelector);
+      
+      // Wait for button to be visible
+      await buttonLocator.waitFor({ state: 'visible', timeout: 5000 });
+      this.logger.info('Upload button found inside iframe');
+      
+      // Set up file chooser listener before clicking
+      // Note: File chooser events are always on the main page, not the frame
+      const fileChooserPromise = this.page.waitForEvent('filechooser', { timeout });
+      
+      // Click the button inside the iframe that opens the file dialog
+      await buttonLocator.click();
+      this.logger.info('Upload button clicked inside iframe');
+      
+      // Wait for file chooser dialog to appear
+      const fileChooser: FileChooser = await fileChooserPromise;
+      this.logger.info('File chooser dialog opened');
+      
+      // Set the files
+      if (Array.isArray(filePath)) {
+        await fileChooser.setFiles(filePath);
+        this.logger.info(`Successfully uploaded ${filePath.length} file(s) via file chooser from iframe`);
+      } else {
+        await fileChooser.setFiles(filePath);
+        this.logger.info(`Successfully uploaded file via file chooser from iframe: ${filePath}`);
+      }
+      
+      // Optional small pause
+      if (this.page) await this.page.waitForTimeout(150);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      this.logger.error(`Failed to upload file(s) via button in iframe: ${files.join(', ')}`, error as Error);
+      await this.takeScreenshot('iframe-file-upload-failed');
+      throw new Error(`Failed to upload file(s) via button in iframe: ${errorMessage}`);
+    }
+  }
+
+  /**
    * Navigate to the page URL
    */
   async navigate(): Promise<void> {
@@ -275,6 +531,17 @@ protected async unhighlight(locator: Locator): Promise<void> {
     const url = this.page.url();
     this.logger.info(`Current URL: ${url}`);
     return url;
+  }
+
+  /**
+   * Maximize the browser window/viewport
+   * @param width Optional width in pixels (default: 1920)
+   * @param height Optional height in pixels (default: 1080)
+   */
+  async maximizeScreen(width: number = 1920, height: number = 1080): Promise<void> {
+    this.logger.info(`Maximizing screen to ${width}x${height}`);
+    await this.page.setViewportSize({ width, height });
+    this.logger.info(`Screen maximized to ${width}x${height}`);
   }
 
   /**

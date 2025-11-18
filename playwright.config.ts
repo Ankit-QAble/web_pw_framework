@@ -23,7 +23,7 @@ const PROFILES = {
       },
     },
     reportEmail: {
-      email: false, // Set to true to enable email reporting and setup in utils/EmailService.ts
+      email: true, // Set to true to enable email reporting and setup in utils/EmailService.ts
       to: ['patelankitr123@gmail.com'],
       subject: 'Automation Test Report',
       body: 'Test execution completed for development environment',
@@ -78,7 +78,7 @@ const PROFILES = {
     }
   },
   preprod: {
-    baseURL: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login',
+    baseURL: 'http://devwebpanel.sadadqa.com:3004/',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
     headless: false,
     parallel: 1,
@@ -98,7 +98,7 @@ const PROFILES = {
     },
     reportEmail: {
       email: true,
-      to: ['ankitpatel@qable.io'],
+      to: ['patelankitr123@gmail.com'],
       subject: 'Preprod Test Report - Allure Results',
       body: 'Test execution completed for preprod environment. Allure report attached.',
     },
@@ -608,7 +608,7 @@ if (isMobileMode) {
 export default defineConfig({
   testDir: './test/specs',
   /* Global timeout for each test */
-  timeout: process.env.CI ? 120000 : 60000, // 2 minutes for CI, 1 minute for local
+  timeout: process.env.CI ? 600000 : 600000, // 10 minutes for CI, 10 minutes for local
   /* Global setup and teardown */
   globalSetup: require.resolve('./framework/utils/globalSetup'),
   globalTeardown: require.resolve('./framework/utils/globalTeardown'),
