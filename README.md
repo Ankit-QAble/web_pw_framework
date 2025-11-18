@@ -122,5 +122,48 @@ When using the service or grid, ensure the required env vars are present (or use
 ## Contributing
 Please open issues or PRs on the repository. Run linting and tests locally before submitting changes.
 
+## Syncing template repositories with upstream
+When teammates scaffold their own template repos by cloning this framework, the cleanest way to pull new framework updates without disrupting their main branch is to add this repo as an upstream remote and merge through a temporary branch:
+
+1. Add upstream remote (inside the template repo):
+   ```bash
+   git remote add upstream https://github.com/Ankit-QAble/web_pw_framework.git
+   git remote -v
+   # origin should point to the template repo, upstream to this framework
+   ```
+2. Fetch latest changes:
+   ```bash
+   git fetch upstream
+   ```
+3. Create a merge branch to keep template `main` safe:
+   ```bash
+   git checkout -b merge-framework-updates
+   ```
+4. Merge upstream updates (resolve conflicts if prompted, then test):
+   ```bash
+   git merge upstream/main
+   # ...resolve conflicts...
+   git add .
+   git commit
+   ```
+5. Optional: fast-forward template `main` once satisfied, then push:
+   ```bash
+   git checkout main
+   git merge merge-framework-updates
+   git push origin main
+   ```
+
+### Quick reference
+```
+git remote add upstream https://github.com/Ankit-QAble/web_pw_framework.git
+git fetch upstream
+git checkout -b merge-framework-updates
+git merge upstream/main
+# resolve conflicts, add, commit
+git checkout main
+git merge merge-framework-updates
+git push origin main
+```
+
 ---
 Generated on: 2025-10-24

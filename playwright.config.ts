@@ -15,7 +15,7 @@ const PROFILES = {
     elementHighlight: true,
     mobile: {
       mobile: {
-        isMobile: true,
+        isMobile: false,
         device: 'pixel 7'
         //viewportWidth: 875,
         //viewportHeight: 667,
