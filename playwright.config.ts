@@ -23,7 +23,7 @@ const PROFILES = {
       },
     },
     reportEmail: {
-      email: true, // Set to true to enable email reporting and setup in utils/EmailService.ts
+      email: false, // Set to true to enable email reporting and setup in utils/EmailService.ts
       to: ['patelankitr123@gmail.com'],
       subject: 'Automation Test Report',
       body: 'Test execution completed for development environment',
@@ -78,7 +78,7 @@ const PROFILES = {
     }
   },
   preprod: {
-    baseURL: 'http://devwebpanel.sadadqa.com:3004/',
+    baseURL: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
     headless: false,
     parallel: 1,
@@ -97,7 +97,7 @@ const PROFILES = {
       suiteTitle: false,
     },
     reportEmail: {
-      email: true,
+      email: false,
       to: ['patelankitr123@gmail.com'],
       subject: 'Preprod Test Report - Allure Results',
       body: 'Test execution completed for preprod environment. Allure report attached.',
@@ -151,7 +151,7 @@ const PROFILES = {
       }
     }
   },
-  qable: {
+  demo: {
     baseURL: 'https://www.qable.io/blog',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
     headless: false,
@@ -623,6 +623,7 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['html'],
+    ['json', { outputFile: 'test-results/results.json' }],
     ['allure-playwright', {
       detail: true,
       outputFolder: 'allure-results',

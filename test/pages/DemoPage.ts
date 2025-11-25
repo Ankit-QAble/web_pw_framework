@@ -1,32 +1,27 @@
-import { Page, TestInfo, expect } from '@playwright/test';
+import { Page, TestInfo } from '@playwright/test';
 import { BasePage } from '../../framework/core/BasePage';
 import { DemoPageLocators } from '../locators/DemoPageLocators';
-import { testData } from '../../framework/utils/DataHelper';
+import { DataHelper } from '../../framework/utils/DataHelper';
 
 export interface OrangeHrmCredentials {
   username: string;
   password: string;
 }
 
-interface OrangeHrmTestData {
-  url?: string;
-  validUsers?: OrangeHrmCredentials[];
-  invalidUsers?: Array<OrangeHrmCredentials & { expectedError?: string }>;
+interface ExcelCredentialRow {
+  UserName: string;
+  Password: string;
 }
 
-export class DemoPage extends BasePage {
-  private readonly orangeHrmData: OrangeHrmTestData;
+const excelCredentials = DataHelper.loadExcelData<ExcelCredentialRow[]>('creds.xlsx', 'Test Cases');
+const primaryExcelCredential = excelCredentials[0];
+console.log(`Primary Excel Credential: ${primaryExcelCredential}`);
 
+export class DemoPage extends BasePage {
   constructor(page: Page, url?: string, testInfo?: TestInfo) {
-    const data = testData.users.orangeHrm as OrangeHrmTestData | undefined;
-    const defaultUrl =
-      url ||
-      process.env.ORANGE_HRM_URL ||
-      data?.url ||
-      'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login';
+    const defaultUrl = url || process.env.ORANGE_HRM_URL || 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login';
 
     super(page, defaultUrl, testInfo);
-    this.orangeHrmData = data ?? {};
     this.logger.info(`OrangeHRM target URL: ${this.url}`);
   }
 
@@ -58,16 +53,24 @@ export class DemoPage extends BasePage {
   /**
    * Enter username using BasePage fill helper
    */
-  async enterUsername(username: string): Promise<void> {
-    await this.fill(DemoPageLocators.usernameField, username);
-    this.logger.info(`Username entered: ${username}`);
+  async enterUsername(username?: string): Promise<void> {
+    const resolvedUsername =
+      username ??
+      primaryExcelCredential?.UserName ??
+      this.getValidCredentials().username;
+    await this.fill(DemoPageLocators.usernameField, resolvedUsername);
+    this.logger.info(`Username entered: ${resolvedUsername}`);
   }
 
   /**
    * Enter password using BasePage fill helper
    */
-  async enterPassword(password: string): Promise<void> {
-    await this.fill(DemoPageLocators.passwordField, password);
+  async enterPassword(password?: string): Promise<void> {
+    const resolvedPassword =
+      password ??
+      primaryExcelCredential?.Password ??
+      this.getValidCredentials().password;
+    await this.fill(DemoPageLocators.passwordField, resolvedPassword);
     this.logger.info('Password entered');
   }
 
@@ -84,10 +87,13 @@ export class DemoPage extends BasePage {
    * Retrieve default valid credentials
    */
   getValidCredentials(): OrangeHrmCredentials {
-    if (this.orangeHrmData.validUsers && this.orangeHrmData.validUsers.length > 0) {
-      return this.orangeHrmData.validUsers[0];
+    const excelUser = primaryExcelCredential;
+    if (excelUser?.UserName && excelUser?.Password) {
+      return {
+        username: excelUser.UserName,
+        password: excelUser.Password
+      };
     }
-
     return {
       username: process.env.ORANGE_HRM_USERNAME ?? 'Admin',
       password: process.env.ORANGE_HRM_PASSWORD ?? 'admin123'

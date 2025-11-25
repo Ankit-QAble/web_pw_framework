@@ -9,6 +9,7 @@ A Playwright-based TypeScript test framework with built-in support for multiple 
 - `playwright.config.ts` - base Playwright configuration
 - `playwright.service.config.ts` - service/grid configuration wrapper
 - `package.json` - scripts to run tests and generate reports
+- `framework/utils/DataHelper.ts` - cached loader for JSON/CSV/Excel fixtures
 - `allure-results/` - test results for Allure
 - `allure-report/` - generated Allure HTML report
 

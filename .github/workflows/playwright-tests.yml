@@ -73,7 +73,7 @@ jobs:
           WORKERS="${WORKERS:-5}"
           
           # Run specific login test file
-          npx playwright test test/specs/login.spec.ts --project=${{ matrix.browser }} --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright,github
+          npx playwright test test/specs/demo.spec.ts --project=${{ matrix.browser }} --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright,github
         env:
           CI: true
           RUN: ${{ env.RUN }}

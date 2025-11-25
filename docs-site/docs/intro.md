@@ -106,6 +106,8 @@ Explore our comprehensive documentation:
 - **[Grid Setup](./grid/)** - Selenium Grid configuration
 - **[Troubleshooting](./troubleshooting/)** - Common issues and solutions
 - **[Examples](./examples/)** - Code examples and best practices
+- **[User Guide](./getting-started/USER_GUIDE.md)** - Rules, naming, and workflows for contributors
+- **[Data Sources](./getting-started/DATA_SOURCES.md)** - Loading JSON/CSV/Excel fixtures with DataHelper
 
 ## 🛠️ Available Scripts
 
