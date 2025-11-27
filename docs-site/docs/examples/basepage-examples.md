@@ -26,6 +26,8 @@ This comprehensive guide provides real-world test examples demonstrating how to 
 - **Auto-Healing Selectors** - Fallback selectors for resilient tests
 - **Iframe Support** - Handle elements inside iframes
 - **File Upload** - Direct and button-triggered file uploads
+- **Console Log Capture** - Capture and analyze browser console logs
+- **Network Request Capture** - Monitor and analyze network requests/responses
 
 ## BasePage Examples
 
@@ -768,6 +770,337 @@ export class DashboardPage extends BasePage {
 }
 ```
 
+### Pattern 6: Capturing Console Logs and Saving to Files
+
+```typescript
+import { Page, TestInfo } from '@playwright/test';
+import { BasePage } from '../../framework/core/BasePage';
+
+export class DebugPage extends BasePage {
+  constructor(page: Page, url?: string, testInfo?: TestInfo) {
+    super(page, url || 'https://example.com', testInfo);
+  }
+
+  /**
+   * Capture console logs and save to file
+   */
+  async captureAndSaveConsoleLogs(): Promise<void> {
+    // Start capturing all console logs
+    await this.captureConsoleLogs();
+    
+    // Perform actions that might generate console logs
+    await this.navigate();
+    await this.performSomeAction();
+    
+    // Save all console logs to file in log/ folder
+    const logFile = await this.saveConsoleLogsToFile();
+    this.logger.info(`Console logs saved to: ${logFile}`);
+    
+    // Save only errors to separate file
+    const errorFile = await this.saveConsoleErrorsToFile();
+    this.logger.info(`Console errors saved to: ${errorFile}`);
+    
+    // Check for console errors programmatically
+    const errors = this.getConsoleErrors();
+    if (errors.length > 0) {
+      this.logger.error(`Found ${errors.length} console errors - see ${errorFile}`);
+      throw new Error('Console errors detected');
+    }
+    
+    // Stop capturing
+    this.stopCapturingConsoleLogs();
+  }
+
+  /**
+   * Capture only errors and warnings, then save to file
+   */
+  async captureErrorsAndWarnings(): Promise<void> {
+    await this.captureConsoleLogs(['error', 'warning']);
+    
+    // Your test actions...
+    await this.performSomeAction();
+    
+    // Save errors to file
+    await this.saveConsoleErrorsToFile();
+    
+    this.stopCapturingConsoleLogs();
+  }
+}
+```
+
+**File Output Location:**
+- Console logs are saved to `log/console-logs_<ClassName>_<timestamp>.txt`
+- Console errors are saved to `log/console-errors_<ClassName>_<timestamp>.txt`
+- Files include timestamps, locations, and formatted content
+
+### Pattern 7: Capturing Network Requests and Saving to Files
+
+```typescript
+import { Page, TestInfo } from '@playwright/test';
+import { BasePage } from '../../framework/core/BasePage';
+
+export class ApiTestPage extends BasePage {
+  constructor(page: Page, url?: string, testInfo?: TestInfo) {
+    super(page, url || 'https://example.com', testInfo);
+  }
+
+  /**
+   * Monitor API calls and save to file
+   */
+  async monitorApiCalls(): Promise<void> {
+    // Start capturing network requests
+    await this.captureNetworkRequests();
+    
+    // Perform actions that trigger API calls
+    await this.navigate();
+    await this.submitForm();
+    
+    // Wait for network activity to complete
+    await this.waitForPageLoad();
+    
+    // Save all network requests to file
+    const requestsFile = await this.saveNetworkRequestsToFile();
+    this.logger.info(`Network requests saved to: ${requestsFile}`);
+    
+    // Save failed requests to separate file
+    const failedFile = await this.saveFailedNetworkRequestsToFile();
+    this.logger.info(`Failed requests saved to: ${failedFile}`);
+    
+    // Check for failed requests programmatically
+    const failedRequests = this.getFailedNetworkRequests();
+    if (failedRequests.length > 0) {
+      this.logger.error(`Found ${failedRequests.length} failed requests - see ${failedFile}`);
+    }
+    
+    // Get network summary
+    const summary = this.getNetworkRequestSummary();
+    this.logger.info(`Network Summary: ${summary.total} total, ${summary.successful} successful, ${summary.failed} failed`);
+    this.logger.info(`Average duration: ${summary.averageDuration}ms`);
+    
+    // Stop capturing
+    this.stopCapturingNetworkRequests();
+  }
+
+  /**
+   * Monitor specific API endpoint and save to file
+   */
+  async monitorSpecificApi(endpointPattern: string): Promise<void> {
+    // Capture only requests matching the pattern
+    await this.captureNetworkRequests(endpointPattern);
+    
+    // Perform actions...
+    await this.triggerApiCall();
+    
+    // Save captured requests to file
+    await this.saveNetworkRequestsToFile();
+    
+    // Verify API was called programmatically
+    const apiRequests = this.getNetworkRequestsByUrl(endpointPattern);
+    if (apiRequests.length === 0) {
+      throw new Error(`Expected API call to ${endpointPattern} was not made`);
+    }
+    
+    // Verify API response
+    const apiRequest = apiRequests[0];
+    if (apiRequest.status !== 200) {
+      throw new Error(`API call failed with status ${apiRequest.status}`);
+    }
+    
+    this.stopCapturingNetworkRequests();
+  }
+
+  /**
+   * Monitor POST requests only and save to file
+   */
+  async monitorPostRequests(): Promise<void> {
+    await this.captureNetworkRequests(undefined, 'POST');
+    
+    await this.submitForm();
+    
+    // Save POST requests to file
+    await this.saveNetworkRequestsToFile();
+    
+    this.stopCapturingNetworkRequests();
+  }
+}
+```
+
+**File Output Location:**
+- Network requests are saved to `log/network-requests_<ClassName>_<timestamp>.txt`
+- Failed network requests are saved to `log/network-errors_<ClassName>_<timestamp>.txt`
+- Files include request/response headers, bodies, status codes, durations, and summary statistics
+
+### Pattern 8: Complete Test with Console and Network Monitoring (File-Based)
+
+```typescript
+import { test, expect } from '../../framework/core/BaseTest';
+import { LoginPage } from '../pages/LoginPage';
+
+test.describe('Login with Monitoring', () => {
+  test('should login without console errors or failed requests', async ({ page, logger }, testInfo) => {
+    const loginPage = new LoginPage(page, undefined, testInfo);
+    
+    // Start capturing console logs and network requests
+    await loginPage.captureConsoleLogs();
+    await loginPage.captureNetworkRequests();
+    
+    await logger.step('Navigate to login page', async () => {
+      await loginPage.open();
+    });
+    
+    await logger.step('Perform login', async () => {
+      await loginPage.login('username', 'password');
+    });
+    
+    await logger.step('Save all captured data to files', async () => {
+      // Save all captured data to files in log/ folder
+      const files = await loginPage.saveAllCapturedDataToFiles();
+      
+      logger.info(`Console logs saved to: ${files.consoleLogs}`);
+      logger.info(`Console errors saved to: ${files.consoleErrors}`);
+      logger.info(`Network requests saved to: ${files.networkRequests}`);
+      logger.info(`Failed network requests saved to: ${files.failedRequests}`);
+    });
+    
+    await logger.step('Verify no console errors', async () => {
+      const errors = loginPage.getConsoleErrors();
+      expect(errors.length).toBe(0);
+    });
+    
+    await logger.step('Verify no failed network requests', async () => {
+      const failedRequests = loginPage.getFailedNetworkRequests();
+      expect(failedRequests.length).toBe(0);
+    });
+    
+    await logger.step('Verify login API was called successfully', async () => {
+      const loginRequests = loginPage.getNetworkRequestsByUrl(/\/api\/login/);
+      expect(loginRequests.length).toBeGreaterThan(0);
+      expect(loginRequests[0].status).toBe(200);
+    });
+    
+    // Stop capturing
+    loginPage.stopCapturingConsoleLogs();
+    loginPage.stopCapturingNetworkRequests();
+  });
+});
+```
+
+**Key Features:**
+- All captured data is automatically saved to text files in the `log/` folder
+- Files are timestamped and include page class name for easy identification
+- You can still access data programmatically for assertions
+- Files contain detailed information including headers, bodies, timestamps, and summaries
+
+## Console Log and Network Request File Saving
+
+### Overview
+
+The framework automatically saves captured console logs and network requests to text files in the `log/` folder. This provides persistent records of browser activity for debugging and analysis.
+
+### File Saving Methods
+
+#### Console Log Methods
+
+- `saveConsoleLogsToFile(fileName?)` - Saves all captured console logs to a text file
+- `saveConsoleErrorsToFile(fileName?)` - Saves only console errors to a text file
+- Returns the file path where data was saved
+
+#### Network Request Methods
+
+- `saveNetworkRequestsToFile(fileName?)` - Saves all captured network requests to a text file
+- `saveFailedNetworkRequestsToFile(fileName?)` - Saves only failed requests (status >= 400) to a text file
+- Returns the file path where data was saved
+
+#### Combined Method
+
+- `saveAllCapturedDataToFiles(prefix?)` - Saves all captured data (console logs, errors, network requests, failed requests) to separate files
+- Returns an object with paths to all saved files:
+  ```typescript
+  {
+    consoleLogs: string;
+    consoleErrors: string;
+    networkRequests: string;
+    failedRequests: string;
+  }
+  ```
+
+### File Naming Convention
+
+Files are automatically named with the following pattern:
+- `console-logs_<ClassName>_<timestamp>.txt`
+- `console-errors_<ClassName>_<timestamp>.txt`
+- `network-requests_<ClassName>_<timestamp>.txt`
+- `network-errors_<ClassName>_<timestamp>.txt`
+
+Example: `console-logs_LoginPage_2024-01-01_12-00-00.txt`
+
+### File Contents
+
+#### Console Log Files Include:
+- All captured console messages (log, debug, info, warning, error)
+- Location information (URL, line number, column number)
+- Timestamps for each log entry
+- Summary by log type
+
+#### Network Request Files Include:
+- Request method, URL, and timestamp
+- Response status code and status text
+- Request/response headers
+- Request/response bodies (JSON parsed when possible)
+- Request duration in milliseconds
+- Resource type
+- Summary statistics (total, successful, failed, pending, average duration)
+- Methods breakdown
+
+### Usage Example
+
+```typescript
+import { Page, TestInfo } from '@playwright/test';
+import { BasePage } from '../../framework/core/BasePage';
+
+export class MyPage extends BasePage {
+  async testWithMonitoring(): Promise<void> {
+    // Start capturing
+    await this.captureConsoleLogs();
+    await this.captureNetworkRequests();
+    
+    // Perform test actions
+    await this.navigate();
+    await this.performActions();
+    
+    // Save all data to files
+    const files = await this.saveAllCapturedDataToFiles();
+    this.logger.info(`Data saved to: ${JSON.stringify(files, null, 2)}`);
+    
+    // Or save individually
+    const consoleLogFile = await this.saveConsoleLogsToFile();
+    const networkFile = await this.saveNetworkRequestsToFile();
+    
+    // Stop capturing
+    this.stopCapturingConsoleLogs();
+    this.stopCapturingNetworkRequests();
+  }
+}
+```
+
+### Accessing Data Programmatically
+
+Even though data is saved to files, you can still access it programmatically for assertions:
+
+```typescript
+// Get console errors
+const errors = this.getConsoleErrors();
+expect(errors.length).toBe(0);
+
+// Get failed network requests
+const failed = this.getFailedNetworkRequests();
+expect(failed.length).toBe(0);
+
+// Get network summary
+const summary = this.getNetworkRequestSummary();
+console.log(`Total requests: ${summary.total}`);
+```
+
 ## Summary
 
 `BasePage` provides a robust foundation for building page objects with:
@@ -779,6 +1112,8 @@ export class DashboardPage extends BasePage {
 - **Auto-Healing** - Fallback selectors for resilient tests
 - **Iframe Support** - Handle elements inside iframes
 - **File Upload** - Direct and button-triggered uploads
+- **Console Log Capture** - Capture and save browser console logs to files in `log/` folder
+- **Network Request Capture** - Monitor and save network requests/responses to files in `log/` folder
 
 By following these examples and best practices, you can build maintainable and scalable page objects with the framework.
 

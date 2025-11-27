@@ -5,7 +5,7 @@ import { envConfig } from './framework/utils/EnvConfig';
 // Select via RUN (preferred) or NODE_ENV. Defaults to 'development'.
 const PROFILES = {
   development: {
-    baseURL: 'http://devwebpanel.sadadqa.com:3004/auth/login',
+    baseURL: 'https://google.com',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'
     headless: false,
     parallel: 1, // workers

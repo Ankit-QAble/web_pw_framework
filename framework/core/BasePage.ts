@@ -1,14 +1,45 @@
 import { Page, Locator, expect, TestInfo, FileChooser, Frame } from '@playwright/test';
 import { Logger } from '../utils/Logger';
 import { ScreenshotHelper } from '../utils/ScreenshotHelper';
+import * as fs from 'fs';
+import * as path from 'path';
 
 type SelectorDefinition = string | Locator | Array<string | Locator>;
+
+export interface ConsoleLogEntry {
+  type: 'log' | 'debug' | 'info' | 'warning' | 'error';
+  text: string;
+  timestamp: Date;
+  location?: {
+    url?: string;
+    lineNumber?: number;
+    columnNumber?: number;
+  };
+}
+
+export interface NetworkRequestEntry {
+  url: string;
+  method: string;
+  status?: number;
+  statusText?: string;
+  requestHeaders?: Record<string, string>;
+  responseHeaders?: Record<string, string>;
+  requestBody?: string | object;
+  responseBody?: string | object;
+  timestamp: Date;
+  duration?: number;
+  resourceType?: string;
+}
 
 export abstract class BasePage {
   protected page: Page;
   protected logger: Logger;
   protected url?: string;
   protected screenshotHelper?: ScreenshotHelper;
+  private consoleLogs: ConsoleLogEntry[] = [];
+  private networkRequests: NetworkRequestEntry[] = [];
+  private isCapturingConsole: boolean = false;
+  private isCapturingNetwork: boolean = false;
 
   constructor(page: Page, url?: string, testInfo?: TestInfo) {
     this.page = page;
@@ -758,5 +789,602 @@ protected async unhighlight(locator: Locator): Promise<void> {
     const errorMessage = `Auto-healing failed. Tried selectors: ${failureMessages.join(' | ')}`;
     this.logger.error(errorMessage);
     throw new Error(errorMessage);
+  }
+
+  /**
+   * Start capturing console logs from the browser
+   * @param logLevels Optional array of log levels to capture (default: all levels)
+   * @returns Promise that resolves when capturing is started
+   */
+  async captureConsoleLogs(logLevels: Array<'log' | 'debug' | 'info' | 'warning' | 'error'> = ['log', 'debug', 'info', 'warning', 'error']): Promise<void> {
+    if (this.isCapturingConsole) {
+      this.logger.warn('Console log capturing is already active');
+      return;
+    }
+
+    this.consoleLogs = [];
+    this.isCapturingConsole = true;
+
+    this.page.on('console', (msg) => {
+      const type = msg.type() as 'log' | 'debug' | 'info' | 'warning' | 'error';
+      
+      if (logLevels.includes(type)) {
+        const text = msg.text();
+        const location = msg.location();
+        
+        const logEntry: ConsoleLogEntry = {
+          type,
+          text,
+          timestamp: new Date(),
+          location: {
+            url: location.url,
+            lineNumber: location.lineNumber,
+            columnNumber: location.columnNumber
+          }
+        };
+
+        this.consoleLogs.push(logEntry);
+
+        // Log to framework logger based on console type
+        const logMessage = `[Browser Console ${type.toUpperCase()}] ${text}${location.url ? ` (${location.url}:${location.lineNumber})` : ''}`;
+        
+        switch (type) {
+          case 'error':
+            this.logger.error(logMessage);
+            break;
+          case 'warning':
+            this.logger.warn(logMessage);
+            break;
+          case 'info':
+          case 'debug':
+            this.logger.debug(logMessage);
+            break;
+          default:
+            this.logger.info(logMessage);
+        }
+      }
+    });
+
+    this.logger.info(`Started capturing console logs (levels: ${logLevels.join(', ')})`);
+  }
+
+  /**
+   * Stop capturing console logs
+   */
+  stopCapturingConsoleLogs(): void {
+    if (!this.isCapturingConsole) {
+      this.logger.warn('Console log capturing is not active');
+      return;
+    }
+
+    this.isCapturingConsole = false;
+    this.logger.info('Stopped capturing console logs');
+  }
+
+  /**
+   * Get all captured console logs
+   * @param filterByType Optional filter by log type
+   * @returns Array of console log entries
+   */
+  getConsoleLogs(filterByType?: 'log' | 'debug' | 'info' | 'warning' | 'error'): ConsoleLogEntry[] {
+    if (filterByType) {
+      return this.consoleLogs.filter(log => log.type === filterByType);
+    }
+    return [...this.consoleLogs];
+  }
+
+  /**
+   * Get console errors only
+   * @returns Array of error console log entries
+   */
+  getConsoleErrors(): ConsoleLogEntry[] {
+    return this.getConsoleLogs('error');
+  }
+
+  /**
+   * Get console warnings only
+   * @returns Array of warning console log entries
+   */
+  getConsoleWarnings(): ConsoleLogEntry[] {
+    return this.getConsoleLogs('warning');
+  }
+
+  /**
+   * Clear captured console logs
+   */
+  clearConsoleLogs(): void {
+    this.consoleLogs = [];
+    this.logger.info('Cleared captured console logs');
+  }
+
+  /**
+   * Start capturing network requests and responses
+   * @param filterByUrl Optional URL pattern to filter requests (regex or string)
+   * @param filterByMethod Optional HTTP method to filter requests
+   * @returns Promise that resolves when capturing is started
+   */
+  async captureNetworkRequests(filterByUrl?: string | RegExp, filterByMethod?: string): Promise<void> {
+    if (this.isCapturingNetwork) {
+      this.logger.warn('Network request capturing is already active');
+      return;
+    }
+
+    this.networkRequests = [];
+    this.isCapturingNetwork = true;
+
+    this.page.on('request', async (request) => {
+      const url = request.url();
+      const method = request.method();
+
+      // Apply filters if provided
+      if (filterByUrl) {
+        const urlPattern = typeof filterByUrl === 'string' ? new RegExp(filterByUrl) : filterByUrl;
+        if (!urlPattern.test(url)) {
+          return;
+        }
+      }
+
+      if (filterByMethod && method.toUpperCase() !== filterByMethod.toUpperCase()) {
+        return;
+      }
+
+      const requestHeaders = request.headers();
+      let requestBody: string | object | undefined;
+
+      try {
+        const postData = request.postData();
+        if (postData) {
+          try {
+            requestBody = JSON.parse(postData);
+          } catch {
+            requestBody = postData;
+          }
+        }
+      } catch {
+        // Ignore errors when reading request body
+      }
+
+      const requestEntry: NetworkRequestEntry = {
+        url,
+        method,
+        requestHeaders,
+        requestBody,
+        timestamp: new Date(),
+        resourceType: request.resourceType()
+      };
+
+      this.networkRequests.push(requestEntry);
+      this.logger.debug(`[Network Request] ${method} ${url}`);
+    });
+
+    this.page.on('response', async (response) => {
+      const url = response.url();
+      const method = response.request().method();
+      const status = response.status();
+      const statusText = response.statusText();
+
+      // Find matching request entry
+      const requestEntry = this.networkRequests.find(req => req.url === url && req.method === method);
+      
+      if (requestEntry) {
+        const startTime = requestEntry.timestamp.getTime();
+        const endTime = Date.now();
+        requestEntry.duration = endTime - startTime;
+        requestEntry.status = status;
+        requestEntry.statusText = statusText;
+        requestEntry.responseHeaders = response.headers();
+
+        // Try to get response body for non-binary content
+        try {
+          const contentType = response.headers()['content-type'] || '';
+          if (contentType.includes('application/json')) {
+            requestEntry.responseBody = await response.json();
+          } else if (contentType.includes('text/')) {
+            requestEntry.responseBody = await response.text();
+          }
+        } catch {
+          // Ignore errors when reading response body (may be binary or too large)
+        }
+
+        // Log response
+        const statusEmoji = status >= 200 && status < 300 ? '✅' : status >= 400 ? '❌' : '⚠️';
+        this.logger.info(`[Network Response] ${statusEmoji} ${method} ${url} - ${status} ${statusText} (${requestEntry.duration}ms)`);
+      }
+    });
+
+    const filterInfo = [];
+    if (filterByUrl) filterInfo.push(`URL: ${filterByUrl}`);
+    if (filterByMethod) filterInfo.push(`Method: ${filterByMethod}`);
+    
+    this.logger.info(`Started capturing network requests${filterInfo.length > 0 ? ` (${filterInfo.join(', ')})` : ''}`);
+  }
+
+  /**
+   * Stop capturing network requests
+   */
+  stopCapturingNetworkRequests(): void {
+    if (!this.isCapturingNetwork) {
+      this.logger.warn('Network request capturing is not active');
+      return;
+    }
+
+    this.isCapturingNetwork = false;
+    this.logger.info('Stopped capturing network requests');
+  }
+
+  /**
+   * Get all captured network requests
+   * @param filterByStatus Optional filter by HTTP status code
+   * @param filterByMethod Optional filter by HTTP method
+   * @returns Array of network request entries
+   */
+  getNetworkRequests(filterByStatus?: number, filterByMethod?: string): NetworkRequestEntry[] {
+    let filtered = [...this.networkRequests];
+
+    if (filterByStatus !== undefined) {
+      filtered = filtered.filter(req => req.status === filterByStatus);
+    }
+
+    if (filterByMethod) {
+      filtered = filtered.filter(req => req.method.toUpperCase() === filterByMethod.toUpperCase());
+    }
+
+    return filtered;
+  }
+
+  /**
+   * Get failed network requests (status >= 400)
+   * @returns Array of failed network request entries
+   */
+  getFailedNetworkRequests(): NetworkRequestEntry[] {
+    return this.networkRequests.filter(req => req.status !== undefined && req.status >= 400);
+  }
+
+  /**
+   * Get successful network requests (status 200-299)
+   * @returns Array of successful network request entries
+   */
+  getSuccessfulNetworkRequests(): NetworkRequestEntry[] {
+    return this.networkRequests.filter(req => req.status !== undefined && req.status >= 200 && req.status < 300);
+  }
+
+  /**
+   * Get network requests by URL pattern
+   * @param urlPattern URL pattern to match (regex or string)
+   * @returns Array of matching network request entries
+   */
+  getNetworkRequestsByUrl(urlPattern: string | RegExp): NetworkRequestEntry[] {
+    const pattern = typeof urlPattern === 'string' ? new RegExp(urlPattern) : urlPattern;
+    return this.networkRequests.filter(req => pattern.test(req.url));
+  }
+
+  /**
+   * Clear captured network requests
+   */
+  clearNetworkRequests(): void {
+    this.networkRequests = [];
+    this.logger.info('Cleared captured network requests');
+  }
+
+  /**
+   * Get summary of captured network requests
+   * @returns Summary object with counts and statistics
+   */
+  getNetworkRequestSummary(): {
+    total: number;
+    successful: number;
+    failed: number;
+    pending: number;
+    averageDuration: number;
+    methods: Record<string, number>;
+  } {
+    const total = this.networkRequests.length;
+    const successful = this.getSuccessfulNetworkRequests().length;
+    const failed = this.getFailedNetworkRequests().length;
+    const pending = this.networkRequests.filter(req => req.status === undefined).length;
+    
+    const completedRequests = this.networkRequests.filter(req => req.duration !== undefined);
+    const averageDuration = completedRequests.length > 0
+      ? completedRequests.reduce((sum, req) => sum + (req.duration || 0), 0) / completedRequests.length
+      : 0;
+
+    const methods: Record<string, number> = {};
+    this.networkRequests.forEach(req => {
+      methods[req.method] = (methods[req.method] || 0) + 1;
+    });
+
+    return {
+      total,
+      successful,
+      failed,
+      pending,
+      averageDuration: Math.round(averageDuration),
+      methods
+    };
+  }
+
+  /**
+   * Ensure log directory exists
+   */
+  private ensureLogDirectory(): void {
+    const logDir = path.join(process.cwd(), 'log');
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+  }
+
+  /**
+   * Generate log file name with timestamp
+   */
+  private generateLogFileName(prefix: string, extension: string = 'txt'): string {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').split('.')[0];
+    const className = this.constructor.name;
+    return `${prefix}_${className}_${timestamp}.${extension}`;
+  }
+
+  /**
+   * Save console logs to a text file in the log folder
+   * @param fileName Optional custom file name (default: auto-generated)
+   * @returns Path to the saved file
+   */
+  async saveConsoleLogsToFile(fileName?: string): Promise<string> {
+    this.ensureLogDirectory();
+    const logDir = path.join(process.cwd(), 'log');
+    const file = fileName || this.generateLogFileName('console-logs');
+    const filePath = path.join(logDir, file);
+
+    const logs = this.getConsoleLogs();
+    let content = '='.repeat(80) + '\n';
+    content += `CONSOLE LOGS CAPTURE REPORT\n`;
+    content += `Generated: ${new Date().toISOString()}\n`;
+    content += `Page: ${this.constructor.name}\n`;
+    content += `Total Logs Captured: ${logs.length}\n`;
+    content += '='.repeat(80) + '\n\n';
+
+    if (logs.length === 0) {
+      content += 'No console logs captured.\n';
+    } else {
+      logs.forEach((log, index) => {
+        content += `[${index + 1}] ${log.type.toUpperCase()}: ${log.text}\n`;
+        if (log.location?.url) {
+          content += `    Location: ${log.location.url}:${log.location.lineNumber}:${log.location.columnNumber}\n`;
+        }
+        content += `    Timestamp: ${log.timestamp.toISOString()}\n`;
+        content += '\n';
+      });
+    }
+
+    // Add summary by type
+    content += '\n' + '='.repeat(80) + '\n';
+    content += 'SUMMARY BY TYPE\n';
+    content += '='.repeat(80) + '\n';
+    const types = ['log', 'debug', 'info', 'warning', 'error'] as const;
+    types.forEach(type => {
+      const count = logs.filter(l => l.type === type).length;
+      if (count > 0) {
+        content += `${type.toUpperCase()}: ${count}\n`;
+      }
+    });
+
+    try {
+      fs.writeFileSync(filePath, content, 'utf8');
+      this.logger.info(`Console logs saved to: ${filePath}`);
+      return filePath;
+    } catch (error) {
+      this.logger.error(`Failed to save console logs to file: ${filePath}`, error as Error);
+      throw error;
+    }
+  }
+
+  /**
+   * Save console errors to a text file in the log folder
+   * @param fileName Optional custom file name (default: auto-generated)
+   * @returns Path to the saved file
+   */
+  async saveConsoleErrorsToFile(fileName?: string): Promise<string> {
+    this.ensureLogDirectory();
+    const logDir = path.join(process.cwd(), 'log');
+    const file = fileName || this.generateLogFileName('console-errors');
+    const filePath = path.join(logDir, file);
+
+    const errors = this.getConsoleErrors();
+    let content = '='.repeat(80) + '\n';
+    content += `CONSOLE ERRORS REPORT\n`;
+    content += `Generated: ${new Date().toISOString()}\n`;
+    content += `Page: ${this.constructor.name}\n`;
+    content += `Total Errors: ${errors.length}\n`;
+    content += '='.repeat(80) + '\n\n';
+
+    if (errors.length === 0) {
+      content += '✅ No console errors found!\n';
+    } else {
+      errors.forEach((error, index) => {
+        content += `[${index + 1}] ERROR: ${error.text}\n`;
+        if (error.location?.url) {
+          content += `    Location: ${error.location.url}:${error.location.lineNumber}:${error.location.columnNumber}\n`;
+        }
+        content += `    Timestamp: ${error.timestamp.toISOString()}\n`;
+        content += '\n';
+      });
+    }
+
+    try {
+      fs.writeFileSync(filePath, content, 'utf8');
+      this.logger.info(`Console errors saved to: ${filePath}`);
+      return filePath;
+    } catch (error) {
+      this.logger.error(`Failed to save console errors to file: ${filePath}`, error as Error);
+      throw error;
+    }
+  }
+
+  /**
+   * Save network requests to a text file in the log folder
+   * @param fileName Optional custom file name (default: auto-generated)
+   * @returns Path to the saved file
+   */
+  async saveNetworkRequestsToFile(fileName?: string): Promise<string> {
+    this.ensureLogDirectory();
+    const logDir = path.join(process.cwd(), 'log');
+    const file = fileName || this.generateLogFileName('network-requests');
+    const filePath = path.join(logDir, file);
+
+    const requests = this.getNetworkRequests();
+    let content = '='.repeat(80) + '\n';
+    content += `NETWORK REQUESTS CAPTURE REPORT\n`;
+    content += `Generated: ${new Date().toISOString()}\n`;
+    content += `Page: ${this.constructor.name}\n`;
+    content += `Total Requests Captured: ${requests.length}\n`;
+    content += '='.repeat(80) + '\n\n';
+
+    if (requests.length === 0) {
+      content += 'No network requests captured.\n';
+    } else {
+      requests.forEach((req, index) => {
+        const statusIcon = req.status 
+          ? (req.status >= 200 && req.status < 300 ? '✅' : req.status >= 400 ? '❌' : '⚠️')
+          : '⏳';
+        content += `[${index + 1}] ${statusIcon} ${req.method} ${req.url}\n`;
+        if (req.status) {
+          content += `    Status: ${req.status} ${req.statusText || ''}\n`;
+        }
+        if (req.duration !== undefined) {
+          content += `    Duration: ${req.duration}ms\n`;
+        }
+        if (req.resourceType) {
+          content += `    Resource Type: ${req.resourceType}\n`;
+        }
+        content += `    Timestamp: ${req.timestamp.toISOString()}\n`;
+        
+        if (req.requestHeaders && Object.keys(req.requestHeaders).length > 0) {
+          content += `    Request Headers:\n`;
+          Object.entries(req.requestHeaders).forEach(([key, value]) => {
+            content += `      ${key}: ${value}\n`;
+          });
+        }
+        
+        if (req.requestBody) {
+          content += `    Request Body: ${JSON.stringify(req.requestBody, null, 2)}\n`;
+        }
+        
+        if (req.responseHeaders && Object.keys(req.responseHeaders).length > 0) {
+          content += `    Response Headers:\n`;
+          Object.entries(req.responseHeaders).forEach(([key, value]) => {
+            content += `      ${key}: ${value}\n`;
+          });
+        }
+        
+        if (req.responseBody) {
+          const bodyStr = typeof req.responseBody === 'string' 
+            ? req.responseBody 
+            : JSON.stringify(req.responseBody, null, 2);
+          content += `    Response Body: ${bodyStr.substring(0, 1000)}${bodyStr.length > 1000 ? '... (truncated)' : ''}\n`;
+        }
+        
+        content += '\n';
+      });
+    }
+
+    // Add summary
+    const summary = this.getNetworkRequestSummary();
+    content += '\n' + '='.repeat(80) + '\n';
+    content += 'NETWORK SUMMARY\n';
+    content += '='.repeat(80) + '\n';
+    content += `Total Requests: ${summary.total}\n`;
+    content += `✅ Successful: ${summary.successful}\n`;
+    content += `❌ Failed: ${summary.failed}\n`;
+    content += `⏳ Pending: ${summary.pending}\n`;
+    content += `⏱️  Average Duration: ${summary.averageDuration}ms\n`;
+    content += '\nMethods Breakdown:\n';
+    Object.entries(summary.methods).forEach(([method, count]) => {
+      content += `  ${method}: ${count}\n`;
+    });
+
+    try {
+      fs.writeFileSync(filePath, content, 'utf8');
+      this.logger.info(`Network requests saved to: ${filePath}`);
+      return filePath;
+    } catch (error) {
+      this.logger.error(`Failed to save network requests to file: ${filePath}`, error as Error);
+      throw error;
+    }
+  }
+
+  /**
+   * Save failed network requests to a text file in the log folder
+   * @param fileName Optional custom file name (default: auto-generated)
+   * @returns Path to the saved file
+   */
+  async saveFailedNetworkRequestsToFile(fileName?: string): Promise<string> {
+    this.ensureLogDirectory();
+    const logDir = path.join(process.cwd(), 'log');
+    const file = fileName || this.generateLogFileName('network-errors');
+    const filePath = path.join(logDir, file);
+
+    const failed = this.getFailedNetworkRequests();
+    let content = '='.repeat(80) + '\n';
+    content += `FAILED NETWORK REQUESTS REPORT\n`;
+    content += `Generated: ${new Date().toISOString()}\n`;
+    content += `Page: ${this.constructor.name}\n`;
+    content += `Total Failed Requests: ${failed.length}\n`;
+    content += '='.repeat(80) + '\n\n';
+
+    if (failed.length === 0) {
+      content += '✅ No failed requests!\n';
+    } else {
+      failed.forEach((req, index) => {
+        content += `[${index + 1}] ${req.method} ${req.url}\n`;
+        content += `    Status: ${req.status} ${req.statusText || ''}\n`;
+        if (req.duration !== undefined) {
+          content += `    Duration: ${req.duration}ms\n`;
+        }
+        content += `    Timestamp: ${req.timestamp.toISOString()}\n`;
+        if (req.requestHeaders && Object.keys(req.requestHeaders).length > 0) {
+          content += `    Request Headers:\n`;
+          Object.entries(req.requestHeaders).forEach(([key, value]) => {
+            content += `      ${key}: ${value}\n`;
+          });
+        }
+        content += '\n';
+      });
+    }
+
+    try {
+      fs.writeFileSync(filePath, content, 'utf8');
+      this.logger.info(`Failed network requests saved to: ${filePath}`);
+      return filePath;
+    } catch (error) {
+      this.logger.error(`Failed to save failed network requests to file: ${filePath}`, error as Error);
+      throw error;
+    }
+  }
+
+  /**
+   * Save all captured data (console logs and network requests) to files
+   * @param prefix Optional prefix for file names
+   * @returns Object with paths to saved files
+   */
+  async saveAllCapturedDataToFiles(prefix?: string): Promise<{
+    consoleLogs: string;
+    consoleErrors: string;
+    networkRequests: string;
+    failedRequests: string;
+  }> {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').split('.')[0];
+    const filePrefix = prefix ? `${prefix}_${timestamp}` : timestamp;
+
+    const consoleLogs = await this.saveConsoleLogsToFile(`console-logs_${filePrefix}.txt`);
+    const consoleErrors = await this.saveConsoleErrorsToFile(`console-errors_${filePrefix}.txt`);
+    const networkRequests = await this.saveNetworkRequestsToFile(`network-requests_${filePrefix}.txt`);
+    const failedRequests = await this.saveFailedNetworkRequestsToFile(`network-errors_${filePrefix}.txt`);
+
+    this.logger.info('All captured data saved to log folder');
+    
+    return {
+      consoleLogs,
+      consoleErrors,
+      networkRequests,
+      failedRequests
+    };
   }
 }
