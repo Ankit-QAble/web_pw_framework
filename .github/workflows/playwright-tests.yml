@@ -72,8 +72,8 @@ jobs:
           WORKERS="${{ github.event.inputs.workers }}"
           WORKERS="${WORKERS:-5}"
           
-          # Run specific login test file
-          npx playwright test test/specs/demo.spec.ts --project=${{ matrix.browser }} --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright,github
+          # Run specific simpletest test file
+          npx playwright test test/specs/simpletest.spec.ts --project=${{ matrix.browser }} --workers=$WORKERS --reporter=list,html,json,junit,allure-playwright,github
         env:
           CI: true
           RUN: ${{ env.RUN }}
@@ -92,6 +92,14 @@ jobs:
         if: always()
         run: |
           npx allure generate allure-results --clean -o allure-report || echo "Allure report generation skipped"
+          
+      - name: 📊 Upload Playwright HTML Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-html-report-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 30
           
       - name: 📊 Upload test results
         uses: actions/upload-artifact@v4
@@ -115,11 +123,14 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Configuration:**" >> $GITHUB_STEP_SUMMARY
           echo "- 🌍 Environment: ${{ github.event.inputs.environment || 'development' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- 📄 Test File: test/specs/login.spec.ts" >> $GITHUB_STEP_SUMMARY
+          echo "- 📄 Test File: test/specs/simpletest.spec.ts" >> $GITHUB_STEP_SUMMARY
           echo "- 👥 Workers: ${{ github.event.inputs.workers || '5' }}" >> $GITHUB_STEP_SUMMARY
           echo "- 🎭 Browser: ${{ matrix.browser }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📊 Check artifacts for detailed HTML, Allure, and JSON reports" >> $GITHUB_STEP_SUMMARY
+          echo "📊 **Reports Available:**" >> $GITHUB_STEP_SUMMARY
+          echo "- 🎭 [Playwright HTML Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) - Download artifact: playwright-html-report-${{ matrix.browser }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 📈 Allure Report - Download artifact: test-results-${{ matrix.browser }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 📄 JSON & JUnit Reports - Download artifact: test-results-${{ matrix.browser }}" >> $GITHUB_STEP_SUMMARY
           
       - name: 💬 Comment PR with results
         if: github.event_name == 'pull_request' && always()
@@ -130,6 +141,6 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '## 🧪 Playwright Test Results - ${{ matrix.browser }}\n\n✅ Tests completed!\n\n**Configuration:**\n- Environment: ${{ github.event.inputs.environment || 'development' }}\n- Test File: test/specs/login.spec.ts\n- Workers: ${{ github.event.inputs.workers || '5' }}\n\n[📊 View Full Results](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})'
+              body: '## 🧪 Playwright Test Results - ${{ matrix.browser }}\n\n✅ Tests completed!\n\n**Configuration:**\n- Environment: ${{ github.event.inputs.environment || 'development' }}\n- Test File: test/specs/simpletest.spec.ts\n- Workers: ${{ github.event.inputs.workers || '5' }}\n\n**📊 Reports:**\n- 🎭 [Playwright HTML Report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) - Download artifact: `playwright-html-report-${{ matrix.browser }}`\n- 📈 [View Full Results](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})'
             });
 

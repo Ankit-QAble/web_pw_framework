@@ -21,7 +21,7 @@ export class SimplePage extends BasePage {
 
     async googleClick(): Promise<void> {
         await this.click(SimplePageLocators.clickSearchCombobox);
-        await this.takeScreenshot('google-click-failed');
+        await this.takeScreenshot('google-page-loaded');
             
     }
 

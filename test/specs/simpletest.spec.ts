@@ -1,6 +1,8 @@
 import { SimplePage } from '../pages/simplePage';
 import { test, expect } from '../../framework/core/BaseTest';
 
+
+
 test.describe('Simple Test Suite @smoke', () => {
   test('google test', { tag: ['@smoke'] }, async ({logger, page }, testInfo) => {
     const simplePage = new SimplePage(page, undefined, testInfo);

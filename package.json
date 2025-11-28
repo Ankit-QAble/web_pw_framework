@@ -1,7 +1,7 @@
 {
   "name": "playwright-typescript-framework",
   "version": "1.0.0",
-  "description": "Playwright TypeScript Web Automation Framework with Allure Reporting",
+  "description": "Playwright TypeScript Web Automation Framework with Allure Reporting (detail: true enabled)",
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
