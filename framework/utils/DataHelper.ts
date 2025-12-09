@@ -250,15 +250,80 @@ export class DataHelper {
 }
 
 /**
- * Simple direct access to test data
- * Use: testData.validUsers[0].username
+ * Flexible data access helper - works with any JSON file and property
+ * 
+ * Usage examples:
+ * - getData('users.json', 'validUsers') - returns array
+ * - getData('users.json', 'validUsers', true) - returns first item (direct property access)
+ * - getData('users.json', 'validUsers.mobileNumber', true) - returns first user's mobileNumber
+ * - getData('products.json', 'items', true) - returns first product
+ */
+export function getData<T = any>(
+  fileName: string, 
+  propertyPath?: string, 
+  getFirst: boolean = false
+): T {
+  const data = DataHelper.loadJsonData<any>(fileName);
+  
+  if (!propertyPath) {
+    return data as T;
+  }
+  
+  // Handle dot notation paths (e.g., 'validUsers.mobileNumber')
+  const parts = propertyPath.split('.');
+  let result: any = data;
+  
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    if (result === null || result === undefined) {
+      return undefined as T;
+    }
+    result = result[part];
+    
+    // If this is an array and getFirst is true, get first item
+    // But only if we're at the last part OR if result is an array
+    if (Array.isArray(result) && getFirst && i === parts.length - 1) {
+      return (result.length > 0 ? result[0] : undefined) as T;
+    }
+  }
+  
+  // If result is array and getFirst is true, return first item
+  if (Array.isArray(result) && getFirst) {
+    return (result.length > 0 ? result[0] : undefined) as T;
+  }
+  
+  return result as T;
+}
+
+/**
+ * Convenience function for direct property access (returns first item if array)
+ * 
+ * Usage:
+ * - getFirst('users.json', 'validUsers') - returns first validUser object
+ * - getFirst('users.json', 'validUsers').mobileNumber - chain property access
+ */
+export function getFirst<T = any>(fileName: string, propertyPath: string): T {
+  return getData<T>(fileName, propertyPath, true);
+}
+
+/**
+ * Legacy testData object for backward compatibility
+ * Use getData() or getFirst() for new code - they work with any JSON file
  */
 export const testData = {
   get validUsers() {
     return DataHelper.loadJsonData<any>('users.json').validUsers;
   },
+  get validUser() {
+    // Direct access to first valid user - use: testData.validUser.mobileNumber
+    return DataHelper.loadJsonData<any>('users.json').validUsers[0];
+  },
   get invalidUsers() {
     return DataHelper.loadJsonData<any>('users.json').invalidUsers;
+  },
+  get invalidUser() {
+    // Direct access to first invalid user
+    return DataHelper.loadJsonData<any>('users.json').invalidUsers[0];
   },
   get users() {
     return DataHelper.loadJsonData<any>('users.json');

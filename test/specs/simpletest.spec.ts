@@ -48,3 +48,51 @@ test.describe('Simple Test Suite Two @regression', () => {
     });
   });
 });
+
+test.describe('Simple Test Suite fail test @regression', () => {
+  test('google test two', async ({logger, page }, testInfo) => {
+    const simplePage = new SimplePage(page, undefined, testInfo);
+    
+    await logger.step('Open the page', async () => {
+      await simplePage.open();
+    });
+    
+    await logger.step('Interact with search', async () => {
+      await simplePage.googleClickFail();
+      await simplePage.googleSearch();
+      await simplePage.takeScreenshot('google-search-failed');
+    });
+  });
+});
+test.describe('Annotation test @Annotation', () => {
+  test('skip this test', async ({ logger, page }, testInfo) => {
+    test.skip();
+
+    const simplePage = new SimplePage(page, undefined, testInfo);
+    
+    await logger.step('Open the page', async () => {
+      await simplePage.open();
+    });
+  });
+
+  test('expected to fail test', async ({ logger, page }, testInfo) => {
+    test.fail();
+
+    const simplePage = new SimplePage(page, undefined, testInfo);
+    
+    await logger.step('Open the page', async () => {
+      await simplePage.open();
+    });
+  });
+
+  // You can declare a test as to be fixed, and Playwright will not run it.
+  test('fixme test', async ({ logger, page }, testInfo) => {
+    test.fixme();
+
+    const simplePage = new SimplePage(page, undefined, testInfo);
+    
+    await logger.step('Open the page', async () => {
+      await simplePage.open();
+    });
+  });
+});

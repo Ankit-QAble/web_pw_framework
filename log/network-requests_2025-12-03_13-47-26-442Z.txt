@@ -1,15 +1,15 @@
 ================================================================================
 NETWORK REQUESTS CAPTURE REPORT
-Generated: 2025-11-27T11:15:09.640Z
+Generated: 2025-12-03T13:47:26.442Z
 Page: SimplePage
 Total Requests Captured: 48
 ================================================================================
 
 [1] ⚠️ GET https://google.com/
     Status: 301 
-    Duration: 625ms
+    Duration: 644ms
     Resource Type: document
-    Timestamp: 2025-11-27T11:15:02.409Z
+    Timestamp: 2025-12-03T13:47:19.709Z
     Request Headers:
       accept-language: en-US
       upgrade-insecure-requests: 1
@@ -21,11 +21,11 @@ Total Requests Captured: 48
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       cache-control: public, max-age=2592000
       content-length: 220
-      content-security-policy-report-only: object-src 'none';base-uri 'self';script-src 'nonce-0jgAYqEEOm_t10xnX2JLTg' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+      content-security-policy-report-only: object-src 'none';base-uri 'self';script-src 'nonce-OPKPy7JYDYPIKe8vt-obtQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
       content-type: text/html; charset=UTF-8
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
-      date: Thu, 27 Nov 2025 11:15:02 GMT
-      expires: Sat, 27 Dec 2025 11:15:02 GMT
+      date: Wed, 03 Dec 2025 13:47:20 GMT
+      expires: Fri, 02 Jan 2026 13:47:20 GMT
       location: https://www.google.com/
       permissions-policy: unload=()
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
@@ -35,9 +35,9 @@ Total Requests Captured: 48
 
 [2] ✅ GET https://www.google.com/
     Status: 200 
-    Duration: 466ms
+    Duration: 399ms
     Resource Type: document
-    Timestamp: 2025-11-27T11:15:03.038Z
+    Timestamp: 2025-12-03T13:47:20.355Z
     Request Headers:
       accept-language: en-US
       upgrade-insecure-requests: 1
@@ -61,10 +61,10 @@ Sec-CH-UA-WoW64
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       cache-control: private, max-age=0
       content-encoding: br
-      content-security-policy-report-only: object-src 'none';base-uri 'self';script-src 'nonce-StU_KeExmTMtWaaZqWxrcw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+      content-security-policy-report-only: object-src 'none';base-uri 'self';script-src 'nonce-bNkVDt656KIcEosyruhFpA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
       content-type: text/html; charset=UTF-8
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
-      date: Thu, 27 Nov 2025 11:15:02 GMT
+      date: Wed, 03 Dec 2025 13:47:20 GMT
       expires: -1
       p3p: CP="This is not a P3P policy! See g.co/p3phelp for more info."
       permissions-policy: unload=()
@@ -73,13 +73,82 @@ Sec-CH-UA-WoW64
       strict-transport-security: max-age=31536000
       x-frame-options: SAMEORIGIN
       x-xss-protection: 0
-    Response Body: <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="en-IN"><head><meta charset="UTF-8"><meta content="origin" name="referrer"><link href="//www.gstatic.com/images/branding/searchlogo/ico/favicon.ico" rel="icon"><meta content="/images/branding/googleg/1x/googleg_standard_color_128dp.png" itemprop="image"><style>@font-face{font-family:'Google Sans';font-style:normal;font-weight:400 700;font-display:optional;src:url(//fonts.gstatic.com/s/googlesans/v58/4UaRrENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iq2vgCI.woff2)format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}</style><script nonce="StU_KeExmTMtWaaZqWxrcw">(function(){var w=["Google Sans",[400,500,700]];(function(){for(var a=0;a<w.length;a+=2)for(var d=w[a],e=w[a+1],b=0,c=void 0;c=e[b];++b)document.fonts.load(c+" 10pt "+d).catch(function(){})})();})();</script><title>Google</title><script no... (truncated)
+    Response Body: <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="en-IN"><head><meta charset="UTF-8"><meta content="origin" name="referrer"><link href="//www.gstatic.com/images/branding/searchlogo/ico/favicon.ico" rel="icon"><meta content="/images/branding/googleg/1x/googleg_standard_color_128dp.png" itemprop="image"><style>@font-face{font-family:'Google Sans';font-style:normal;font-weight:400 700;font-display:optional;src:url(//fonts.gstatic.com/s/googlesans/v29/4UaGrENHsxJlGDuGo1OIlL3Owp4.woff2)format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}</style><script nonce="bNkVDt656KIcEosyruhFpA">(function(){var w=["Google Sans",[400,500,700]];(function(){for(var a=0;a<w.length;a+=2)for(var d=w[a],e=w[a+1],b=0,c=void 0;c=e[b];++b)document.fonts.load(c+" 10pt "+d).catch(function(){})})();})();</script><title>Google</title><script nonce="bNkVDt656KIc... (truncated)
 
-[3] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.TyQmyefY7a8.L.B1.O/am=AEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=1/ed=1/br=1/rs=ACT90oEzGM_-BZTTJoA7SVov6niAhXJC_Q/m=cdos,hsm,jsa,mb4ZUb,cEt90b,SNUn3,qddgKe,sTsDMc,dtl0hd,eHDfl,YV5bee,d,csi
+[3] ✅ GET https://fonts.gstatic.com/s/googlesans/v29/4UaGrENHsxJlGDuGo1OIlL3Owp4.woff2
     Status: 200 
-    Duration: 284ms
+    Duration: 825ms
+    Resource Type: font
+    Timestamp: 2025-12-03T13:47:20.780Z
+    Request Headers:
+      origin: https://www.google.com
+      sec-ch-ua-platform: "Windows"
+      referer: https://www.google.com/
+      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
+      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
+      accept-language: en-US
+      sec-ch-ua-mobile: ?0
+    Response Headers:
+      age: 533143
+      report-to: {"group":"apps-themes","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/apps-themes"}]}
+      x-content-type-options: nosniff
+      expires: Fri, 27 Nov 2026 09:41:38 GMT
+      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      date: Thu, 27 Nov 2025 09:41:38 GMT
+      last-modified: Tue, 23 Feb 2021 01:47:39 GMT
+      content-type: font/woff2
+      cache-control: public, max-age=31536000
+      timing-allow-origin: *
+      cross-origin-opener-policy: same-origin; report-to="apps-themes"
+      cross-origin-resource-policy: cross-origin
+      content-security-policy-report-only: require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/apps-themes
+      accept-ranges: bytes
+      access-control-allow-origin: *
+      content-length: 39516
+      x-xss-protection: 0
+      server: sffe
+
+[4] ✅ POST https://www.google.com/gen_204?ei=aD8wab7qIOPZkPIP1Kb2OQ&sol=th&atyp=i&sr=10
+    Status: 204 
+    Duration: 313ms
+    Resource Type: ping
+    Timestamp: 2025-12-03T13:47:20.780Z
+    Request Headers:
+      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
+      sec-ch-ua-platform: "Windows"
+      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
+      sec-ch-ua-bitness: "64"
+      sec-ch-ua-model: ""
+      sec-ch-ua-mobile: ?0
+      sec-ch-ua-form-factors: "Desktop"
+      sec-ch-ua-wow64: ?0
+      sec-ch-ua-arch: "x86"
+      sec-ch-ua-full-version: "141.0.7390.37"
+      downlink: 1.4
+      referer: https://www.google.com/
+      accept-language: en-US
+      sec-ch-prefers-color-scheme: light
+      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
+      rtt: 300
+      sec-ch-ua-platform-version: "10.0"
+    Response Headers:
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-5y-Av1X2mfIlYH_LrE_BeQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
+      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
+      permissions-policy: unload=()
+      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      content-length: 0
+      date: Wed, 03 Dec 2025 13:47:20 GMT
+      x-xss-protection: 0
+      content-type: text/html; charset=UTF-8
+      server: gws
+      x-frame-options: SAMEORIGIN
+
+[5] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.Pabh4or7wFs.L.B1.O/am=AEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=1/ed=1/br=1/rs=ACT90oGgoK3G47XxqsQG5biE5z5e3ugysQ/m=cdos,hsm,jsa,mb4ZUb,cEt90b,SNUn3,qddgKe,sTsDMc,dtl0hd,eHDfl,YV5bee,d,csi
+    Status: 200 
+    Duration: 295ms
     Resource Type: stylesheet
-    Timestamp: 2025-11-27T11:15:03.533Z
+    Timestamp: 2025-12-03T13:47:20.787Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -100,13 +169,13 @@ Sec-CH-UA-WoW64
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 35862
+      age: 29298
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:17:21 GMT
+      expires: Thu, 03 Dec 2026 05:39:02 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:17:21 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:22 GMT
+      date: Wed, 03 Dec 2025 05:39:02 GMT
+      last-modified: Wed, 03 Dec 2025 04:23:15 GMT
       content-type: text/css; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -119,80 +188,11 @@ Sec-CH-UA-WoW64
       server: sffe
     Response Body: :root{--COEmY:#1f1f1f;--xhUGwc:#fff}:root{--vZe0jb:#a8c7fa;--nwXobb:#638ed4;--VuZXBd:#001d35;--uLz37c:#545d7e;--jINu6c:#001d35;--TyVYld:#0b57d0;--ZEpPmd:#c3d9fb;--QWaaaf:#638ed4;--DEeStf:#f5f8ff;--TSWZIb:#e5edff;--BRLwE:#d3e3fd;--gS5jXb:#dadce0;--Aqn7xd:#d2d2d2;--EpFNW:#fff;--Xqboce:#1f1f1f;--IXoxUe:#5e5e5e;--bbQxAb:#474747;--YLNNHc:#1f1f1f;--TMYS9:#0b57d0;--JKqx2:#1a0dab;--rrJJUc:var(--Nsm0ce);--mXZkqc:#d2d2d2;--Nsm0ce:#0b57d0;--vdwxpe:#a8c7fa;--ywz01c:#fbbc04;--XKMDxc:#f3f5f6;--aYn2S:#f3f5f6;--Lm570b:#dee1e3}:root{--amnPwe:var(--IXoxUe);--ZXiaGf:#fff;--EoKObe:#fff;--cIehld:#fff;--ONhrGd:#dadce0;--gVUKcd:rgba(0,0,0,0.6)}.zJUuqf{margin-bottom:4px}.AB4Wff{margin-left:16px}.wHYlTd{font-family:Arial,sans-serif;font-size:14px;line-height:22px}.yUTMj{font-family:Arial,sans-serif;font-weight:400}@keyframes g-snackbar-show{from{pointer-events:none;transform:translateY(0)}to{transform:translateY(-100%)}}@keyframes g-snackbar-hide{from{transform:translateY(-100%)}to{transform:translateY(0)}}@ke... (truncated)
 
-[4] ✅ GET https://fonts.gstatic.com/s/googlesans/v58/4UaRrENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iq2vgCI.woff2
+[6] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAEAIAAIMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=1/ed=1/dg=4/br=1/rs=ACT90oGE0XIKeP6KKRRa6_rKXqhVnz_l2g/ee=ALeJib:B8gLwd;AfeaP:TkrAjf;BMxAGc:E5bFse;BgS6mb:fidj5d;BjwMce:cXX2Wb;CIZTGb:Kqhykb;CxXAWb:YyRLvc;DQEued:Fevhcf;DULqB:RKfG5c;Dkk6ge:JZmW9e;DpcR3d:zL72xf;Du7NI:C6zLgf;EABSZ:MXZt9d;ESrPQc:mNTJvc;EVNhjf:pw70Gc;EjXHpb:pSHqh;EmZ2Bf:zr1jrb;EnlcNd:WeHg4;F9mqte:UoRcbe;FSxmUe:fiZR8b;Fkukfc:i8H2c;Fmv9Nc:O1Tzwc;G0KhTb:LIaoZ;GEkGdd:e1RzQd;GleZL:J1A7Od;HMDDWe:G8QUdb;IBADCc:RYquRb;IoGlCf:b5lhvb;JXJSm:ii1RGf;JXS8fb:Qj0suc;JqSq7d:y9ePhe;JsbNhc:Xd8iUd;K5nYTd:ZDZcre;KOxcK:OZqGte;KQzWid:ZMKkN;KcokUb:KiuZBf;KpRAue:Tia57b;LBgRLc:SdcwHb,XVMNvd;LBn8Cf:bJ9L0c;LEikZe:byfTOb,lsjVmc;LXA8b:q7OdKd;LsNahb:ucGLNb;NJ1rfe:qTnoBf;NPKaK:SdcwHb;NSEoX:lazG7b;Np8Qkd:Dpx6qc;Nyt6ic:jn2sGd;OIfWUb:qfOYcd;OgagBe:cNTe0;OiqE2c:TFpEK;OoK5v:Sp69O;OohIYe:mpEAQb;Pjplud:PoEs9b;PpTLXd:pJYjx;Q1Ow7b:x5CSu;QGR0gd:Mlhmy;QYLF2b:pAQYUd;Qw8Feb:jpavUe;R4IIIb:QWfeKf;R9Ulx:CR7Ufe;RCF5Sd:X1kBmd;SLtqO:Kh1xYe;SMDL4c:fTfGO;SNUn3:ZwDk9d,xD8Kp;ScI3Yc:e7Hzgb,e7Hzgb;ShpF6e:N0pvGc;SwCqAd:fXbCZc;SzQQ3e:dNhofb;TIUVQd:M8uRWb;TroZ1d:vVVzjb;U96pRd:FsR04;UBKJZ:LGDJGb;UDrY1c:eps46d;UVmjEd:EesRsb;UVzb9c:IvPZ6d;UYRIEb:HzTAQc;UyG7Kb:wQd0G;V2HTTe:RolTY;VGRfx:VFqbr;VN6jIc:ddQyuf;VOcgDe:YquhTb;VhA7bd:vAmQFf;VsAqSb:PGf2Re;WCEKNd:I46Hvd;WDGyFe:jcVOxd;Wfmdue:g3MJlb;Y3c5sd:FGbfLe;YIZmRd:A1yn5d;YV5bee:IvPZ6d;ZSH6tc:QAvyLe;ZWEUA:afR4Cf;ZlOOMb:P0I0Ec;a56pNe:JEfCwb;aAJE9c:WHW6Ef;aCJ9tf:qKftvc;aVZq3e:EMeVIb;aZ61od:arTwJ;aci7y:Z5Tr6c;bDXwRe:UsyOtc;bUIkwb:WMwEHe;bcPXSc:gSZLJb;cEt90b:ws9Tlc;cFTWae:gT8qnd;dIoSBb:ZgGg9b;dLlj2:Qqt3Gf;dowIGb:ebZ3mb,ebZ3mb;dtl0hd:lLQWFe;eBAeSb:Ck63tb;eBZ5Nd:audvde;eHDfl:ofjVkb;eJKchc:ATg1be;eO3lse:UefOmb;euOXY:OZjbQ;g8nkx:U4MzKc;gaub4:TN6bMe;gtVSi:ekUOYd;h3MYod:ws9Tlc;hK67qb:QWEO5b;hVic1b:Kqhykb;heHB1:sFczq;hjRo6e:F62sG;hlqGX:FWz1ic;hsLsYc:Vl118;hwoVHd:zw4U8c;iFQyKf:QIhFr;iySzae:a6xXfd;jJj2G:kF2o2b;k2Qxcb:XY51pe;kbAm9d:MkHyGd;lOO0Vd:OTA3Ae;lbfkyf:MqGdUd;liAz7d:kF2o2b;mWzs9c:fz5ukf;nJw4Gd:dPFZH;nrDcw:SuEoDe;oGtAuc:sOXFj;oSUNyd:fTfGO,fTfGO;oUlnpc:RagDlc;okUaUd:wItadb;pKJiXd:VCenhc;pNsl2d:j9Yuyc;pXdRYb:JKoKVe;pj82le:ww04Df;qZx2Fc:j0xrE;qaS3gd:yiLg6e;qafBPd:sgY6Zb;qavrXe:zQzcXe;qddgKe:d7YSfd,x4FYXe;rdexKf:FEkKD;rmWaj:PMS6Sd;ropkZ:hjoqoe;sTsDMc:kHVSUb;sZmdvc:rdGEfc;slIQ5d:pnOULd;tH4IIe:Ymry6;teSRSb:BMLai;tosKvd:ZCqP3;trZL0b:qY8PFe;uuQkY:u2V3ud;vEYCNb:FaqsVd;vRlMvf:Iw9Xo;vfVwPd:lcrkwe;w3bZCb:ZPGaIb;w4rSdf:XKiZ9;w9w86d:dt4g2b;wQlYve:aLUfP;wR5FRb:O1Gjze,TtcOte;wV5Pjc:L8KGxe;xBbsrc:NEW1Qc;ysNiMc:CpIBjd;yxTchf:KUM7Z;z97YGf:oug9te;zOsCQe:Ko78Df;zaIgPb:Sl0pxd/m=cdos,hsm,jsa,mb4ZUb,cEt90b,SNUn3,qddgKe,sTsDMc,dtl0hd,eHDfl,YV5bee,d,csi
     Status: 200 
-    Duration: 939ms
-    Resource Type: font
-    Timestamp: 2025-11-27T11:15:03.538Z
-    Request Headers:
-      origin: https://www.google.com
-      sec-ch-ua-platform: "Windows"
-      referer: https://www.google.com/
-      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
-      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
-      accept-language: en-US
-      sec-ch-ua-mobile: ?0
-    Response Headers:
-      age: 148554
-      report-to: {"group":"apps-themes","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/apps-themes"}]}
-      x-content-type-options: nosniff
-      expires: Wed, 25 Nov 2026 17:59:09 GMT
-      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Tue, 25 Nov 2025 17:59:09 GMT
-      last-modified: Tue, 23 May 2023 16:36:38 GMT
-      content-type: font/woff2
-      cache-control: public, max-age=31536000
-      timing-allow-origin: *
-      cross-origin-opener-policy: same-origin; report-to="apps-themes"
-      cross-origin-resource-policy: cross-origin
-      content-security-policy-report-only: require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/apps-themes
-      accept-ranges: bytes
-      access-control-allow-origin: *
-      content-length: 52280
-      x-xss-protection: 0
-      server: sffe
-
-[5] ✅ POST https://www.google.com/gen_204?ei=tjIoabW6K6_Jp84P-cXqeA&sol=th&atyp=i&sr=10
-    Status: 204 
-    Duration: 328ms
-    Resource Type: ping
-    Timestamp: 2025-11-27T11:15:03.538Z
-    Request Headers:
-      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
-      sec-ch-ua-platform: "Windows"
-      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
-      sec-ch-ua-bitness: "64"
-      sec-ch-ua-model: ""
-      sec-ch-ua-mobile: ?0
-      sec-ch-ua-form-factors: "Desktop"
-      sec-ch-ua-wow64: ?0
-      sec-ch-ua-arch: "x86"
-      sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
-      referer: https://www.google.com/
-      accept-language: en-US
-      sec-ch-prefers-color-scheme: light
-      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
-      rtt: 300
-      sec-ch-ua-platform-version: "10.0"
-    Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-ibB2kW1P38ploNnejKLmVQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
-      cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
-      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
-      permissions-policy: unload=()
-      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      content-length: 0
-      date: Thu, 27 Nov 2025 11:15:03 GMT
-      x-xss-protection: 0
-      content-type: text/html; charset=UTF-8
-      server: gws
-      x-frame-options: SAMEORIGIN
-
-[6] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAEAIAAIMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=1/ed=1/dg=4/br=1/rs=ACT90oH3C8T3bJaVxIl1ZnXSiGRGAJOLSg/ee=ALeJib:B8gLwd;AfeaP:TkrAjf;BMxAGc:E5bFse;BgS6mb:fidj5d;BjwMce:cXX2Wb;CIZTGb:Kqhykb;CxXAWb:YyRLvc;DQEued:Fevhcf;DULqB:RKfG5c;Dkk6ge:JZmW9e;DpcR3d:zL72xf;Du7NI:C6zLgf;EABSZ:MXZt9d;ESrPQc:mNTJvc;EVNhjf:pw70Gc;EjXHpb:pSHqh;EmZ2Bf:zr1jrb;EnlcNd:WeHg4;F9mqte:UoRcbe;FSxmUe:fiZR8b;Fkukfc:i8H2c;Fmv9Nc:O1Tzwc;G0KhTb:LIaoZ;GEkGdd:e1RzQd;GleZL:J1A7Od;HMDDWe:G8QUdb;IBADCc:RYquRb;IoGlCf:b5lhvb;JXJSm:ii1RGf;JXS8fb:Qj0suc;JqSq7d:y9ePhe;JsbNhc:Xd8iUd;K5nYTd:ZDZcre;KOxcK:OZqGte;KQzWid:ZMKkN;KcokUb:KiuZBf;KpRAue:Tia57b;LBgRLc:SdcwHb,XVMNvd;LBn8Cf:bJ9L0c;LEikZe:byfTOb,lsjVmc;LXA8b:q7OdKd;LsNahb:ucGLNb;NJ1rfe:qTnoBf;NPKaK:SdcwHb;NSEoX:lazG7b;Np8Qkd:Dpx6qc;Nyt6ic:jn2sGd;OIfWUb:qfOYcd;OgagBe:cNTe0;OiqE2c:TFpEK;OoK5v:Sp69O;OohIYe:mpEAQb;Pjplud:PoEs9b;PpTLXd:pJYjx;Q1Ow7b:x5CSu;QGR0gd:Mlhmy;QYLF2b:pAQYUd;Qw8Feb:jpavUe;R4IIIb:QWfeKf;R9Ulx:CR7Ufe;RCF5Sd:X1kBmd;SLtqO:Kh1xYe;SMDL4c:fTfGO;SNUn3:ZwDk9d,xD8Kp;ScI3Yc:e7Hzgb,e7Hzgb;ShpF6e:N0pvGc;SwCqAd:fXbCZc;SzQQ3e:dNhofb;TIUVQd:M8uRWb;TroZ1d:vVVzjb;U96pRd:FsR04;UBKJZ:LGDJGb;UDrY1c:eps46d;UVmjEd:EesRsb;UVzb9c:IvPZ6d;UYRIEb:HzTAQc;UyG7Kb:wQd0G;V2HTTe:RolTY;VGRfx:VFqbr;VN6jIc:ddQyuf;VOcgDe:YquhTb;VhA7bd:vAmQFf;VsAqSb:PGf2Re;WCEKNd:I46Hvd;WDGyFe:jcVOxd;Wfmdue:g3MJlb;Y3c5sd:FGbfLe;YIZmRd:A1yn5d;YV5bee:IvPZ6d;ZSH6tc:QAvyLe;ZWEUA:afR4Cf;ZlOOMb:P0I0Ec;a56pNe:JEfCwb;aAJE9c:WHW6Ef;aCJ9tf:qKftvc;aVZq3e:EMeVIb;aZ61od:arTwJ;aci7y:Z5Tr6c;bDXwRe:UsyOtc;bUIkwb:WMwEHe;bcPXSc:gSZLJb;cEt90b:ws9Tlc;cFTWae:gT8qnd;dIoSBb:ZgGg9b;dLlj2:Qqt3Gf;dowIGb:ebZ3mb,ebZ3mb;dtl0hd:lLQWFe;eBAeSb:Ck63tb;eBZ5Nd:audvde;eHDfl:ofjVkb;eJKchc:ATg1be;eO3lse:UefOmb;euOXY:OZjbQ;g8nkx:U4MzKc;gaub4:TN6bMe;gtVSi:ekUOYd;h3MYod:ws9Tlc;hK67qb:QWEO5b;hVic1b:Kqhykb;heHB1:sFczq;hjRo6e:F62sG;hlqGX:FWz1ic;hsLsYc:Vl118;hwoVHd:zw4U8c;iFQyKf:QIhFr;iySzae:a6xXfd;jJj2G:kF2o2b;k2Qxcb:XY51pe;kbAm9d:MkHyGd;lOO0Vd:OTA3Ae;lbfkyf:MqGdUd;liAz7d:kF2o2b;mWzs9c:fz5ukf;nJw4Gd:dPFZH;nrDcw:SuEoDe;oGtAuc:sOXFj;oSUNyd:fTfGO,fTfGO;oUlnpc:RagDlc;okUaUd:wItadb;pKJiXd:VCenhc;pNsl2d:j9Yuyc;pXdRYb:JKoKVe;pj82le:ww04Df;qZx2Fc:j0xrE;qaS3gd:yiLg6e;qafBPd:sgY6Zb;qavrXe:zQzcXe;qddgKe:d7YSfd,x4FYXe;rdexKf:FEkKD;rmWaj:PMS6Sd;ropkZ:hjoqoe;sTsDMc:kHVSUb;sZmdvc:rdGEfc;slIQ5d:pnOULd;tH4IIe:Ymry6;teSRSb:BMLai;tosKvd:ZCqP3;trZL0b:qY8PFe;uuQkY:u2V3ud;vEYCNb:FaqsVd;vRlMvf:Iw9Xo;vfVwPd:lcrkwe;w3bZCb:ZPGaIb;w4rSdf:XKiZ9;w9w86d:dt4g2b;wQlYve:aLUfP;wR5FRb:O1Gjze,TtcOte;wV5Pjc:L8KGxe;xBbsrc:NEW1Qc;ysNiMc:CpIBjd;yxTchf:KUM7Z;z97YGf:oug9te;zOsCQe:Ko78Df;zaIgPb:Sl0pxd/m=cdos,hsm,jsa,mb4ZUb,cEt90b,SNUn3,qddgKe,sTsDMc,dtl0hd,eHDfl,YV5bee,d,csi
-    Status: 200 
-    Duration: 1385ms
+    Duration: 1676ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:03.538Z
+    Timestamp: 2025-12-03T13:47:20.790Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -213,13 +213,13 @@ Sec-CH-UA-WoW64
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 36434
+      age: 45920
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:07:49 GMT
+      expires: Thu, 03 Dec 2026 01:02:01 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:07:49 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 01:02:01 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -227,7 +227,7 @@ Sec-CH-UA-WoW64
       cross-origin-resource-policy: cross-origin
       content-security-policy-report-only: require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/gws-team
       accept-ranges: bytes
-      content-length: 343493
+      content-length: 343501
       x-xss-protection: 0
       server: sffe
     Response Body: this._hd=this._hd||{};(function(_){var window=this;
@@ -263,11 +263,11 @@ try{
 */
 var baa,caa,saa,uaa,xaa,Iaa,Oaa,Uaa,aba,fba,lba,mba,pba,nba,tba,vba,wba,xba,Aba,Dba,Eba,Jba,Nba,Sba,Uba,Vba,Tba,Zba,Pba,aca,bca,dca,jca,nca,oca,qca,rca,tca,uca,vca,xca,yca,Gca,Jca,Tca,Uca,Rca,Xca,Oca,Yca,Mca,Pca,Qca,Zca,$ca,bda,lda,mda,oda,sda,wb,wda,vda,xda,zda,Ada,Cda,Bda,Hda,Ida,Jda,Kda,Lda,Mda,Nda,Gda,Oda,Rda,Uda,Wda,Xda,dea,hea,jea,iea,kea,oea,sea,vea,zea,xea,Bea,yea,Aea,Dea,Cea,Lea,Gea,Iea,Mea,Oea,Sea,Uea,Vea,X... (truncated)
 
-[7] ✅ GET https://www.gstatic.com/og/_/js/k=og.asy.en_US.ZB_JWty8yBQ.2019.O/rt=j/m=_ac,_awd,ada,lldp,qads,abld/exm=/d=1/ed=1/rs=AA2YrTuOdAa9YWDd3u-N0sm5Gvsh4Lr-DQ
+[7] ✅ GET https://www.gstatic.com/og/_/js/k=og.asy.en_US.QCR5kFdMrnY.2019.O/rt=j/m=_ac,_awd,ada,lldp,qads,abld/exm=/d=1/ed=1/rs=AA2YrTs3RjY7Ibegz3inte9EfSZVIUhCvg
     Status: 200 
-    Duration: 1720ms
+    Duration: 1516ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:03.585Z
+    Timestamp: 2025-12-03T13:47:21.062Z
     Request Headers:
       sec-ch-ua-platform: "Windows"
       referer: https://www.google.com/
@@ -277,13 +277,13 @@ var baa,caa,saa,uaa,xaa,Iaa,Oaa,Uaa,aba,fba,lba,mba,pba,nba,tba,vba,wba,xba,Aba,
       sec-ch-ua-mobile: ?0
     Response Headers:
       content-encoding: gzip
-      age: 444235
+      age: 103348
       report-to: {"group":"one-google-eng","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/one-google-eng"}]}
       x-content-type-options: nosniff
-      expires: Sun, 22 Nov 2026 07:51:09 GMT
+      expires: Wed, 02 Dec 2026 09:04:53 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Sat, 22 Nov 2025 07:51:09 GMT
-      last-modified: Mon, 17 Nov 2025 02:29:20 GMT
+      date: Tue, 02 Dec 2025 09:04:53 GMT
+      last-modified: Fri, 28 Nov 2025 02:27:40 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, max-age=31536000
@@ -291,7 +291,7 @@ var baa,caa,saa,uaa,xaa,Iaa,Oaa,Uaa,aba,fba,lba,mba,pba,nba,tba,vba,wba,xba,Aba,
       cross-origin-resource-policy: cross-origin
       content-security-policy-report-only: require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/one-google-eng
       accept-ranges: bytes
-      content-length: 80233
+      content-length: 80818
       x-xss-protection: 0
       server: sffe
     Response Body: this.gbar_=this.gbar_||{};(function(_){var window=this;
@@ -315,13 +315,13 @@ mailto:robert@broofa.com
 Copyright (c) 2010 Robert Kieffer
 Dual licensed under the MIT and GPL licenses.
 */
-var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,Mb,Ib,Ob,Ub,Tb,Wb,Zb,Sb,ec,ac,cc,lc,nc,pc,tc,zc,Cc,Lc,Pc,Rc,Sc,Xc,bd,gd,id,E,md,nd,od,pd;_.aa=function(a,b){if(Error.captureStackTrace)Error.captureStackTrace(this,_.aa);else{const c=Error().stack;c&&(this.stack=c)}a&&(this.message=String(a));b!==void 0&&(this.cause=b)};ba=function(a){_.t.setTimeout(()=>{throw a;},0)};_.ca=function(a,b){return a.lastIndexOf(b,0)==0};_.ea=function... (truncated)
+var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,$a,rb,tb,nb,ob,pb,xb,yb,Db,Eb,Jb,Mb,Nb,Sb,Ob,Ub,$b,Zb,bc,ec,Yb,lc,hc,jc,rc,tc,vc,zc,Fc,Hc,Jc,Sc,Wc,Yc,Zc,dd,id,jd,kd,pd,sd,F,wd,xd,yd,zd;_.aa=function(a,b){if(Error.captureStackTrace)Error.captureStackTrace(this,_.aa);else{const c=Error().stack;c&&(this.stack=c)}a&&(this.message=String(a));b!==void 0&&(this.cause=b)};ba=function(a){_.t.setTimeout(()=>{throw a;},0)};_.da=function(a,b){return a.lastIndexO... (truncated)
 
 [8] ✅ GET https://www.google.com/images/searchbox/desktop_searchbox_sprites318_hr.webp
     Status: 200 
-    Duration: 316ms
+    Duration: 386ms
     Resource Type: image
-    Timestamp: 2025-11-27T11:15:03.860Z
+    Timestamp: 2025-12-03T13:47:21.129Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -345,22 +345,22 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       cross-origin-resource-policy: cross-origin
       report-to: {"group":"static-on-bigtable","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/static-on-bigtable"}]}
       x-content-type-options: nosniff
-      expires: Thu, 27 Nov 2025 11:15:03 GMT
+      expires: Wed, 03 Dec 2025 13:47:21 GMT
       accept-ranges: bytes
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       cross-origin-opener-policy-report-only: same-origin; report-to="static-on-bigtable"
       content-length: 660
-      date: Thu, 27 Nov 2025 11:15:03 GMT
+      date: Wed, 03 Dec 2025 13:47:21 GMT
       x-xss-protection: 0
       content-type: image/webp
       last-modified: Wed, 06 Aug 2025 15:00:00 GMT
       server: sffe
 
-[9] ✅ GET https://www.google.com/async/hpba?yv=3&cs=0&ei=tjIoabW6K6_Jp84P-cXqeA&async=_basejs:/xjs/_/js/k%3Dxjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am%3DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/dg%3D0/br%3D1/rs%3DACT90oEBBkBIkBlyavovqhW4P10F3vkVlw,_basecss:/xjs/_/ss/k%3Dxjs.hd.TyQmyefY7a8.L.B1.O/am%3DAEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/br%3D1/rs%3DACT90oEzGM_-BZTTJoA7SVov6niAhXJC_Q,_basecomb:/xjs/_/js/k%3Dxjs.hd.en_GB.HYnX6N8vTJQ.2019.O/ck%3Dxjs.hd.TyQmyefY7a8.L.B1.O/am%3DAEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICCPQQAAAAAOCAASAEAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAgAAgAEgACCAEAIAAIMCAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAyAAYImEAASAAQEYsAAASAACAAAAAAAAAIAKggAAAAQNAAAAAAgAAACAAFkIQEBUQAAgABAAAAAAAAAQAAAAAACACAAgIBAAAAKCAQABgECAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAJwAgBAAIAHgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d%3D1/ed%3D1/dg%3D0/br%3D1/ujg%3D1/rs%3DACT90oE1K6anPCADTyBirbcY6554M75edQ,_fmt:prog,_id:_tjIoabW6K6_Jp84P-cXqeA_7&sp_imghp=false&sp_hpep=2&sp_hpte=0&vet=10ahUKEwi17dH-mZKRAxWv5MkDHfmiGg8Qj-0KCBU..i
+[9] ✅ GET https://www.google.com/async/hpba?yv=3&cs=0&ei=aD8wab7qIOPZkPIP1Kb2OQ&async=_basejs:/xjs/_/js/k%3Dxjs.hd.en_GB.PrXx8QVVjE4.2019.O/am%3DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/dg%3D0/br%3D1/rs%3DACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA,_basecss:/xjs/_/ss/k%3Dxjs.hd.Pabh4or7wFs.L.B1.O/am%3DAEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/br%3D1/rs%3DACT90oGgoK3G47XxqsQG5biE5z5e3ugysQ,_basecomb:/xjs/_/js/k%3Dxjs.hd.en_GB.PrXx8QVVjE4.2019.O/ck%3Dxjs.hd.Pabh4or7wFs.L.B1.O/am%3DAEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICCPQQAAAAAOCAASAEAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAgAAgAEgACCAEAIAAIMCAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAyAAYImEAASAAQEYsAAASAACAAAAAAAAAIAKggAAAAQNAAAAAAgAAACAAFkIQEBUQAAgABAAAAAAAAAQAAAAAACACAAgIBAAAAKCAQABgECAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAJwAgBAAIAHgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d%3D1/ed%3D1/dg%3D0/br%3D1/ujg%3D1/rs%3DACT90oEjaZ2N1CVFYYbKrwEdDp9SQBiGcA,_fmt:prog,_id:_aD8wab7qIOPZkPIP1Kb2OQ_7&sp_imghp=false&sp_hpep=2&sp_hpte=0&vet=10ahUKEwi-vqOcx6GRAxXjLEQIHVSTPQcQj-0KCBU..i
     Status: 200 
-    Duration: 356ms
+    Duration: 340ms
     Resource Type: xhr
-    Timestamp: 2025-11-27T11:15:03.861Z
+    Timestamp: 2025-12-03T13:47:21.129Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -383,10 +383,10 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       content-encoding: br
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/none"}]}
       x-content-type-options: nosniff
-      expires: Thu, 27 Nov 2025 11:15:03 GMT
+      expires: Wed, 03 Dec 2025 13:47:21 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       p3p: CP="This is not a P3P policy! See g.co/p3phelp for more info."
-      date: Thu, 27 Nov 2025 11:15:03 GMT
+      date: Wed, 03 Dec 2025 13:47:21 GMT
       content-type: text/plain; charset=UTF-8
       content-disposition: attachment; filename="f.txt"
       x-frame-options: SAMEORIGIN
@@ -396,16 +396,16 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       accept-ch: Sec-CH-Prefers-Color-Scheme, Downlink, RTT, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version-List, Sec-CH-UA-WoW64
       permissions-policy: unload=()
       x-xss-protection: 0
-      version: 836538871
+      version: 839125008
       server: gws
     Response Body: )]}'
-22;["tzIoabKJG5DIptQP1qCUyAY","2332"]c;[2,null,"0"]1b;<div jsname="Nll0ne"></div>c;[9,null,"0"]0;
+24;["aT8waaedEuiNwbkPneyzyAY","2336",1]c;[2,null,"0"]1b;<div jsname="Nll0ne"></div>c;[9,null,"0"]0;
 
 [10] ✅ GET https://www.gstatic.com/og/_/ss/k=og.asy.68IT_F-NK08.L.W.O/m=ll_tdm,adcgm3,ll_fw,abld/excm=/d=1/ed=1/ct=zgms/rs=AA2YrTuB9pNk5GDNCjpS0-TPiTc9nq0jFg
     Status: 200 
-    Duration: 1397ms
+    Duration: 1428ms
     Resource Type: stylesheet
-    Timestamp: 2025-11-27T11:15:03.904Z
+    Timestamp: 2025-12-03T13:47:21.149Z
     Request Headers:
       sec-ch-ua-platform: "Windows"
       referer: https://www.google.com/
@@ -415,12 +415,12 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       sec-ch-ua-mobile: ?0
     Response Headers:
       content-encoding: gzip
-      age: 107339
+      age: 385091
       report-to: {"group":"one-google-eng","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/one-google-eng"}]}
       x-content-type-options: nosniff
-      expires: Thu, 26 Nov 2026 05:26:05 GMT
+      expires: Sun, 29 Nov 2026 02:49:10 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Wed, 26 Nov 2025 05:26:05 GMT
+      date: Sat, 29 Nov 2025 02:49:10 GMT
       last-modified: Wed, 01 Oct 2025 01:31:38 GMT
       content-type: text/css; charset=UTF-8
       vary: Accept-Encoding, Origin
@@ -434,11 +434,11 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       server: sffe
     Response Body: .gb_Qc{background:rgba(60,64,67,.9);border-radius:4px;color:#fff;font:500 12px "Roboto",arial,sans-serif;letter-spacing:.8px;line-height:16px;margin-top:4px;min-height:14px;padding:4px 8px;position:absolute;outline:1px solid transparent;-webkit-user-select:text;user-select:text;z-index:1000;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}.gb_Rc,.gb_Sc{text-align:left}.gb_Rc>*{color:#c4c7c5;line-height:16px}.gb_Rc div:first-child{color:white}.gb_B{border-radius:50%}.gb_B::before{background:#444746;background:var(--gm3-sys-color-on-surface-variant,#444746);border-radius:100px;content:"";height:100%;left:0;opacity:0;position:absolute;top:0;-webkit-transition:opacity .3s ease-out;transition:opacity .3s ease-out;width:100%}.gb_H .gb_B::before{background:#c4c7c5;background:var(--gm3-sys-color-on-surface-variant,#c4c7c5)}.gb_B:hover{background-color:rgba(60,64,67,.08)}.gb_B:focus::before,.gb_B:focus:hover::before{opacity:.12}.gb_B:active::before{opacity:.16}.gb_B:hover::b... (truncated)
 
-[11] ✅ POST https://www.google.com/gen_204?s=webhp&t=aft&atyp=csi&ei=tjIoabW6K6_Jp84P-cXqeA&rt=wsrt.1111,hst.28,prt.364,aft.364&folr=_tjIoabW6K6_Jp84P-cXqeA_7&imn=9&dtc=146&stc=24&ima=0&imad=0&imac=0&wh=720&nt=navigate&dt=&ts=50360&nhp=h3&ant=push&opi=89978449
+[11] ✅ POST https://www.google.com/gen_204?s=webhp&t=aft&atyp=csi&ei=aD8wab7qIOPZkPIP1Kb2OQ&rt=wsrt.1032,hst.38,prt.393,aft.393&folr=_aD8wab7qIOPZkPIP1Kb2OQ_7&imn=9&dtc=146&stc=24&ima=0&imad=0&imac=0&wh=720&nt=navigate&dt=&ts=49151&nhp=h2&ant=push&opi=89978449
     Status: 204 
-    Duration: 1000ms
+    Duration: 1304ms
     Resource Type: ping
-    Timestamp: 2025-11-27T11:15:03.904Z
+    Timestamp: 2025-12-03T13:47:21.149Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -459,23 +459,23 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-dn-9gsMvWwLOegPFx-RiOg' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-9D-W32JRaavbEy_UeRgocQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:03 GMT
+      date: Wed, 03 Dec 2025 13:47:21 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[12] ✅ GET https://www.google.com/gen_204?s=async&astyp=hpba&t=all&atyp=csi&ei=tzIoabKJG5DIptQP1qCUyAY&rt=ipf.24,ipfr.383,ttfb.383,st.384,acrt.388,ipfrl.388,aaft.388,art.388,ns.-1445&twt=2&mwt=2&imn=0&ima=0&folid=_tjIoabW6K6_Jp84P-cXqeA_7
+[12] ✅ GET https://www.google.com/gen_204?s=async&astyp=hpba&t=all&atyp=csi&ei=aT8waaedEuiNwbkPneyzyAY&rt=ipf.30,ipfr.368,ttfb.368,st.369,acrt.369,ipfrl.369,aaft.369,art.369,ns.-1392&twt=1&mwt=1&imn=0&ima=0&folid=_aD8wab7qIOPZkPIP1Kb2OQ_7
     Status: 204 
-    Duration: 365ms
+    Duration: 446ms
     Resource Type: image
-    Timestamp: 2025-11-27T11:15:04.221Z
+    Timestamp: 2025-12-03T13:47:21.470Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -487,7 +487,7 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1
+      downlink: 1.4
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -495,23 +495,23 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-ZtWqUaI2tMWfJ8zkfePVnw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-OJDd13ptiPf6qhrf8ww4FQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:03 GMT
+      date: Wed, 03 Dec 2025 13:47:21 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[13] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=tjIoabW6K6_Jp84P-cXqeA&s=webhp&t=all&folr=_tjIoabW6K6_Jp84P-cXqeA_7&imn=9&dtc=146&stc=24&ima=0&imad=0&imac=0&wh=720&nt=navigate&dt=&ts=50360&nhp=h3&ant=push&adh=&ime=0&imeh=0&imeha=0&imehb=0&imea=0&imeb=0&imel=0&imed=0&imeeb=0&imexb=0&scp=0&cb=50060&ucb=177269&lts=50360&mem=ujhs.8,tjhs.11,jhsl.4295,dm.8&nv=ne.1,feid.8ae9d9e2-6001-4f92-b3ef-ee2f8ffd4fb3&net=dl.1000,ect.3g,rtt.300,sd.0&hp=&p=bs.true&rt=hst.28,prt.364,aft.364,xjses.1425,xjsee.1529,xjs.1529,lcp.529,fcp.529,wsrt.1111,cst.295,dnst.0,rqst.774,rspt.308,sslt.295,rqstt.645,unt.636,cstt.642,dit.1516&zx=1764242105029&opi=89978449
+[13] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=aD8wab7qIOPZkPIP1Kb2OQ&s=webhp&t=all&folr=_aD8wab7qIOPZkPIP1Kb2OQ_7&imn=9&dtc=146&stc=24&ima=0&imad=0&imac=0&wh=720&nt=navigate&dt=&ts=49151&nhp=h2&ant=push&ime=0&imeh=0&imeha=0&imehb=0&imea=0&imeb=0&imel=0&imed=0&imeeb=0&imexb=0&scp=0&cb=48851&ucb=176753&lts=49151&adh=&mem=ujhs.8,tjhs.11,jhsl.4295,dm.8&nv=ne.1,feid.ca2e7cd9-b635-43dc-a518-9398eecda273&net=dl.850,ect.3g,rtt.300,sd.0&hp=&p=bs.true&rt=hst.38,prt.393,aft.393,xjses.1729,xjsee.1794,xjs.1794,lcp.508,fcp.508,wsrt.1032,cst.0,dnst.0,rqst.734,rspt.348,rqstt.646,unt.645,cstt.645,dit.1445&zx=1764769642534&opi=89978449
     Status: 204 
-    Duration: 319ms
+    Duration: 667ms
     Resource Type: ping
-    Timestamp: 2025-11-27T11:15:05.035Z
+    Timestamp: 2025-12-03T13:47:22.571Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -523,7 +523,7 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -531,23 +531,23 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-M3mIJJchCGXvi9xge76x1g' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-HDQhaljUnpPmqen-MyvyUQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:04 GMT
+      date: Wed, 03 Dec 2025 13:47:23 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[14] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/ck=xjs.hd.TyQmyefY7a8.L.B1.O/am=AEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICCPQQAAAAAOCAASAEAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAgAAgAEgACCAEAIAAIMCAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAyAAYImEAASAAQEYsAAASAACAAAAAAAAAIAKggAAAAQNAAAAAAgAAACAAFkIQEBUQAAgABAAAAAAAAAQAAAAAACACAAgIBAAAAKCAQABgECAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAJwAgBAAIAHgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/ujg=1/rs=ACT90oE1K6anPCADTyBirbcY6554M75edQ/m=sb_wiz,aa,abd,U9EYge,syc6,syc7,syc1,syum,syuq,syup,syuo,syuk,syu4,syu3,sytw,sytz,syur,syut,syfk,syfj,syfi,syun,syu7,syu6,syu5,sytt,sytv,syx1,syuy,syux,syuv,syu2,syuc,syub,syue,syud,syu9,syu8,syto,sysy,sysx,sytx,syuw,syuu,syus,syuj,async,sy1nv,sy51s,sonic,sy4kb,sy1ig,sy1bl,sy1bh,sysw,sysu,sysv,syst,sy4bu,sy4bv,sy1i6,syt3,spch?xjs=s3
+[14] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/ck=xjs.hd.Pabh4or7wFs.L.B1.O/am=AEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICCPQQAAAAAOCAASAEAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAgAAgAEgACCAEAIAAIMCAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAyAAYImEAASAAQEYsAAASAACAAAAAAAAAIAKggAAAAQNAAAAAAgAAACAAFkIQEBUQAAgABAAAAAAAAAQAAAAAACACAAgIBAAAAKCAQABgECAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAJwAgBAAIAHgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/ujg=1/rs=ACT90oEjaZ2N1CVFYYbKrwEdDp9SQBiGcA/m=sb_wiz,aa,abd,U9EYge,syc6,syc7,syc1,syum,syuq,syup,syuo,syuk,syu4,syu3,sytw,sytz,syur,syut,syfk,syfj,syfi,syun,syu7,syu6,syu5,sytt,sytv,syx1,syuy,syux,syuv,syu2,syuc,syub,syue,syud,syu9,syu8,syto,sysy,sysx,sytx,syuw,syuu,syus,syuj,async,sy1nv,sy51s,sonic,sy4kb,sy1ig,sy1bl,sy1bh,sysw,sysu,sysv,syst,sy4bu,sy4bv,sy1i6,syt3,spch?xjs=s3
     Status: 200 
-    Duration: 322ms
+    Duration: 287ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:05.072Z
+    Timestamp: 2025-12-03T13:47:22.577Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -559,7 +559,7 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -568,13 +568,13 @@ var ba,ja,ia,fa,ma,na,ra,ta,ua,va,wa,Ba,Qa,Ta,Xa,Wa,Ua,nb,rb,sb,xb,yb,Db,Gb,Hb,M
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 27023
+      age: 29300
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 03:44:41 GMT
+      expires: Thu, 03 Dec 2026 05:39:02 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 03:44:41 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 05:39:02 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -601,11 +601,11 @@ _.t("abd");
 var kum=function(a){typeof a==="string"&&(a=_.Hm(a));if(a)return _.kn(a,"display")!=="none"&&_.kn(a,"visibility")!=="hidden"&&a.offsetHeight>0},lum=function(a){let b="",c=21;for(let d=0;d<a.length;d++)d%4!=3&&(b+=String.fromCharCode(a[d]^c),c++);return b},mum=function(a){let b=0;for(const c in a)if(a[c].e)if(a[c].b)b++;else return!1;return b>0},rum=function(a={}){const b={};b[num]={e:!!a[num],b:!kum(oum)};b[pum]={e:!!a[pum],b:!kum(qum)};return b},sum=function(a){const b=[];for(const c in a)a[c].e&&
 b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(a);b&&(a+=`,${b}`);google.log(tum,a)},vum=function(a,b,c=2){if(c<1)uum(7,b);else{var d=new Image;d.onerror=()=>{vum(a,b,c-1)};d.src=a}};var oum=lum([97,119,115,111,107]),qum=lum([97,119,115,111,107,123]),wum=lum([118,115,121,107,108,... (truncated)
 
-[15] ✅ GET https://www.google.com/xjs/_/js/md=2/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAEAIAAIMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/rs=ACT90oH3C8T3bJaVxIl1ZnXSiGRGAJOLSg
+[15] ✅ GET https://www.google.com/xjs/_/js/md=2/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAEAIAAIMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/rs=ACT90oGE0XIKeP6KKRRa6_rKXqhVnz_l2g
     Status: 200 
-    Duration: 289ms
+    Duration: 274ms
     Resource Type: fetch
-    Timestamp: 2025-11-27T11:15:05.072Z
+    Timestamp: 2025-12-03T13:47:22.577Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -617,7 +617,7 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -626,13 +626,13 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: gzip
-      age: 36430
+      age: 45379
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:07:54 GMT
+      expires: Thu, 03 Dec 2026 01:11:03 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:07:54 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 01:11:03 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -645,11 +645,11 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       server: sffe
     Response Body: {"chunkTypes":"1000011111111011110001000101011111111110001111111111111111111111111111111111111111111111111111111111111111101111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111131111111111111111111111111111111111111111111111110110111111111111111111111111111111101000222221222122121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212221212121212121212221212121212121212121212121212221212121212121212121212121212121212121212121222212221221221221221221221222122122122122212212212212212212212212212221221222122122122122122122122122121212121212121221212121212121222121212121212121212121221211212121212121222121212121212132212121321121212122121212121222212121212121222222222222222121212121212122112212121212121211212221121212121212121212121212121212121212122122... (truncated)
 
-[16] ✅ GET https://www.google.com/client_204?atyp=i&biw=1280&bih=720&dpr=1.0000000149011612&ei=tjIoabW6K6_Jp84P-cXqeA&opi=89978449
+[16] ✅ GET https://www.google.com/client_204?atyp=i&biw=1280&bih=720&ei=aD8wab7qIOPZkPIP1Kb2OQ&opi=89978449
     Status: 204 
-    Duration: 631ms
+    Duration: 286ms
     Resource Type: image
-    Timestamp: 2025-11-27T11:15:05.072Z
+    Timestamp: 2025-12-03T13:47:22.577Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -661,7 +661,7 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -670,23 +670,23 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       strict-transport-security: max-age=31536000
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-LeIqFLL_9I8Q70_VaoH0BQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/cdt1
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-oEYb0Ll6m_a4qPMk52RbQw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/cdt1
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/cdt1"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:04 GMT
+      date: Wed, 03 Dec 2025 13:47:22 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[17] ✅ GET https://www.google.com/complete/search?q&cp=0&client=gws-wiz&xssi=t&gs_pcrt=2&hl=en-IN&authuser=0&psi=tjIoabW6K6_Jp84P-cXqeA.1764242105096&dpr=1.0000000149011612&nolsbt=1
+[17] ✅ GET https://www.google.com/complete/s?q&cp=0&client=gws-wiz&xssi=t&gs_pcrt=2&hl=en-IN&authuser=0&psi=aD8wab7qIOPZkPIP1Kb2OQ.1764769642554&dpr=1&nolsbt=1
     Status: 200 
-    Duration: 365ms
+    Duration: 325ms
     Resource Type: xhr
-    Timestamp: 2025-11-27T11:15:05.109Z
+    Timestamp: 2025-12-03T13:47:22.577Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -698,37 +698,38 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
+      x-server-token: CAMS7gIV7AXhrcklj7sOo7sLviHWPIvLBoQujcoE_3XWBifTEJM8qynlGI9hpiPclAaDHrkB95IGlkmVA_QPqCO7CeECtWX1J_oL9QiMDfQWlw6PGqEPjgq0E6AdqwSIDg_KBcMVuQuS_ZMTsJkC3QtPRswQ5wDRcdqCBuGaBZecBrkGBcwztewG4GW_tQblX7Uk4BC67ATdL4G5BcMfytcGxy-nKeZRwCqaZbNR6BECp8IG_OYG8-cGtW4I_aAGoxT4qAaBCaUewjfpHOs5njqkHNUOqBKRFrrvBqhFAelB3zifBYMGuQ4F9zKfE-o6hA3dDsFpoQ78BuEPohKfT_98xkbfJZE30R6WG9sAgnCBLssdzqQGtwmfHRQMBAzjAcoNmjGYAfcK9wvFJ_0ptCWTAfQbj0KDHZ8S6G-1FIIRnCnMA9AOa4Q1klKEAQujA4Mf6yK3pQaYYwzeyQa-kwbSFYAK1RfnPfmOBQSgRbAa4lY=
       sec-ch-prefers-color-scheme: light
       user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/cdt1"}]}
-      x-content-type-options: nosniff
-      expires: Thu, 27 Nov 2025 11:15:04 GMT
+      report-to: {"group":"stpasrsgpc:348:0","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/scaffolding/stpasrsgpc:348:0"}],}
+      expires: Wed, 03 Dec 2025 13:47:22 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 11:15:04 GMT
+      date: Wed, 03 Dec 2025 13:47:22 GMT
       content-type: application/json; charset=UTF-8
       content-disposition: attachment; filename="f.txt"
       x-frame-options: SAMEORIGIN
-      strict-transport-security: max-age=31536000
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-XU_WwV0iwZBUifvbIr0m3w' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/cdt1
       cache-control: private, max-age=3600
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
-      accept-ch: Sec-CH-Prefers-Color-Scheme, Downlink, RTT, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version, Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version-List, Sec-CH-UA-WoW64
+      accept-ch: Sec-CH-UA-WoW64
+      content-security-policy-report-only: script-src 'none'; form-action 'none'; frame-src 'none'; report-uri https://csp.withgoogle.com/csp/scaffolding/stpasrsgpc:348:0
       permissions-policy: unload=()
+      cross-origin-opener-policy-report-only: same-origin; report-to=stpasrsgpc:348:0
+      content-length: 2503
       x-xss-protection: 0
-      server: gws
+      server: Proxima
 
 [18] ✅ POST https://ogads-pa.clients6.google.com/$rpc/google.internal.onegoogle.asyncdata.v1.AsyncDataService/GetAsyncData
     Status: 200 
-    Duration: 1455ms
+    Duration: 1492ms
     Resource Type: xhr
-    Timestamp: 2025-11-27T11:15:05.325Z
+    Timestamp: 2025-12-03T13:47:22.578Z
     Request Headers:
       sec-ch-ua-platform: "Windows"
       x-user-agent: grpc-web-javascript/0.1
@@ -769,10 +770,10 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       access-control-allow-credentials: true
       x-content-type-options: nosniff
       access-control-allow-origin: https://www.google.com
-      server-timing: gfet4t7; dur=7
+      server-timing: gfet4t7; dur=10
       content-length: 30
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 11:15:06 GMT
+      date: Wed, 03 Dec 2025 13:47:23 GMT
       x-xss-protection: 0
       content-type: application/json+protobuf; charset=UTF-8
       vary: Origin, X-Origin, Referer
@@ -792,11 +793,11 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
   0
 ]
 
-[19] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.TyQmyefY7a8.L.B1.O/am=AEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=0/br=1/rs=ACT90oEzGM_-BZTTJoA7SVov6niAhXJC_Q/m=sypz?xjs=s4
+[19] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.Pabh4or7wFs.L.B1.O/am=AEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=0/br=1/rs=ACT90oGgoK3G47XxqsQG5biE5z5e3ugysQ/m=sypz?xjs=s4
     Status: 200 
-    Duration: 284ms
+    Duration: 288ms
     Resource Type: fetch
-    Timestamp: 2025-11-27T11:15:05.433Z
+    Timestamp: 2025-12-03T13:47:22.878Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -808,7 +809,7 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -817,13 +818,13 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 27974
+      age: 29300
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 03:28:50 GMT
+      expires: Thu, 03 Dec 2026 05:39:03 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 03:28:50 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:22 GMT
+      date: Wed, 03 Dec 2025 05:39:03 GMT
+      last-modified: Wed, 03 Dec 2025 04:23:15 GMT
       content-type: text/css; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -836,11 +837,11 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       server: sffe
     Response Body: .mWcf0e{cursor:pointer}@media (forced-colors:active){.CNbPnc{background-color:ButtonFace;border:1px solid transparent;border-color:ButtonBorder;color:ButtonText}}.VfL2Y{position:relative;}.YQpX9d{cursor:pointer;position:relative;}.LRZwuc{display:inline-block}.BJ1Ird .LRZwuc{display:block}.nKHyTc{color:var(--IXoxUe);float:right;font-size:12px;line-height:16px;padding-bottom:4px}.eDGqNd{color:var(--IXoxUe);float:right;font-size:12px;line-height:16px}.k62gjb:hover,.k62gjb .W7GCoc:hover,.BJ1Ird{text-decoration:underline}sentinel{}
 
-[20] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oEBBkBIkBlyavovqhW4P10F3vkVlw/m=syw0,syvy,rtH1bd,syz9,syzc,syzd,syze,syzf,sye3,syzb,syz7,syz6,syyt,sydz,syaq,syan,syai,syys,SMquOb,sy81,sy80,syg5,syg0,syg1,syfz,sygd,sygb,syfy,syfw,syfv,syfu,sy8g,sy8d,sy8f,syft,syfx,syfs,syc0,syc5,syas,sybc,sybb,syb4,syba,syb9,syax,syb7,syb8,syc2,sybv,sybg,sybu,sybp,sya2,sya0,sybo,sybn,sybe,sybq,syaz,syb0,syb1,syb2,syay,sybh,syb6,syb3,sycb,syat,sya1,syc9,syaj,syak,syaf,syao,syaw,sybr,syfr,syfq,syfn,syfl,sy8j,uxMpU,syfc,sycj,sycf,sych,sycd,syci,sybm,syce,syc8,sy91,sy8y,sy8x,sy8w,sy8v,sy8u,Mlhmy,QGR0gd,PoEs9b,Pjplud,OTA3Ae,sy8r,sy8m,A1yn5d,YIZmRd,sy8a,sy88,sy89,sy87,sy86,sy84,byfTOb,lsjVmc,LEikZe,sy82,kWgXee,ovKuLd,sgY6Zb,qafBPd,ebZ3mb,dowIGb,sy114,sy112,sy10z,syw5,sye4,d5EhJe,sy1fs,fCxEDd,sy1fr,sy1fq,sy1fp,sy1fo,sy1fn,sy15i,sy15h,sy15g,sy11c,syyw,sy119,sy11d,syxz,syxv,T1HOxc,sy11a,sy117,sy118,sy115,sypz,zx30Y,sy1fu,sy1ft,sy195,sy11g,Wo3n8,ZgGg9b,dIoSBb,sy1l3,sy1l9,sy1la,syt7,sy1l4,sy1l8,sy1l7,b6knsb,sy1kz,sy1ky,sy1gc,syxx,syej,sycu,sycs,sy9q,sycw,JKoKVe,pXdRYb,sy24v,sy9r,sy9o,sy8i,O1Gjze,TtcOte,wR5FRb,kQvlef,syeh,syee,syea,sye9,sybs,sye8,sycn,sye7,sye6,sye5,sye2,sye0,sydy,syam?xjs=s4
+[20] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA/m=syw0,syvy,rtH1bd,syz9,syzc,syzd,syze,syzf,sye3,syzb,syz7,syz6,syyt,sydz,syaq,syan,syai,syys,SMquOb,sy81,sy80,syg5,syg0,syg1,syfz,sygd,sygb,syfy,syfw,syfv,syfu,sy8g,sy8d,sy8f,syft,syfx,syfs,syc0,syc5,syas,sybc,sybb,syb4,syba,syb9,syax,syb7,syb8,syc2,sybv,sybg,sybu,sybp,sya2,sya0,sybo,sybn,sybe,sybq,syaz,syb0,syb1,syb2,syay,sybh,syb6,syb3,sycb,syat,sya1,syc9,syaj,syak,syaf,syao,syaw,sybr,syfr,syfq,syfn,syfl,sy8j,uxMpU,syfc,sycj,sycf,sych,sycd,syci,sybm,syce,syc8,sy91,sy8y,sy8x,sy8w,sy8v,sy8u,Mlhmy,QGR0gd,PoEs9b,Pjplud,OTA3Ae,sy8r,sy8m,A1yn5d,YIZmRd,sy8a,sy88,sy89,sy87,sy86,sy84,byfTOb,lsjVmc,LEikZe,sy82,kWgXee,ovKuLd,sgY6Zb,qafBPd,ebZ3mb,dowIGb,sy114,sy112,sy10z,syw5,sye4,d5EhJe,sy1fs,fCxEDd,sy1fr,sy1fq,sy1fp,sy1fo,sy1fn,sy15i,sy15h,sy15g,sy11c,syyw,sy119,sy11d,syxz,syxv,T1HOxc,sy11a,sy117,sy118,sy115,sypz,zx30Y,sy1fu,sy1ft,sy195,sy11g,Wo3n8,ZgGg9b,dIoSBb,sy1l3,sy1l9,sy1la,syt7,sy1l4,sy1l8,sy1l7,b6knsb,sy1kz,sy1ky,sy1gc,syxx,syej,sycu,sycs,sy9q,sycw,JKoKVe,pXdRYb,sy24v,sy9r,sy9o,sy8i,O1Gjze,TtcOte,wR5FRb,kQvlef,syeh,syee,syea,sye9,sybs,sye8,sycn,sye7,sye6,sye5,sye2,sye0,sydy,syam?xjs=s4
     Status: 200 
-    Duration: 356ms
+    Duration: 363ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:05.436Z
+    Timestamp: 2025-12-03T13:47:22.878Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -852,7 +853,7 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -861,13 +862,13 @@ b.push(`${c}:`+(a[c].b?"1":"0"));return b.join(",")},uum=function(a,b){a=String(
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 36291
+      age: 39760
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:10:13 GMT
+      expires: Thu, 03 Dec 2026 02:44:43 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:10:13 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 02:44:43 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -885,11 +886,11 @@ _.aSb=_.cd("rtH1bd",[_.G1a]);
 try{
 var WRb,XRb;_.VRb=function(a){return JSON.stringify(a,(b,c)=>c instanceof Map?Object.fromEntries(c):c)};WRb=function(a,b,c,d){const e=()=>d?a.pop(d,!0):_.Ih(),f=()=>c!==d;return b?{chb:e,QCb:f,Bpb:2}:{chb:e,QCb:f,N9:()=>c?a.pop(c,!0):_.Ih(),Bpb:6}};XRb=function(a,b){return{chb:()=>a.oa(b.Es())||_.Ih(),QCb:()=>!0,Bpb:2}};_.YRb=a=>new _.Yu(a);_.YRb=a=>new _.Zu(a);_.ZRb=class{constructor(){this.ka=new Map}and(a,...b){return a.call(null,...b,this)}};_.$Rb=class{constructor(a,b,c){this.oa=c;this.wa=a;this.ka=b}Zbb(a,{Dga:b={},fP:c}={}){const d=this.ka.getState()||{id:"",pushId:""};var e=this.oa||d;e={url:_.YRb(e.url||""),state:e.Xk||null};const f=e.url.toString(),g=_.VRb(e.state);for(const k of this.wa.keys())if(a.has(k)){const m=a.get(k);this.wa.get(k).Sk(m,e)}const {replace:h=!1}=b;if(f===e.url.toString()&&g===_.VRb(e.state))return _.zg(WRb(this.ka,h,d.id,d.id));this.... (truncated)
 
-[21] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oEBBkBIkBlyavovqhW4P10F3vkVlw/m=syah,sya6,sya8,sya7,syad,sy9y,sy9w,sydx,sydv,syck,sydu,sydt,sydi,sydr,syd8,sycz,syd0,sydq,sybl,sydg,sydp,syd3,syd4,sydn,syd2,sydm,sycl,syd5,sycx,sydf,sydk,syde,sydj,sydd,sydc,syd1,syda,syd9,syd7,syd6,sydh,sycy,sycr,sycm,sy9v,sy7w,zbML3c,gskBEc,sy19g,s980lf,sytr,loL8vb,syuh,syug,syuf,ms4mZb,sys7,B2qlPe,syxt,NzU6V,sy11n,sy11l,zGLm3b,sy1ke,sy1kd,sy1kc,sy19s,sy19t,DhPYme,sy1lp,sy1ks,sy1kq,sy1lq,sy1kr,sy1lt,sy1ls,sy1ln,sy1lo,KHourd?xjs=s4
+[21] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA/m=syah,sya6,sya8,sya7,syad,sy9y,sy9w,sydx,sydv,syck,sydu,sydt,sydi,sydr,syd8,sycz,syd0,sydq,sybl,sydg,sydp,syd3,syd4,sydn,syd2,sydm,sycl,syd5,sycx,sydf,sydk,syde,sydj,sydd,sydc,syd1,syda,syd9,syd7,syd6,sydh,sycy,sycr,sycm,sy9v,sy7w,zbML3c,gskBEc,sy19g,s980lf,sytr,loL8vb,syuh,syug,syuf,ms4mZb,sys7,B2qlPe,syxt,NzU6V,sy11n,sy11l,zGLm3b,sy1ke,sy1kd,sy1kc,sy19s,sy19t,DhPYme,sy1lp,sy1ks,sy1kq,sy1lq,sy1kr,sy1lt,sy1ls,sy1ln,sy1lo,KHourd?xjs=s4
     Status: 200 
-    Duration: 351ms
+    Duration: 349ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:05.437Z
+    Timestamp: 2025-12-03T13:47:22.878Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -901,7 +902,7 @@ var WRb,XRb;_.VRb=function(a){return JSON.stringify(a,(b,c)=>c instanceof Map?Ob
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -910,13 +911,13 @@ var WRb,XRb;_.VRb=function(a){return JSON.stringify(a,(b,c)=>c instanceof Map?Ob
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 36292
+      age: 39760
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:10:13 GMT
+      expires: Thu, 03 Dec 2026 02:44:43 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:10:13 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 02:44:43 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -940,11 +941,11 @@ _.Thb=[-500,_.F,-1,_.Ul,1,_.F,-1,8,_.nr,484,_.at];_.dt=[0,_.ct,-1];
 try{
 _.jib=_.Nb(function(a,b,c,d){if(_.ac)return _.lha(a,b,c,d);if(a.ka!==1)return!1;_.$b(b,c,d,_.pha(a.oa));return!0},_.uga,_.ej);_.kib=_.Ob(_.rha,function(a,b,c){b=_.Mb(_.kb,b,!0);if(b!=null)for(let d=0;d<b.length;d++)_.yga(a,c,b[d])},_.SAa);_.lib=[-500,1,_.B,_.ct,-1,_.E,-1,1,_.H,_.ct,_.ft,_.D,_.Ul,_.ft,486,_.at];_.mib=[-500,_.H,_.D,_.B,-1,1,_.G,_.ft,_.... (truncated)
 
-[22] ✅ GET https://www.google.com/gen_204?atyp=i&ct=psnt&cad=&nt=navigate&ei=tjIoabW6K6_Jp84P-cXqeA&zx=1764242105703&opi=89978449
+[22] ✅ GET https://www.google.com/gen_204?atyp=i&ct=psnt&cad=&nt=navigate&ei=aD8wab7qIOPZkPIP1Kb2OQ&zx=1764769642880&opi=89978449
     Status: 204 
-    Duration: 397ms
+    Duration: 652ms
     Resource Type: image
-    Timestamp: 2025-11-27T11:15:05.707Z
+    Timestamp: 2025-12-03T13:47:22.883Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -956,7 +957,7 @@ _.jib=_.Nb(function(a,b,c,d){if(_.ac)return _.lha(a,b,c,d);if(a.ka!==1)return!1;
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -964,23 +965,23 @@ _.jib=_.Nb(function(a,b,c,d){if(_.ac)return _.lha(a,b,c,d);if(a.ka!==1)return!1;
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-IYGXrBGXndYT5EXj1ICfCA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-xrpoJVlKUIgXcd3hE29lZw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:05 GMT
+      date: Wed, 03 Dec 2025 13:47:23 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[23] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.TyQmyefY7a8.L.B1.O/am=AEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=0/br=1/rs=ACT90oEzGM_-BZTTJoA7SVov6niAhXJC_Q/m=y05UD,PPhKqf,sy15f,sy159,sy16r,sy15y,sy15t,sy1bs,sy1bt,sy15k,sy1bu,synh,symd,synt,sy1bv,sy1bj,sy1bi,sy1bk,sy1be,epYOx?xjs=s4
+[23] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.Pabh4or7wFs.L.B1.O/am=AEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=0/br=1/rs=ACT90oGgoK3G47XxqsQG5biE5z5e3ugysQ/m=y05UD,PPhKqf,sy15f,sy159,sy16r,sy15y,sy15t,sy1bs,sy1bt,sy15k,sy1bu,synh,symd,synt,sy1bv,sy1bj,sy1bi,sy1bk,sy1be,epYOx?xjs=s4
     Status: 200 
-    Duration: 261ms
+    Duration: 285ms
     Resource Type: fetch
-    Timestamp: 2025-11-27T11:15:05.861Z
+    Timestamp: 2025-12-03T13:47:23.269Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -992,7 +993,7 @@ _.jib=_.Nb(function(a,b,c,d){if(_.ac)return _.lha(a,b,c,d);if(a.ka!==1)return!1;
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1001,13 +1002,13 @@ _.jib=_.Nb(function(a,b,c,d){if(_.ac)return _.lha(a,b,c,d);if(a.ka!==1)return!1;
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 27023
+      age: 29300
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 03:44:42 GMT
+      expires: Thu, 03 Dec 2026 05:39:03 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 03:44:42 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:22 GMT
+      date: Wed, 03 Dec 2025 05:39:03 GMT
+      last-modified: Wed, 03 Dec 2025 04:23:15 GMT
       content-type: text/css; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -1020,11 +1021,11 @@ _.jib=_.Nb(function(a,b,c,d){if(_.ac)return _.lha(a,b,c,d);if(a.ka!==1)return!1;
       server: sffe
     Response Body: .jbBItf{display:block;position:relative}.DU0NJ{bottom:0;left:0;position:absolute;right:0;top:0}.lP3Jof{display:inline-block;position:relative}.nNMuOd{animation:qli-container-rotate 1568.2352941176ms linear infinite}@keyframes qli-container-rotate{from{transform:rotate(0)}to{transform:rotate(1turn)}}.RoKmhb{height:100%;opacity:0;position:absolute;width:100%}.nNMuOd .VQdeab{animation:qli-fill-unfill-rotate 5332ms cubic-bezier(0.4,0,0.2,1) infinite both,qli-blue-fade-in-out 5332ms cubic-bezier(0.4,0,0.2,1) infinite both}.nNMuOd .IEqiAf{animation:qli-fill-unfill-rotate 5332ms cubic-bezier(0.4,0,0.2,1) infinite both,qli-red-fade-in-out 5332ms cubic-bezier(0.4,0,0.2,1) infinite both}.nNMuOd .smocse{animation:qli-fill-unfill-rotate 5332ms cubic-bezier(0.4,0,0.2,1) infinite both,qli-yellow-fade-in-out 5332ms cubic-bezier(0.4,0,0.2,1) infinite both}.nNMuOd .FlKbCe{animation:qli-fill-unfill-rotate 5332ms cubic-bezier(0.4,0,0.2,1) infinite both,qli-green-fade-in-out 5332ms cubic-bezier(0.4,0,0.2,... (truncated)
 
-[24] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oEBBkBIkBlyavovqhW4P10F3vkVlw/m=qTnoBf,sy97,sOXFj,oGtAuc,NJ1rfe,sy9h,q0xTif,y05UD,PPhKqf,sy15f,sy159,sy16r,sy15e,sy15d,sy15c,sy15b,sy1ca,sy15y,sy1c9,sy15t,sy1c1,sy1c0,sy1bs,sy171,syf7,sy1bz,sy16t,sy1bo,sy1bt,sy1bp,sy16z,sy170,sy1c2,sy15k,sy1bx,sy1bw,sy1bu,synh,symd,synt,sy1bv,sy1c4,sy1bj,sy1bq,sy1bi,sy1bn,sy1bk,sy17x,sy1br,sy1be,sy173,sy174,epYOx?xjs=s4
+[24] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA/m=qTnoBf,sy97,sOXFj,oGtAuc,NJ1rfe,sy9h,q0xTif,y05UD,PPhKqf,sy15f,sy159,sy16r,sy15e,sy15d,sy15c,sy15b,sy1ca,sy15y,sy1c9,sy15t,sy1c1,sy1c0,sy1bs,sy171,syf7,sy1bz,sy16t,sy1bo,sy1bt,sy1bp,sy16z,sy170,sy1c2,sy15k,sy1bx,sy1bw,sy1bu,synh,symd,synt,sy1bv,sy1c4,sy1bj,sy1bq,sy1bi,sy1bn,sy1bk,sy17x,sy1br,sy1be,sy173,sy174,epYOx?xjs=s4
     Status: 200 
-    Duration: 272ms
+    Duration: 291ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:05.862Z
+    Timestamp: 2025-12-03T13:47:23.269Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1036,7 +1037,7 @@ _.jib=_.Nb(function(a,b,c,d){if(_.ac)return _.lha(a,b,c,d);if(a.ka!==1)return!1;
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1045,13 +1046,13 @@ _.jib=_.Nb(function(a,b,c,d){if(_.ac)return _.lha(a,b,c,d);if(a.ka!==1)return!1;
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 36291
+      age: 39760
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:10:14 GMT
+      expires: Thu, 03 Dec 2026 02:44:43 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:10:14 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 02:44:43 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -1068,11 +1069,11 @@ _.t("qTnoBf");
 var Web=function(a,b,c){var d=a.getAttribute(b)||"";c=String(c||"");c=c.split(";").filter(e=>e);d=d.split(";").filter(e=>_.oaa(e,":.CLIENT"));_.Ka(c,d);(c=c.join(";"))?a.setAttribute(b,c):a.removeAttribute(b);_.Kqa(a)},Xeb=function(a,b,c){c?a.setAttribute(b,c):a.removeAttribute(b);a.hasAttribute("c-wiz")||(b=a,a.tagName==="C-DATA"&&(b=a.parentElement),_.cPa(b,!1))},afb=function(){Yeb||(Yeb=!0,Zeb=_.pua,_.pua=a=>{Zeb&&Zeb(a);for(let d=0;d<a.length;d++){const e=a[d];if(_.Mg(e)){var b=_.wh(e),c=b.ka;
 c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<a.length;d++){const e=a[d];if(_.Mg(e)){var b=_.wh(e),c=b.ka;c.ka||c.Ba.push(e);_.rNa(b.ka)}}})},Yeb=!1,Zeb,$eb,bfb=function(a){if(a=a||document.body){var b=document.head.querySelector("style[data-late-css]");for(const c of Array.from(a.querySelectorAll("style[data-server-css-collection], link[data-server-css-collection]")))c.tagName==="STYLE"?... (truncated)
 
-[25] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=tjIoabW6K6_Jp84P-cXqeA&s=promo&rt=hpbas.2330&zx=1764242105827&opi=89978449
+[25] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=aD8wab7qIOPZkPIP1Kb2OQ&s=promo&rt=hpbas.2522&zx=1764769643261&opi=89978449
     Status: 204 
-    Duration: 954ms
+    Duration: 906ms
     Resource Type: ping
-    Timestamp: 2025-11-27T11:15:05.862Z
+    Timestamp: 2025-12-03T13:47:23.270Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1084,7 +1085,7 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1092,23 +1093,23 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-B71ymG5jX53jrlbwbjm6Nw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-lwnzo2N-0zw9JRBLVOlSfg' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:06 GMT
+      date: Wed, 03 Dec 2025 13:47:24 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[26] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=tjIoabW6K6_Jp84P-cXqeA&s=promo&rt=hpbas.2330,hpbarr.2&zx=1764242105829&opi=89978449
+[26] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=aD8wab7qIOPZkPIP1Kb2OQ&s=promo&rt=hpbas.2522,hpbarr.0&zx=1764769643261&opi=89978449
     Status: 204 
-    Duration: 955ms
+    Duration: 908ms
     Resource Type: ping
-    Timestamp: 2025-11-27T11:15:05.862Z
+    Timestamp: 2025-12-03T13:47:23.270Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1120,7 +1121,7 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1128,23 +1129,23 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-oPcvUZyThFNGSBEPtMgprA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-hv_MMCYzE8gA7YVhTalB8w' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:06 GMT
+      date: Wed, 03 Dec 2025 13:47:24 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[27] ✅ POST https://www.google.com/gen_204?atyp=i&ei=tjIoabW6K6_Jp84P-cXqeA&dt19=2&prm23=0&zx=1764242105835&opi=89978449
+[27] ✅ POST https://www.google.com/gen_204?atyp=i&ei=aD8wab7qIOPZkPIP1Kb2OQ&dt19=2&prm23=0&zx=1764769643263&opi=89978449
     Status: 204 
-    Duration: 1262ms
+    Duration: 977ms
     Resource Type: ping
-    Timestamp: 2025-11-27T11:15:05.862Z
+    Timestamp: 2025-12-03T13:47:23.270Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1156,7 +1157,7 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1164,13 +1165,13 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-qSav1wfY1n5gPw_I2wOWXQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-6brOqGskcF0WWjHWeyqDTg' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:06 GMT
+      date: Wed, 03 Dec 2025 13:47:24 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
@@ -1178,9 +1179,9 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
 
 [28] ✅ GET https://www.google.com/client_204?cs=1&opi=89978449
     Status: 204 
-    Duration: 301ms
+    Duration: 304ms
     Resource Type: xhr
-    Timestamp: 2025-11-27T11:15:05.862Z
+    Timestamp: 2025-12-03T13:47:23.270Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1192,7 +1193,7 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1201,24 +1202,24 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       strict-transport-security: max-age=31536000
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-80_tKZy_yNTLnxm4bpOXdg' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/cdt1
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-G1zTeFIHXgQjNqvTmJmiDQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/cdt1
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/cdt1"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       p3p: CP="This is not a P3P policy! See g.co/p3phelp for more info."
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:05 GMT
+      date: Wed, 03 Dec 2025 13:47:23 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[29] ✅ GET https://www.google.com/async/hpba?vet=10ahUKEwi17dH-mZKRAxWv5MkDHfmiGg8Qj-0KCBY..i&ei=tjIoabW6K6_Jp84P-cXqeA&opi=89978449&yv=3&sp_imghp=false&sp_hpte=1&sp_hpep=1&stick=&cs=0&async=_basejs:%2Fxjs%2F_%2Fjs%2Fk%3Dxjs.hd.en_GB.HYnX6N8vTJQ.2019.O%2Fam%3DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA%2Fdg%3D0%2Fbr%3D1%2Frs%3DACT90oEBBkBIkBlyavovqhW4P10F3vkVlw,_basecss:%2Fxjs%2F_%2Fss%2Fk%3Dxjs.hd.TyQmyefY7a8.L.B1.O%2Fam%3DAEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ%2Fbr%3D1%2Frs%3DACT90oEzGM_-BZTTJoA7SVov6niAhXJC_Q,_basecomb:%2Fxjs%2F_%2Fjs%2Fk%3Dxjs.hd.en_GB.HYnX6N8vTJQ.2019.O%2Fck%3Dxjs.hd.TyQmyefY7a8.L.B1.O%2Fam%3DAEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICCPQQAAAAAOCAASAEAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAgAAgAEgACCAEAIAAIMCAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAyAAYImEAASAAQEYsAAASAACAAAAAAAAAIAKggAAAAQNAAAAAAgAAACAAFkIQEBUQAAgABAAAAAAAAAQAAAAAACACAAgIBAAAAKCAQABgECAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAJwAgBAAIAHgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA%2Fd%3D1%2Fed%3D1%2Fdg%3D0%2Fbr%3D1%2Fujg%3D1%2Frs%3DACT90oE1K6anPCADTyBirbcY6554M75edQ,_fmt:prog,_id:_tjIoabW6K6_Jp84P-cXqeA_8
+[29] ✅ GET https://www.google.com/async/hpba?vet=10ahUKEwi-vqOcx6GRAxXjLEQIHVSTPQcQj-0KCBY..i&ei=aD8wab7qIOPZkPIP1Kb2OQ&opi=89978449&yv=3&sp_imghp=false&sp_hpte=1&sp_hpep=1&stick=&cs=0&async=_basejs:%2Fxjs%2F_%2Fjs%2Fk%3Dxjs.hd.en_GB.PrXx8QVVjE4.2019.O%2Fam%3DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA%2Fdg%3D0%2Fbr%3D1%2Frs%3DACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA,_basecss:%2Fxjs%2F_%2Fss%2Fk%3Dxjs.hd.Pabh4or7wFs.L.B1.O%2Fam%3DAEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ%2Fbr%3D1%2Frs%3DACT90oGgoK3G47XxqsQG5biE5z5e3ugysQ,_basecomb:%2Fxjs%2F_%2Fjs%2Fk%3Dxjs.hd.en_GB.PrXx8QVVjE4.2019.O%2Fck%3Dxjs.hd.Pabh4or7wFs.L.B1.O%2Fam%3DAEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICCPQQAAAAAOCAASAEAAAAAAAAAAAAAJCACACAAAAAAAAAAAAAAAAAAAAAgAAAAAgAAgAEgACCAEAIAAIMCAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAyAAYImEAASAAQEYsAAASAACAAAAAAAAAIAKggAAAAQNAAAAAAgAAACAAFkIQEBUQAAgABAAAAAAAAAQAAAAAACACAAgIBAAAAKCAQABgECAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAJwAgBAAIAHgIIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiRQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA%2Fd%3D1%2Fed%3D1%2Fdg%3D0%2Fbr%3D1%2Fujg%3D1%2Frs%3DACT90oEjaZ2N1CVFYYbKrwEdDp9SQBiGcA,_fmt:prog,_id:_aD8wab7qIOPZkPIP1Kb2OQ_8
     Status: 200 
-    Duration: 356ms
+    Duration: 329ms
     Resource Type: xhr
-    Timestamp: 2025-11-27T11:15:05.862Z
+    Timestamp: 2025-12-03T13:47:23.270Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1230,7 +1231,7 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1246,21 +1247,21 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       x-content-type-options: nosniff
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 11:15:05 GMT
+      date: Wed, 03 Dec 2025 13:47:23 GMT
       x-xss-protection: 0
       content-type: text/plain; charset=UTF-8
       content-disposition: attachment; filename="f.txt"
-      version: 836538871
+      version: 839125008
       server: gws
       x-frame-options: SAMEORIGIN
     Response Body: )]}'
-22;["uTIoaYuRG-zsptQP6rKZ8Ag","2332"]d;[12,null,"0"]160e;{"css_modules":[{"module_id":"sygh","style_sheet":{"private_do_not_access_or_else_safe_style_sheet_wrapped_value":":root{--COEmY:#1f1f1f;--xhUGwc:#fff}:root{--vZe0jb:#a8c7fa;--nwXobb:#638ed4;--VuZXBd:#001d35;--uLz37c:#545d7e;--jINu6c:#001d35;--TyVYld:#0b57d0;--ZEpPmd:#c3d9fb;--QWaaaf:#638ed4;--DEeStf:#f5f8ff;--TSWZIb:#e5edff;--BRLwE:#d3e3fd;--gS5jXb:#dadce0;--Aqn7xd:#d2d2d2;--EpFNW:#fff;--Xqboce:#1f1f1f;--IXoxUe:#5e5e5e;--bbQxAb:#474747;--YLNNHc:#1f1f1f;--TMYS9:#0b57d0;--JKqx2:#1a0dab;--rrJJUc:var(--Nsm0ce);--mXZkqc:#d2d2d2;--Nsm0ce:#0b57d0;--vdwxpe:#a8c7fa;--ywz01c:#fbbc04;--XKMDxc:#f3f5f6;--aYn2S:#f3f5f6;--Lm570b:#dee1e3}:root{--amnPwe:var(--IXoxUe);--ZXiaGf:#fff;--EoKObe:#fff;--cIehld:#fff;--ONhrGd:#dadce0;--gVUKcd:rgba(0,0,0,0.6)}sentinel{}"}},{"module_id":"syjp","style_sheet":{"private_do_not_access_or_else_safe_style_sheet_wrapped_value":".sjVJQd{font-family:Google Sans,Arial,sans-serif;font-size:14px;font-weight:500;l... (truncated)
+24;["az8waeXfGoiXwbkPxv_QgAg","2336",1]d;[12,null,"0"]160e;{"css_modules":[{"module_id":"sygh","style_sheet":{"private_do_not_access_or_else_safe_style_sheet_wrapped_value":":root{--COEmY:#1f1f1f;--xhUGwc:#fff}:root{--vZe0jb:#a8c7fa;--nwXobb:#638ed4;--VuZXBd:#001d35;--uLz37c:#545d7e;--jINu6c:#001d35;--TyVYld:#0b57d0;--ZEpPmd:#c3d9fb;--QWaaaf:#638ed4;--DEeStf:#f5f8ff;--TSWZIb:#e5edff;--BRLwE:#d3e3fd;--gS5jXb:#dadce0;--Aqn7xd:#d2d2d2;--EpFNW:#fff;--Xqboce:#1f1f1f;--IXoxUe:#5e5e5e;--bbQxAb:#474747;--YLNNHc:#1f1f1f;--TMYS9:#0b57d0;--JKqx2:#1a0dab;--rrJJUc:var(--Nsm0ce);--mXZkqc:#d2d2d2;--Nsm0ce:#0b57d0;--vdwxpe:#a8c7fa;--ywz01c:#fbbc04;--XKMDxc:#f3f5f6;--aYn2S:#f3f5f6;--Lm570b:#dee1e3}:root{--amnPwe:var(--IXoxUe);--ZXiaGf:#fff;--EoKObe:#fff;--cIehld:#fff;--ONhrGd:#dadce0;--gVUKcd:rgba(0,0,0,0.6)}sentinel{}"}},{"module_id":"syjp","style_sheet":{"private_do_not_access_or_else_safe_style_sheet_wrapped_value":".sjVJQd{font-family:Google Sans,Arial,sans-serif;font-size:14px;font-weight:500... (truncated)
 
-[30] ✅ POST https://www.google.com/gen_204?atyp=i&ei=tjIoabW6K6_Jp84P-cXqeA&vet=10ahUKEwi17dH-mZKRAxWv5MkDHfmiGg8QuqMJCC4..s&bl=Rbu2&s=webhp&lpl=CAUYATAGOANiCAgDEN_zmuEB&zx=1764242105860&opi=89978449
+[30] ✅ POST https://www.google.com/gen_204?atyp=i&ei=aD8wab7qIOPZkPIP1Kb2OQ&vet=10ahUKEwi-vqOcx6GRAxXjLEQIHVSTPQcQuqMJCC4..s&bl=t8WN&s=webhp&lpl=CAUYATADOANiCAgDEIC134wC&zx=1764769643271&opi=89978449
     Status: 204 
-    Duration: 1264ms
+    Duration: 979ms
     Resource Type: ping
-    Timestamp: 2025-11-27T11:15:05.864Z
+    Timestamp: 2025-12-03T13:47:23.272Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1272,7 +1273,7 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1280,23 +1281,23 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-Jm1RvFKHPZZ5GdbdPJaE3A' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-BbMIvThQOstEYUGzuQea7g' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:06 GMT
+      date: Wed, 03 Dec 2025 13:47:24 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[31] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.TyQmyefY7a8.L.B1.O/am=AEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=0/br=1/rs=ACT90oEzGM_-BZTTJoA7SVov6niAhXJC_Q/m=GnLh6e,sy1fd,sy1f5,sy1dk,sy1el,sy1f1,sy1dj,sy1f2,sy1ez,sy1ey,sy1dl,sy1et,sy1en,sy1er,sy1ed,sy1e0,sy1ef,sy1ee,sy1ec,sy1ea,sy1e6,sy1e4,sy1e3,sy1dn,sy1dm,sy1ev,sy1db,sykk,syny?xjs=s4
+[31] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.Pabh4or7wFs.L.B1.O/am=AEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=0/br=1/rs=ACT90oGgoK3G47XxqsQG5biE5z5e3ugysQ/m=GnLh6e,sy1fd,sy1f5,sy1dk,sy1el,sy1f1,sy1dj,sy1f2,sy1ez,sy1ey,sy1dl,sy1et,sy1en,sy1er,sy1ed,sy1e0,sy1ef,sy1ee,sy1ec,sy1ea,sy1e6,sy1e4,sy1e3,sy1dn,sy1dm,sy1ev,sy1db,sykk,syny?xjs=s4
     Status: 200 
-    Duration: 291ms
+    Duration: 295ms
     Resource Type: fetch
-    Timestamp: 2025-11-27T11:15:06.136Z
+    Timestamp: 2025-12-03T13:47:23.565Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1308,7 +1309,7 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1317,13 +1318,13 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 29591
+      age: 29299
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 03:01:54 GMT
+      expires: Thu, 03 Dec 2026 05:39:04 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 03:01:54 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:22 GMT
+      date: Wed, 03 Dec 2025 05:39:04 GMT
+      last-modified: Wed, 03 Dec 2025 04:23:15 GMT
       content-type: text/css; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -1336,11 +1337,11 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       server: sffe
     Response Body: .MTIaKb,.LwDUdc,.FAoEle,.RlTCPd,.wPNfjb,.caNvfd,.Vnob4b,.bbxTBb,.DpgmK,.YKUhfb,.uNnvb,.aVsZpf,.RoOVmf,.dIfvQd,.V3Ezn,.Enb9pe,.mYuoaf,.kJSB8,.tUr4Kc,.iQMtqe{--Yi4Nb:var(--mXZkqc);--pEa0Bc:var(--bbQxAb);--kloG3:var(--mXZkqc);--YaIeMb:var(--XKMDxc);--Pa8Wlb:var(--Nsm0ce);--izGsqb:var(--Nsm0ce);--todMNcl:var(--EpFNW);--p9J9c:var(--Nsm0ce)}:root{--KIZPne:#a3c9ff;--xPpiM:#001d35;--Ehh4mf:var(--Nsm0ce)}:root{--Yi4Nb:#d2d2d2;--pEa0Bc:#474747;--kloG3:#d2d2d2;--YaIeMb:#f7f8f9;--Pa8Wlb:#0b57d0;--izGsqb:#0b57d0;--todMNcl:#fff;--p9J9c:#0b57d0}.EpPYLd{display:block;position:relative}.YpcDnf{padding:0 16px;vertical-align:middle}.WtV5nd .YpcDnf{padding-left:28px}.EpPYLd:hover{cursor:pointer}.EpPYLd,.CB8nDe:hover{cursor:default}.LGiluc,.EpPYLd[disabled]{pointer-events:none;cursor:default}@media (forced-colors:active){.EpPYLd[disabled]{color:GrayText}}.LGiluc{border-top:1px solid;height:0;margin:5px 0}:root{--emphasized-curve:cubic-bezier(0.38,0.72,0,1)}@supports (animation-timing-function:linear(0,1)){... (truncated)
 
-[32] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oEBBkBIkBlyavovqhW4P10F3vkVlw/m=sy1d0,qj9t6b,syx7,sy1cs,sy1cr,dE8Uac,sy4ag,sy22g,Kqhykb,CIZTGb,GnLh6e,sy1d5,sy1d4,sy1d2,bFudd,sy1cw,sy1cz,sy1cx,sy1cu,sy1cv,sy156,sy1cn,sy155,sy1ct,WlOj5b,HUEBbc,sy1cq,sy1cm,TxCJfd,sy1cp,hjoqoe,ropkZ,sy1df,sy1fj,sy1fi,sy1dv,syx8,sy1dt,sy1fd,sy1e7,syx9,syxa,sy1f5,sy1d6,sy1d7,sy1dp,syxn,sy1dr,sy1ek,sy1dk,syxe,sy1el,sy1e1,sy1dw,sy1dz,syxc,sy1f1,sy1f0,sy1dj,syxb,sy1f2,sy1ez,sy1ey,sy1dl,sy1et,sy1d8,sy1d9,sy1eo,sy1en,sy1er,sy1eg,sy1ed,sy1e0,sy1ef,sy1ee,sy1ec,sy1ea,sy1e6,sy1e4,sy1e3,sy1es,sy1dn,sy1dm,sy1ev,sy1db,sy1da,sy1e2,sy1di,sy1dh,sy1dd,sy1dc,sy1de,sysr,jNZDL,sy1h1,P10Owf,sy11i,gSZvdb,syy9,WlNQGd,sytn,sytl,sytk,DPreE,syyb,syya,nabPbb,syy7,syy5,sykk,syny,CnSW2d,syy1,syxy,syy0,nRwWne,syy4,fXO0xe?xjs=s4
+[32] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA/m=sy1d0,qj9t6b,syx7,sy1cs,sy1cr,dE8Uac,sy4ag,sy22g,Kqhykb,CIZTGb,GnLh6e,sy1d5,sy1d4,sy1d2,bFudd,sy1cw,sy1cz,sy1cx,sy1cu,sy1cv,sy156,sy1cn,sy155,sy1ct,WlOj5b,HUEBbc,sy1cq,sy1cm,TxCJfd,sy1cp,hjoqoe,ropkZ,sy1df,sy1fj,sy1fi,sy1dv,syx8,sy1dt,sy1fd,sy1e7,syx9,syxa,sy1f5,sy1d6,sy1d7,sy1dp,syxn,sy1dr,sy1ek,sy1dk,syxe,sy1el,sy1e1,sy1dw,sy1dz,syxc,sy1f1,sy1f0,sy1dj,syxb,sy1f2,sy1ez,sy1ey,sy1dl,sy1et,sy1d8,sy1d9,sy1eo,sy1en,sy1er,sy1eg,sy1ed,sy1e0,sy1ef,sy1ee,sy1ec,sy1ea,sy1e6,sy1e4,sy1e3,sy1es,sy1dn,sy1dm,sy1ev,sy1db,sy1da,sy1e2,sy1di,sy1dh,sy1dd,sy1dc,sy1de,sysr,jNZDL,sy1h1,P10Owf,sy11i,gSZvdb,syy9,WlNQGd,sytn,sytl,sytk,DPreE,syyb,syya,nabPbb,syy7,syy5,sykk,syny,CnSW2d,syy1,syxy,syy0,nRwWne,syy4,fXO0xe?xjs=s4
     Status: 200 
-    Duration: 366ms
+    Duration: 370ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:06.136Z
+    Timestamp: 2025-12-03T13:47:23.565Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1352,7 +1353,7 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1361,13 +1362,13 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 36291
+      age: 35295
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:10:14 GMT
+      expires: Thu, 03 Dec 2026 03:59:08 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:10:14 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 03:59:08 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -1375,7 +1376,7 @@ c.ka||c.Aa.push(e);_.rNa(b.ka)}}},$eb=_.qua,_.qua=a=>{$eb&&$eb(a);for(let d=0;d<
       cross-origin-resource-policy: cross-origin
       content-security-policy-report-only: require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/gws-team
       accept-ranges: bytes
-      content-length: 111138
+      content-length: 111145
       x-xss-protection: 0
       server: sffe
     Response Body: this._hd=this._hd||{};(function(_){var window=this;
@@ -1392,9 +1393,9 @@ var PVb;PVb=function(a,b){return O... (truncated)
 
 [33] ✅ POST https://play.google.com/log?format=json&hasfast=true
     Status: 200 
-    Duration: 2220ms
+    Duration: 1630ms
     Resource Type: xhr
-    Timestamp: 2025-11-27T11:15:06.319Z
+    Timestamp: 2025-12-03T13:47:23.566Z
     Request Headers:
       sec-ch-ua-platform: "Windows"
       referer: https://www.google.com/
@@ -1451,14 +1452,14 @@ var PVb;PVb=function(a,b){return O... (truncated)
   373,
   [
     [
-      "1764242105306",
+      "1764769642560",
       null,
       null,
       null,
       null,
       null,
       null,
-      "[1,40400,538,null,\"833102617.0\",\"tjIoaeqqLMLU6-APhuCRwQo\",null,null,null,\"en\",\"IND\",0,19,2920,null,0,0,null,\"og-490b3354-1af4-4f1e-b78f-74258c077862\",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,0,null,[2,5,\"nn\",52],null,null,null,null,1,null,1]",
+      "[1,40400,538,null,\"838538220.0\",\"aD8wacTPIeOQ8L0Pkq-RyQ0\",null,null,null,\"en\",\"IND\",0,19,2854,null,0,0,null,\"og-7cb0d87c-0f28-4189-ab9e-92dab5182a7c\",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,0,null,[2,5,\"dz\",4],null,null,null,null,1,null,1]",
       null,
       null,
       null,
@@ -1470,7 +1471,7 @@ var PVb;PVb=function(a,b){return O... (truncated)
         null,
         null,
         null,
-        "[null,null,[3701384,102772546]]"
+        "[null,null,[3700949,3701384,102772546]]"
       ],
       null,
       null,
@@ -1479,7 +1480,7 @@ var PVb;PVb=function(a,b){return O... (truncated)
       1
     ]
   ],
-  "1764242106315",
+  "1764769643565",
   null,
   null,
   null,
@@ -1523,18 +1524,18 @@ var PVb;PVb=function(a,b){return O... (truncated)
       access-control-allow-origin: https://www.google.com
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 131
-      date: Thu, 27 Nov 2025 11:15:07 GMT
+      date: Wed, 03 Dec 2025 13:47:25 GMT
       x-xss-protection: 0
       content-type: text/plain; charset=UTF-8
       server: Playlog
       access-control-allow-headers: X-Playlog-Web
     Response Body: ["-1",null,[[["ANDROID_BACKUP",0],["BATTERY_STATS",0],["SMART_SETUP",0],["TRON",0]],-3334737594024971225],[],{"175237375":[10000]}]
 
-[34] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oEBBkBIkBlyavovqhW4P10F3vkVlw/m=aLUfP?xjs=s4
+[34] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA/m=aLUfP?xjs=s4
     Status: 200 
-    Duration: 296ms
+    Duration: 297ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:06.514Z
+    Timestamp: 2025-12-03T13:47:23.956Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1546,7 +1547,7 @@ var PVb;PVb=function(a,b){return O... (truncated)
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1555,13 +1556,13 @@ var PVb;PVb=function(a,b){return O... (truncated)
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 36429
+      age: 39760
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:07:57 GMT
+      expires: Thu, 03 Dec 2026 02:44:44 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:07:57 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 02:44:44 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -1579,11 +1580,11 @@ var fyb=class{constructor(a){this.Cw=a}};_.gyb=!1;
 _.Tf(_.YUa,class extends _.Ro{static Qa(){return{service:{window:_.So}}}constructor(a){super();this.window=a.service.window.get();this.wa=this.Cw();this.oa=window.orientation;this.ka=()=>{const b=this.Cw();var c="orientation"in window&&Math.abs(window.orientation)===90&&this.oa===-1*window.orientation;this.oa=window.orientation;if(b!==this.wa||c){this.wa=b;for(const d of this.listeners){c=new fyb(b);try{d(c)}catch(e){_.ia(e)}}}};this.listeners=new Set;this.window.addEventListener("resize",this.ka);
 "orientation"in window&&this.window.addEventListener("orientationchange",this.ka)}addListener(a){this.listeners.add(a)}removeListener(a){this.listeners.delete(a)}Cw(){if(_.wa()&&_.ua()&&!navigator.userAgent.includes("GSA")){var a=_.ei(this.window);a=new _.ce(a.width,Math.round(a.width*this.window.innerHeight/this.window.innerWidth))}else a=this.Jc()||(_.wa()?_.wa()&&_.ua(... (truncated)
 
-[35] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oEBBkBIkBlyavovqhW4P10F3vkVlw/m=lOO0Vd,sy8s,P6sQOc?xjs=s4
+[35] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA/m=lOO0Vd,sy8s,P6sQOc?xjs=s4
     Status: 200 
-    Duration: 296ms
+    Duration: 294ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:06.815Z
+    Timestamp: 2025-12-03T13:47:24.255Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1595,7 +1596,7 @@ _.Tf(_.YUa,class extends _.Ro{static Qa(){return{service:{window:_.So}}}construc
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1604,13 +1605,13 @@ _.Tf(_.YUa,class extends _.Ro{static Qa(){return{service:{window:_.So}}}construc
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 36429
+      age: 39760
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:07:57 GMT
+      expires: Thu, 03 Dec 2026 02:44:44 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:07:57 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 02:44:44 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -1634,11 +1635,11 @@ try{
 _.t("P6sQOc");
 var Rdb=function(a){const b={};_.Oa(a.Fa(),e=>{b[e]=!0});const c=a.wa(),d=a.Ba();return new _.Qdb(a.Aa(),_.Ge(c.getSeconds())*1E3,a.oa(),_.Ge(d.getSeconds())*1E3,b)},Sdb=function(a,b,c,d){return c.then(e=>e,e=>{if(e instanceof _.ni){if(!e.status||!d.Csa(e.status.Er()))throw e;}else if("function"==typeof _.P$a&&e instanceof _.P$a&&e.ka!==103&&e.ka!==7)throw e;return _.ki(d.Cab).then(()=>{_.Pdb(d);const f=d.VGb();b=_.lr(b,_.TSa,f);retur... (truncated)
 
-[36] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.TyQmyefY7a8.L.B1.O/am=AEAQCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=0/br=1/rs=ACT90oEzGM_-BZTTJoA7SVov6niAhXJC_Q/m=syqo,syr0?xjs=s4
+[36] ✅ GET https://www.google.com/xjs/_/ss/k=xjs.hd.Pabh4or7wFs.L.B1.O/am=AEAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPQQAAAAAOAAASAEAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgACCAEAAAAIACAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAyAAYAGEAASAAQEYAAAAAAAAAAAAAAAAAIAKggAAAAQMAAAAAAgAAACAAFkIQEBUQAAAABAAAAAAAAAQAAAAAAAACAAgIBAAAAKAAQABgEAAEBAQAeAMQGAAAABJBAACgHgFAAAQAAAgAAAAAAAAAAIwAAAAAIAHgIIoIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ/d=0/br=1/rs=ACT90oGgoK3G47XxqsQG5biE5z5e3ugysQ/m=syqo,syr0?xjs=s4
     Status: 200 
-    Duration: 295ms
+    Duration: 297ms
     Resource Type: fetch
-    Timestamp: 2025-11-27T11:15:07.116Z
+    Timestamp: 2025-12-03T13:47:24.551Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1650,7 +1651,7 @@ var Rdb=function(a){const b={};_.Oa(a.Fa(),e=>{b[e]=!0});const c=a.wa(),d=a.Ba()
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1659,15 +1660,14 @@ var Rdb=function(a){const b={};_.Oa(a.Fa(),e=>{b[e]=!0});const c=a.wa(),d=a.Ba()
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 17130
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 06:29:36 GMT
+      expires: Thu, 03 Dec 2026 13:47:24 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 06:29:36 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:22 GMT
+      date: Wed, 03 Dec 2025 13:47:24 GMT
       content-type: text/css; charset=UTF-8
       vary: Accept-Encoding, Origin
+      last-modified: Wed, 03 Dec 2025 04:23:15 GMT
       cache-control: public, immutable, max-age=31536000
       cross-origin-opener-policy: same-origin; report-to="gws-team"
       cross-origin-resource-policy: cross-origin
@@ -1678,11 +1678,11 @@ var Rdb=function(a){const b={};_.Oa(a.Fa(),e=>{b[e]=!0});const c=a.wa(),d=a.Ba()
       server: sffe
     Response Body: .lgo9kc.vKW4md{opacity:.6;visibility:inherit}.vSyRff.vKW4md{transform:translateY(0);opacity:1;visibility:inherit}.lgo9kc{background-color:#000;transition:opacity .25s;bottom:0;left:0;opacity:0;position:fixed;right:0;top:0;visibility:hidden;z-index:1000}.lgo9kc.GJyMZe{z-index:9998}.lgo9kc.SNco2{z-index:979}.vSyRff{transform:translateY(100%);transition:transform .3s 0s ease-in-out,opacity .3s 0s ease-in-out,visibility .3s 0s ease-in-out;opacity:0;position:fixed;visibility:hidden;z-index:1060}.vSyRff.GJyMZe{z-index:9999}.vSyRff.SNco2{z-index:980}.XEnKRe{height:0;opacity:0;position:absolute;width:0}.jnyxRd{background-color:var(--xhUGwc);display:inline-block;text-align:start;width:100%}.ujnsy{border-top-left-radius:8px;border-top-right-radius:8px}.TpRPV{border-top-left-radius:16px;border-top-right-radius:16px}.Fx52id{border-radius:16px}.jnyxRd:focus{outline:none}.IEBxXd{height:100%}.vSyRff .uBEihf{padding:10px;position:absolute;right:0;top:0;z-index:1}sentinel{}
 
-[37] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oEBBkBIkBlyavovqhW4P10F3vkVlw/m=sy40g,sy3zy,sy49m,sy42k,sy40d,sy40a,sy404,sy406,sy402,sy3zz,sy5nr,sy2lx,hmxkV,sy4ah,Ix7YEd,sy1hg,nqQ5fe,sy22h,sy1lw,dp6JMc,sy1hy,sy1hw,syw3,syqo,syr0,b8OZff,sy2m5,HCSvae?xjs=s4
+[37] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA/m=sy40g,sy3zy,sy49m,sy42k,sy40d,sy40a,sy404,sy406,sy402,sy3zz,sy5nr,sy2lx,hmxkV,sy4ah,Ix7YEd,sy1hg,nqQ5fe,sy22h,sy1lw,dp6JMc,sy1hy,sy1hw,syw3,syqo,syr0,b8OZff,sy2m5,HCSvae?xjs=s4
     Status: 200 
-    Duration: 301ms
+    Duration: 300ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:07.116Z
+    Timestamp: 2025-12-03T13:47:24.551Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1694,7 +1694,7 @@ var Rdb=function(a){const b={};_.Oa(a.Fa(),e=>{b[e]=!0});const c=a.wa(),d=a.Ba()
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1703,13 +1703,13 @@ var Rdb=function(a){const b={};_.Oa(a.Fa(),e=>{b[e]=!0});const c=a.wa(),d=a.Ba()
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 36291
+      age: 24630
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:10:15 GMT
+      expires: Thu, 03 Dec 2026 06:56:54 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:10:15 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 06:56:54 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -1743,11 +1743,11 @@ try{
 _.rS=class extends _.l{constructor(a){super(a)}};
 }catch(e){_._Dump... (truncated)
 
-[38] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.HYnX6N8vTJQ.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oEBBkBIkBlyavovqhW4P10F3vkVlw/m=sy5nj,sy2ct,HFecgf,sy2cz,sy2cy,sy2cx,sy2cv,sy2cu,FZSjO,sy42l,sy2ly,sywg,sywf,HK6Tmb,sy5nn,sy5nv,sy30z,Jlf2lc?xjs=s4
+[38] ✅ GET https://www.google.com/xjs/_/js/k=xjs.hd.en_GB.PrXx8QVVjE4.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAICAAAAAAAAAICAACAAAAAAAAAAAAAAAJAACACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAEgACCAAAIAAAMAAAAAAAAAAAAAAAABBAAAAABgAIA_BkYAAAAAIgAAAAAAAAAsAAASAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAABQAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAICAAAAgACAAAAAAAAAAAAAAAAAAAACAHgAAAAAAAAAAAAAAAAAAABwAgBAAAADgAIoIAAACAAAAgA4AgQcMKSgAAAAAAAAAAAAAAAAAAABAAIJgLiQQEEAAAAAAAAAAAAAAAAAAAAAAAAAAoU0sNA/d=0/dg=0/br=1/rs=ACT90oECUZturEJ_MmWb1zsnCM0z1yeDwA/m=sy5nj,sy2ct,HFecgf,sy2cz,sy2cy,sy2cx,sy2cv,sy2cu,FZSjO,sy42l,sy2ly,sywg,sywf,HK6Tmb,sy5nn,sy5nv,sy30z,Jlf2lc?xjs=s4
     Status: 200 
-    Duration: 284ms
+    Duration: 229ms
     Resource Type: script
-    Timestamp: 2025-11-27T11:15:07.435Z
+    Timestamp: 2025-12-03T13:47:24.919Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1759,7 +1759,7 @@ _.rS=class extends _.l{constructor(a){super(a)}};
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1768,13 +1768,13 @@ _.rS=class extends _.l{constructor(a){super(a)}};
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
       content-encoding: br
-      age: 36292
+      age: 24631
       report-to: {"group":"gws-team","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws-team"}]}
       x-content-type-options: nosniff
-      expires: Fri, 27 Nov 2026 01:10:15 GMT
+      expires: Thu, 03 Dec 2026 06:56:54 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 01:10:15 GMT
-      last-modified: Thu, 27 Nov 2025 00:31:21 GMT
+      date: Wed, 03 Dec 2025 06:56:54 GMT
+      last-modified: Tue, 02 Dec 2025 21:56:30 GMT
       content-type: text/javascript; charset=UTF-8
       vary: Accept-Encoding, Origin
       cache-control: public, immutable, max-age=31536000
@@ -1791,11 +1791,11 @@ var B1v,C1v,G1v,F1v,D1v;B1v=/@{[A-Z_0-9]+}/;C1v=/%{[A-Z_0-9]+}/;_.E1v=function()
 G1v=function(a,b,c){const d=new URL(F1v(a,b.oa()));b.wa().forEach(e=>{const f=e.oa();let g="";switch(e.Aa()){case 3:g=F1v(a,e.wa());break;case 4:g=G1v(a,e.Ba(),c)}e=g;if(f&&e)switch(f){case "/":d.pathname=e;break;case "#":d.hash=e;break;default:d.searchParams.append(f,e)}});return d.toString()};_.H1v=function(a,b){return G1v(a,b,a.ka)};
 F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Error("jx`"+b);var c=b.substring(2,b.length-1);if(!a.ka.has(c))throw Error("kx`"+b);let d;return(d=a.ka.get(c))!=null?d:""};D1v=class{constructor(a=[]){this.ka=new Map;this.ka=a.reduce((b,c)=>... (truncated)
 
-[39] ✅ POST https://www.google.com/wizrpcui/_/WizRpcUi/data/batchexecute?rpcids=VeQe9d&source-path=%2F&hl=en-GB&_reqid=60308&rt=c
+[39] ✅ POST https://www.google.com/wizrpcui/_/WizRpcUi/data/batchexecute?rpcids=VeQe9d&source-path=%2F&hl=en-GB&_reqid=69445&rt=c
     Status: 200 
-    Duration: 349ms
+    Duration: 288ms
     Resource Type: xhr
-    Timestamp: 2025-11-27T11:15:07.453Z
+    Timestamp: 2025-12-03T13:47:24.920Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1809,7 +1809,7 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
       content-type: application/x-www-form-urlencoded;charset=UTF-8
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       x-client-pctx: CgcSBWjR7PMq
@@ -1817,13 +1817,13 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
-    Request Body: "f.req=%5B%5B%5B%22VeQe9d%22%2C%22%5Bnull%2C1%2C10510%2Cnull%2Cnull%2C%5C%22tjIoabW6K6_Jp84P-cXqeA%5C%22%2C0%5D%22%2Cnull%2C%22generic%22%5D%5D%5D&"
+    Request Body: "f.req=%5B%5B%5B%22VeQe9d%22%2C%22%5Bnull%2C1%2C10510%2Cnull%2Cnull%2C%5C%22aD8wab7qIOPZkPIP1Kb2OQ%5C%22%2C0%5D%22%2Cnull%2C%22generic%22%5D%5D%5D&"
     Response Headers:
       content-encoding: gzip
       x-content-type-options: nosniff
       expires: Mon, 01 Jan 1990 00:00:00 GMT
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      date: Thu, 27 Nov 2025 11:15:07 GMT
+      date: Wed, 03 Dec 2025 13:47:25 GMT
       content-type: application/json; charset=utf-8
       vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
       content-disposition: attachment; filename="response.bin"; filename*=UTF-8''response.bin
@@ -1838,11 +1838,135 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       x-xss-protection: 0
       server: ESF
 
-[40] ✅ POST https://www.google.com/log?format=json&hasfast=true&authuser=0
+[40] ⏳ POST https://play.google.com/log?format=json&hasfast=true
+    Resource Type: xhr
+    Timestamp: 2025-12-03T13:47:25.072Z
+    Request Headers:
+      sec-ch-ua-platform: "Windows"
+      referer: https://www.google.com/
+      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
+      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
+      content-type: application/x-www-form-urlencoded;charset=UTF-8
+      sec-ch-ua-mobile: ?0
+      accept-language: en-US
+    Request Body: [
+  [
+    1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    [
+      null,
+      null,
+      null,
+      null,
+      "en-IN",
+      null,
+      null,
+      null,
+      [
+        [
+          [
+            "Chromium",
+            "141"
+          ],
+          [
+            "Not?A_Brand",
+            "8"
+          ]
+        ],
+        0,
+        "Windows",
+        "10.0",
+        "x86",
+        "",
+        "141.0.7390.37"
+      ],
+      [
+        1,
+        0
+      ]
+    ]
+  ],
+  373,
+  [
+    [
+      "1764769644069",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "[130,40400,538,null,\"838538220.0\",\"aD8wacTPIeOQ8L0Pkq-RyQ0\",null,null,null,\"en\",\"IND\",0,19,4363,null,0,0,null,\"og-7cb0d87c-0f28-4189-ab9e-92dab5182a7c\",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0,null,[2,5,\"dz\",4],null,null,null,null,1,null,1]",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      -19800,
+      [
+        null,
+        null,
+        null,
+        "[null,null,[3700949,3701384,102772546]]"
+      ],
+      null,
+      null,
+      null,
+      null,
+      2
+    ]
+  ],
+  "1764769645071",
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  [
+    [
+      null,
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        122505695
+      ]
+    ],
+    9
+  ]
+]
+
+[41] ✅ POST https://www.google.com/log?format=json&hasfast=true&authuser=0
     Status: 200 
-    Duration: 303ms
+    Duration: 325ms
     Resource Type: fetch
-    Timestamp: 2025-11-27T11:15:07.725Z
+    Timestamp: 2025-12-03T13:47:25.156Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -1855,7 +1979,7 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
       content-type: text/plain;charset=UTF-8
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -1911,14 +2035,14 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
   704,
   [
     [
-      "1764242107720",
+      "1764769645151",
       null,
       null,
       null,
       null,
       null,
       null,
-      "[null,[null,\"12ahUKEwjL0fj_mZKRAxVstokEHWpZBo4QkZ4KKAB6BAgBEAA..s\"]]",
+      "[null,[null,\"12ahUKEwilwdSdx6GRAxWISzABHcY_FIAQkZ4KKAB6BAgBEAA..s\"]]",
       null,
       null,
       null,
@@ -1934,10 +2058,10 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       1,
       null,
       null,
-      "[[[1764242107720000,0,0],3],null,[[1764242102711989,63562927,253403897]],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,[{\"233\":[null,null,[\"chrome_install\",null,\"10510\",4],null,3,null,3,2]}]]]"
+      "[[[1764769645150000,0,0],3],null,[[1764769640537918,138685667,121475924]],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,[{\"233\":[null,null,[\"chrome_install\",null,\"10510\",4],null,3,null,3,2]}]]]"
     ]
   ],
-  "1764242107720",
+  "1764769645151",
   null,
   null,
   null,
@@ -1981,18 +2105,18 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       access-control-allow-origin: https://www.google.com
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 131
-      date: Thu, 27 Nov 2025 11:15:07 GMT
+      date: Wed, 03 Dec 2025 13:47:25 GMT
       x-xss-protection: 0
       content-type: text/plain; charset=UTF-8
       server: Playlog
       access-control-allow-headers: X-Playlog-Web
     Response Body: ["-1",null,[[["ANDROID_BACKUP",0],["BATTERY_STATS",0],["SMART_SETUP",0],["TRON",0]],-3334737594024971225],[],{"175237375":[10000]}]
 
-[41] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=tjIoabW6K6_Jp84P-cXqeA&s=promo&sp_pids=10510&utm_campaign=4&rt=pbrt.4225,hpbas.2330,hpbarr.2&zx=1764242107722&opi=89978449
+[42] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=aD8wab7qIOPZkPIP1Kb2OQ&s=promo&sp_pids=10510&utm_campaign=4&rt=pbrt.4414,hpbas.2522,hpbarr.0&zx=1764769645154&opi=89978449
     Status: 204 
-    Duration: 313ms
+    Duration: 352ms
     Resource Type: ping
-    Timestamp: 2025-11-27T11:15:07.726Z
+    Timestamp: 2025-12-03T13:47:25.157Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -2004,7 +2128,7 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -2012,147 +2136,151 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
     Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-ief3B_bouxhJwsvcX0hNvw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-WmhoxGKxKJHyp11jOudMHw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
       cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
       report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
       permissions-policy: unload=()
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-length: 0
-      date: Thu, 27 Nov 2025 11:15:07 GMT
+      date: Wed, 03 Dec 2025 13:47:25 GMT
       x-xss-protection: 0
       content-type: text/html; charset=UTF-8
       server: gws
       x-frame-options: SAMEORIGIN
 
-[42] ⏳ POST https://play.google.com/log?format=json&hasfast=true
+[43] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=aD8wab7qIOPZkPIP1Kb2OQ&s=jsa&jsi=hd,st.6372,t.0,at.6,et.click,n.vZr2rb,an.KjsqPd,cn.1,ie.0,vi.1&zx=1764769646084&opi=89978449
+    Status: 204 
+    Duration: 302ms
+    Resource Type: ping
+    Timestamp: 2025-12-03T13:47:26.095Z
+    Request Headers:
+      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
+      sec-ch-ua-platform: "Windows"
+      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
+      sec-ch-ua-bitness: "64"
+      sec-ch-ua-model: ""
+      sec-ch-ua-mobile: ?0
+      sec-ch-ua-form-factors: "Desktop"
+      sec-ch-ua-wow64: ?0
+      sec-ch-ua-arch: "x86"
+      sec-ch-ua-full-version: "141.0.7390.37"
+      downlink: 0.85
+      referer: https://www.google.com/
+      accept-language: en-US
+      sec-ch-prefers-color-scheme: light
+      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
+      rtt: 300
+      sec-ch-ua-platform-version: "10.0"
+    Response Headers:
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-M4QERFfLXeEeu5RXfhXPcA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
+      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
+      permissions-policy: unload=()
+      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      content-length: 0
+      date: Wed, 03 Dec 2025 13:47:26 GMT
+      x-xss-protection: 0
+      content-type: text/html; charset=UTF-8
+      server: gws
+      x-frame-options: SAMEORIGIN
+
+[44] ✅ POST https://www.google.com/gen_204?atyp=i&ei=aD8wab7qIOPZkPIP1Kb2OQ&ved=0ahUKEwi-vqOcx6GRAxXjLEQIHVSTPQcQ39UDCAU&bl=t8WN&s=webhp&zx=1764769646085&opi=89978449
+    Status: 204 
+    Duration: 304ms
+    Resource Type: ping
+    Timestamp: 2025-12-03T13:47:26.095Z
+    Request Headers:
+      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
+      sec-ch-ua-platform: "Windows"
+      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
+      sec-ch-ua-bitness: "64"
+      sec-ch-ua-model: ""
+      sec-ch-ua-mobile: ?0
+      sec-ch-ua-form-factors: "Desktop"
+      sec-ch-ua-wow64: ?0
+      sec-ch-ua-arch: "x86"
+      sec-ch-ua-full-version: "141.0.7390.37"
+      downlink: 0.85
+      referer: https://www.google.com/
+      accept-language: en-US
+      sec-ch-prefers-color-scheme: light
+      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
+      rtt: 300
+      sec-ch-ua-platform-version: "10.0"
+    Response Headers:
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-SITF3SMFv1uake7V9RT9xw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
+      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
+      permissions-policy: unload=()
+      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      content-length: 0
+      date: Wed, 03 Dec 2025 13:47:26 GMT
+      x-xss-protection: 0
+      content-type: text/html; charset=UTF-8
+      server: gws
+      x-frame-options: SAMEORIGIN
+
+[45] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=aD8wab7qIOPZkPIP1Kb2OQ&s=jsa&jsi=hd,st.6372,t.0,at.6,et.click,n.vZr2rb,an.KjsqPd,cn.1,ie.0,vi.1,af.40&zx=1764769646124&opi=89978449
+    Status: 204 
+    Duration: 308ms
+    Resource Type: ping
+    Timestamp: 2025-12-03T13:47:26.127Z
+    Request Headers:
+      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
+      sec-ch-ua-platform: "Windows"
+      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
+      sec-ch-ua-bitness: "64"
+      sec-ch-ua-model: ""
+      sec-ch-ua-mobile: ?0
+      sec-ch-ua-form-factors: "Desktop"
+      sec-ch-ua-wow64: ?0
+      sec-ch-ua-arch: "x86"
+      sec-ch-ua-full-version: "141.0.7390.37"
+      downlink: 0.85
+      referer: https://www.google.com/
+      accept-language: en-US
+      sec-ch-prefers-color-scheme: light
+      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
+      rtt: 300
+      sec-ch-ua-platform-version: "10.0"
+    Response Headers:
+      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-2zS6q-SIJ9Bnj1pWnmb-TQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
+      cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
+      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
+      permissions-policy: unload=()
+      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      content-length: 0
+      date: Wed, 03 Dec 2025 13:47:26 GMT
+      x-xss-protection: 0
+      content-type: text/html; charset=UTF-8
+      server: gws
+      x-frame-options: SAMEORIGIN
+
+[46] ⏳ POST https://www.google.com/gen_204?atyp=csi&ei=aD8wab7qIOPZkPIP1Kb2OQ&s=webhp&nt=navigate&t=fi&st=6371&fid=3&zx=1764769646143&opi=89978449
+    Resource Type: ping
+    Timestamp: 2025-12-03T13:47:26.144Z
+    Request Headers:
+      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
+      sec-ch-ua-platform: "Windows"
+      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
+      sec-ch-ua-bitness: "64"
+      sec-ch-ua-model: ""
+      sec-ch-ua-mobile: ?0
+      sec-ch-ua-form-factors: "Desktop"
+      sec-ch-ua-wow64: ?0
+      sec-ch-ua-arch: "x86"
+      sec-ch-ua-full-version: "141.0.7390.37"
+      downlink: 0.85
+      referer: https://www.google.com/
+      accept-language: en-US
+      sec-ch-prefers-color-scheme: light
+      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
+      rtt: 300
+      sec-ch-ua-platform-version: "10.0"
+
+[47] ⏳ GET https://www.google.com/complete/s?q=playwright%20agent&cp=16&client=gws-wiz&xssi=t&gs_pcrt=undefined&hl=en-IN&authuser=0&psi=aD8wab7qIOPZkPIP1Kb2OQ.1764769642554&dpr=1
     Resource Type: xhr
-    Timestamp: 2025-11-27T11:15:08.215Z
-    Request Headers:
-      sec-ch-ua-platform: "Windows"
-      referer: https://www.google.com/
-      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
-      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
-      content-type: application/x-www-form-urlencoded;charset=UTF-8
-      sec-ch-ua-mobile: ?0
-      accept-language: en-US
-    Request Body: [
-  [
-    1,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    [
-      null,
-      null,
-      null,
-      null,
-      "en-IN",
-      null,
-      null,
-      null,
-      [
-        [
-          [
-            "Chromium",
-            "141"
-          ],
-          [
-            "Not?A_Brand",
-            "8"
-          ]
-        ],
-        0,
-        "Windows",
-        "10.0",
-        "x86",
-        "",
-        "141.0.7390.37"
-      ],
-      [
-        1,
-        0
-      ]
-    ]
-  ],
-  373,
-  [
-    [
-      "1764242106779",
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      "[130,40400,538,null,\"833102617.0\",\"tjIoaeqqLMLU6-APhuCRwQo\",null,null,null,\"en\",\"IND\",0,19,4393,null,0,0,null,\"og-490b3354-1af4-4f1e-b78f-74258c077862\",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0,null,[2,5,\"nn\",52],null,null,null,null,1,null,1]",
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      -19800,
-      [
-        null,
-        null,
-        null,
-        "[null,null,[3701384,102772546]]"
-      ],
-      null,
-      null,
-      null,
-      null,
-      2
-    ]
-  ],
-  "1764242108212",
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  [
-    [
-      null,
-      [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        122505695
-      ]
-    ],
-    9
-  ]
-]
-
-[43] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=tjIoabW6K6_Jp84P-cXqeA&s=jsa&jsi=hd,st.6754,t.0,at.5,et.click,n.vZr2rb,an.KjsqPd,cn.1,ie.0,vi.1&zx=1764242109146&opi=89978449
-    Status: 204 
-    Duration: 299ms
-    Resource Type: ping
-    Timestamp: 2025-11-27T11:15:09.167Z
+    Timestamp: 2025-12-03T13:47:26.287Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -2164,159 +2292,18 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
-      sec-ch-prefers-color-scheme: light
-      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
-      rtt: 300
-      sec-ch-ua-platform-version: "10.0"
-    Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-mTR7ktaqv1rxHY-iSj7vdQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
-      cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
-      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
-      permissions-policy: unload=()
-      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      content-length: 0
-      date: Thu, 27 Nov 2025 11:15:08 GMT
-      x-xss-protection: 0
-      content-type: text/html; charset=UTF-8
-      server: gws
-      x-frame-options: SAMEORIGIN
-
-[44] ✅ POST https://www.google.com/gen_204?atyp=i&ei=tjIoabW6K6_Jp84P-cXqeA&ved=0ahUKEwi17dH-mZKRAxWv5MkDHfmiGg8Q39UDCAU&bl=Rbu2&s=webhp&zx=1764242109147&opi=89978449
-    Status: 204 
-    Duration: 314ms
-    Resource Type: ping
-    Timestamp: 2025-11-27T11:15:09.168Z
-    Request Headers:
-      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
-      sec-ch-ua-platform: "Windows"
-      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
-      sec-ch-ua-bitness: "64"
-      sec-ch-ua-model: ""
-      sec-ch-ua-mobile: ?0
-      sec-ch-ua-form-factors: "Desktop"
-      sec-ch-ua-wow64: ?0
-      sec-ch-ua-arch: "x86"
-      sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
-      referer: https://www.google.com/
-      accept-language: en-US
-      sec-ch-prefers-color-scheme: light
-      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
-      rtt: 300
-      sec-ch-ua-platform-version: "10.0"
-    Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-l-kVfFBPYCWJaHspJz4Ypw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
-      cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
-      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
-      permissions-policy: unload=()
-      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      content-length: 0
-      date: Thu, 27 Nov 2025 11:15:08 GMT
-      x-xss-protection: 0
-      content-type: text/html; charset=UTF-8
-      server: gws
-      x-frame-options: SAMEORIGIN
-
-[45] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=tjIoabW6K6_Jp84P-cXqeA&s=jsa&jsi=hd,st.6754,t.0,at.5,et.click,n.vZr2rb,an.KjsqPd,cn.1,ie.0,vi.1,af.17&zx=1764242109164&opi=89978449
-    Status: 204 
-    Duration: 317ms
-    Resource Type: ping
-    Timestamp: 2025-11-27T11:15:09.172Z
-    Request Headers:
-      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
-      sec-ch-ua-platform: "Windows"
-      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
-      sec-ch-ua-bitness: "64"
-      sec-ch-ua-model: ""
-      sec-ch-ua-mobile: ?0
-      sec-ch-ua-form-factors: "Desktop"
-      sec-ch-ua-wow64: ?0
-      sec-ch-ua-arch: "x86"
-      sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
-      referer: https://www.google.com/
-      accept-language: en-US
-      sec-ch-prefers-color-scheme: light
-      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
-      rtt: 300
-      sec-ch-ua-platform-version: "10.0"
-    Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-QFrHvNxzmr3JSyn7w6jw2A' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
-      cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
-      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
-      permissions-policy: unload=()
-      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      content-length: 0
-      date: Thu, 27 Nov 2025 11:15:08 GMT
-      x-xss-protection: 0
-      content-type: text/html; charset=UTF-8
-      server: gws
-      x-frame-options: SAMEORIGIN
-
-[46] ✅ POST https://www.google.com/gen_204?atyp=csi&ei=tjIoabW6K6_Jp84P-cXqeA&s=webhp&nt=navigate&t=fi&st=6754&fid=1&zx=1764242109263&opi=89978449
-    Status: 204 
-    Duration: 317ms
-    Resource Type: ping
-    Timestamp: 2025-11-27T11:15:09.266Z
-    Request Headers:
-      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
-      sec-ch-ua-platform: "Windows"
-      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
-      sec-ch-ua-bitness: "64"
-      sec-ch-ua-model: ""
-      sec-ch-ua-mobile: ?0
-      sec-ch-ua-form-factors: "Desktop"
-      sec-ch-ua-wow64: ?0
-      sec-ch-ua-arch: "x86"
-      sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
-      referer: https://www.google.com/
-      accept-language: en-US
-      sec-ch-prefers-color-scheme: light
-      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
-      rtt: 300
-      sec-ch-ua-platform-version: "10.0"
-    Response Headers:
-      content-security-policy: object-src 'none';base-uri 'self';script-src 'nonce-DzcSZPW67bsgNDX5keZoiA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other
-      cross-origin-opener-policy: same-origin-allow-popups; report-to="gws"
-      report-to: {"group":"gws","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/gws/other"}]}
-      permissions-policy: unload=()
-      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-      content-length: 0
-      date: Thu, 27 Nov 2025 11:15:08 GMT
-      x-xss-protection: 0
-      content-type: text/html; charset=UTF-8
-      server: gws
-      x-frame-options: SAMEORIGIN
-
-[47] ⏳ GET https://www.google.com/complete/search?q=playwright%20agent&cp=16&client=gws-wiz&xssi=t&gs_pcrt=undefined&hl=en-IN&authuser=0&psi=tjIoabW6K6_Jp84P-cXqeA.1764242105096&dpr=1.0000000149011612
-    Resource Type: xhr
-    Timestamp: 2025-11-27T11:15:09.480Z
-    Request Headers:
-      sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
-      sec-ch-ua-platform: "Windows"
-      sec-ch-ua: "Chromium";v="141", "Not?A_Brand";v="8"
-      sec-ch-ua-bitness: "64"
-      sec-ch-ua-model: ""
-      sec-ch-ua-mobile: ?0
-      sec-ch-ua-form-factors: "Desktop"
-      sec-ch-ua-wow64: ?0
-      sec-ch-ua-arch: "x86"
-      sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
-      referer: https://www.google.com/
-      accept-language: en-US
+      x-server-token: CAMS7gIV7AXhrcklj7sOo7sLviHWPIvLBoQujcoE_3XWBifTEJM8qynlGI9hpiPclAaDHrkB95IGlkmVA_QPqCO7CeECtWX1J_oL9QiMDfQWlw6PGqEPjgq0E6AdqwSIDg_KBcMVuQuS_ZMTsJkC3QtPRswQ5wDRcdqCBuGaBZecBrkGBcwztewG4GW_tQblX7Uk4BC67ATdL4G5BcMfytcGxy-nKeZRwCqaZbNR6BECp8IG_OYG8-cGtW4I_aAGoxT4qAaBCaUewjfpHOs5njqkHNUOqBKRFrrvBqhFAelB3zifBYMGuQ4F9zKfE-o6hA3dDsFpoQ78BuEPohKfT_98xkbfJZE30R6WG9sAgnCBLssdzqQGtwmfHRQMBAzjAcoNmjGYAfcK9wvFJ_0ptCWTAfQbj0KDHZ8S6G-1FIIRnCnMA9AOa4Q1klKEAQujA4Mf6yK3pQaYYwzeyQa-kwbSFYAK1RfnPfmOBQSgRbAa4lY=
       sec-ch-prefers-color-scheme: light
       user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
       rtt: 300
       sec-ch-ua-platform-version: "10.0"
 
-[48] ⏳ POST https://www.google.com/gen_204?atyp=i&ei=tjIoabW6K6_Jp84P-cXqeA&ved=0ahUKEwi17dH-mZKRAxWv5MkDHfmiGg8Q39UDCAU&bl=Rbu2&s=webhp&zx=1764242109468&opi=89978449
+[48] ⏳ POST https://www.google.com/gen_204?atyp=i&ei=aD8wab7qIOPZkPIP1Kb2OQ&ved=0ahUKEwi-vqOcx6GRAxXjLEQIHVSTPQcQ39UDCAU&bl=t8WN&s=webhp&zx=1764769646285&opi=89978449
     Resource Type: ping
-    Timestamp: 2025-11-27T11:15:09.481Z
+    Timestamp: 2025-12-03T13:47:26.287Z
     Request Headers:
       sec-ch-ua-full-version-list: "Chromium";v="141.0.7390.37", "Not?A_Brand";v="8.0.0.0"
       sec-ch-ua-platform: "Windows"
@@ -2328,7 +2315,7 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
       sec-ch-ua-wow64: ?0
       sec-ch-ua-arch: "x86"
       sec-ch-ua-full-version: "141.0.7390.37"
-      downlink: 1.4
+      downlink: 0.85
       referer: https://www.google.com/
       accept-language: en-US
       sec-ch-prefers-color-scheme: light
@@ -2341,10 +2328,10 @@ F1v=function(a,b){if(!B1v.test(b)&&!C1v.test(b))return b;if(b.length<=3)throw Er
 NETWORK SUMMARY
 ================================================================================
 Total Requests: 48
-✅ Successful: 44
+✅ Successful: 43
 ❌ Failed: 0
-⏳ Pending: 3
-⏱️  Average Duration: 581ms
+⏳ Pending: 4
+⏱️  Average Duration: 571ms
 
 Methods Breakdown:
   GET: 30

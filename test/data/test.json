@@ -1,0 +1,14 @@
+{
+    "testData": {
+        "mobileNumber": "90336607",
+        "password": "QAble@2020",
+        "otp": "333333",
+        "firstName": "Admin",
+        "lastName": "User",
+        "address": {
+            "street": "123 Admin Street",
+            "city": "New York",
+            "country": "USA"
+        }
+    }
+}

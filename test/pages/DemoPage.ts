@@ -1,7 +1,7 @@
 import { Page, TestInfo } from '@playwright/test';
 import { BasePage } from '../../framework/core/BasePage';
 import { DemoPageLocators } from '../locators/DemoPageLocators';
-import { DataHelper } from '../../framework/utils/DataHelper';
+import { DataHelper, getData } from '../../framework/utils/DataHelper';
 
 export interface OrangeHrmCredentials {
   username: string;
@@ -66,11 +66,8 @@ export class DemoPage extends BasePage {
    * Enter password using BasePage fill helper
    */
   async enterPassword(password?: string): Promise<void> {
-    const resolvedPassword =
-      password ??
-      primaryExcelCredential?.Password ??
-      this.getValidCredentials().password;
-    await this.fill(DemoPageLocators.passwordField, resolvedPassword);
+    const user = DataHelper.getData('test.json', 'testData');
+    await this.fill(DemoPageLocators.passwordField, user.password);
     this.logger.info('Password entered');
   }
 

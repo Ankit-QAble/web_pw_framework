@@ -29,10 +29,11 @@
  * await screenshotHelper.takeMaskedScreenshot(['.password-field', '.credit-card'], 'payment-form');
  */
 
-import { Page, TestInfo } from '@playwright/test';
+import { Page, TestInfo, Locator } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Logger } from './Logger';
+import { VisualComparator, VisualCompareOptions, VisualCompareResult } from './VisualComparator';
 
 export interface ScreenshotOptions {
   fullPage?: boolean;
@@ -58,6 +59,7 @@ export class ScreenshotHelper {
   private testInfo: TestInfo;
   private logger: Logger;
   private screenshotDir: string;
+  private visualComparator: VisualComparator;
 
   constructor(page: Page, testInfo: TestInfo) {
     this.page = page;
@@ -65,6 +67,7 @@ export class ScreenshotHelper {
     this.logger = new Logger('ScreenshotHelper');
     this.screenshotDir = path.join(process.cwd(), 'screenshots');
     this.ensureScreenshotDirectory();
+    this.visualComparator = new VisualComparator('ScreenshotHelper');
   }
 
   /**
@@ -205,6 +208,89 @@ export class ScreenshotHelper {
   }
 
   /**
+   * Compare current page screenshot with a baseline image.
+   * If no baseline exists yet, the current screenshot becomes the baseline and the comparison passes.
+   */
+  async compareWithBaseline(
+    name: string,
+    options: ScreenshotOptions & VisualCompareOptions = {}
+  ): Promise<VisualCompareResult> {
+    return this.runVisualComparison(name, options);
+  }
+
+  /**
+   * Compare a specific element's screenshot with a baseline image.
+   */
+  async compareElementWithBaseline(
+    locator: Locator,
+    name: string,
+    options: ScreenshotOptions & VisualCompareOptions = {}
+  ): Promise<VisualCompareResult> {
+    return this.runVisualComparison(name, options, locator);
+  }
+
+  private async runVisualComparison(
+    name: string,
+    options: ScreenshotOptions & VisualCompareOptions,
+    locator?: Locator
+  ): Promise<VisualCompareResult> {
+    const sanitizedName = name.replace(/[^a-zA-Z0-9_-]/g, '_');
+
+    const baselineDir = path.join(this.screenshotDir, 'baseline');
+    const actualDir = path.join(this.screenshotDir, 'actual');
+    const diffDir = path.join(this.screenshotDir, 'diff');
+
+    this.ensureCustomDirectory(baselineDir);
+    this.ensureCustomDirectory(actualDir);
+    this.ensureCustomDirectory(diffDir);
+
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const testName = this.testInfo.title.replace(/[^a-zA-Z0-9]/g, '_');
+
+    const baselinePath = path.join(baselineDir, `${testName}_${sanitizedName}.png`);
+    const actualPath = path.join(actualDir, `${testName}_${sanitizedName}_${timestamp}.png`);
+    const diffPath = path.join(diffDir, `${testName}_${sanitizedName}_${timestamp}_diff.png`);
+
+    const { threshold, thresholdType, ...screenshotOptions } = options;
+
+    await this.captureForComparison(actualPath, screenshotOptions, locator);
+
+    const result = await this.visualComparator.compareOrCreateBaseline(
+      baselinePath,
+      actualPath,
+      diffPath,
+      {
+        threshold,
+        thresholdType,
+      }
+    );
+
+    // Attach images to the Playwright test report, if available
+    if (this.testInfo) {
+      await this.testInfo.attach(`${sanitizedName}-actual`, {
+        path: actualPath,
+        contentType: 'image/png',
+      });
+
+      if (fs.existsSync(baselinePath)) {
+        await this.testInfo.attach(`${sanitizedName}-baseline`, {
+          path: baselinePath,
+          contentType: 'image/png',
+        });
+      }
+
+      if (fs.existsSync(diffPath)) {
+        await this.testInfo.attach(`${sanitizedName}-diff`, {
+          path: diffPath,
+          contentType: 'image/png',
+        });
+      }
+    }
+
+    return result;
+  }
+
+  /**
    * Take screenshot with mask (hide sensitive data)
    */
   async takeMaskedScreenshot(
@@ -328,6 +414,41 @@ export class ScreenshotHelper {
     if (!fs.existsSync(this.screenshotDir)) {
       fs.mkdirSync(this.screenshotDir, { recursive: true });
       this.logger.info(`Created screenshot directory: ${this.screenshotDir}`);
+    }
+  }
+
+  /**
+   * Ensure a custom directory exists (used for baseline/actual/diff subfolders).
+   */
+  private ensureCustomDirectory(dir: string): void {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+      this.logger.info(`Created screenshot sub-directory: ${dir}`);
+    }
+  }
+
+  private async captureForComparison(
+    filePath: string,
+    options: ScreenshotOptions,
+    locator?: Locator
+  ): Promise<void> {
+    if (locator) {
+      const { fullPage: _ignored, ...elementOptions } = options;
+      await locator.screenshot({
+        path: filePath,
+        type: 'png',
+        animations: 'disabled',
+        ...elementOptions,
+      });
+    } else {
+      await this.page.screenshot({
+        path: filePath,
+        fullPage: true,
+        type: 'png',
+        animations: 'disabled',
+        caret: 'hide',
+        ...options,
+      });
     }
   }
 }

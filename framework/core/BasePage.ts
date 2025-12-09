@@ -31,6 +31,8 @@ export interface NetworkRequestEntry {
   resourceType?: string;
 }
 
+type PageAriaRole = Parameters<Page['getByRole']>[0];
+
 export abstract class BasePage {
   protected page: Page;
   protected logger: Logger;
@@ -48,6 +50,83 @@ export abstract class BasePage {
     if (testInfo) {
       this.screenshotHelper = new ScreenshotHelper(page, testInfo);
     }
+  }
+  
+  /**
+   * Convenience wrappers around Playwright's built‑in locators so they can be
+   * used seamlessly with the framework helpers that accept `Locator`.
+   *
+   * Example:
+   *   await this.click(this.byRole('button', { name: 'Login' }));
+   */
+
+  /** Wrapper for page.getByRole(...) */
+  protected byRole(
+    role: PageAriaRole,
+    options?: Parameters<Page['getByRole']>[1]
+  ): Locator {
+    return this.page.getByRole(role, options as any);
+  }
+
+  /** Wrapper for page.getByText(...) */
+  protected byText(
+    text: string | RegExp,
+    options?: Parameters<Page['getByText']>[1]
+  ): Locator {
+    return this.page.getByText(text, options as any);
+  }
+
+  /** Wrapper for page.getByLabel(...) */
+  protected byLabel(
+    text: string | RegExp,
+    options?: Parameters<Page['getByLabel']>[1]
+  ): Locator {
+    return this.page.getByLabel(text, options as any);
+  }
+
+  /** Wrapper for page.getByPlaceholder(...) */
+  protected byPlaceholder(
+    text: string | RegExp,
+    options?: Parameters<Page['getByPlaceholder']>[1]
+  ): Locator {
+    return this.page.getByPlaceholder(text, options as any);
+  }
+
+  /** Wrapper for page.getByAltText(...) */
+  protected byAltText(
+    text: string | RegExp,
+    options?: Parameters<Page['getByAltText']>[1]
+  ): Locator {
+    return this.page.getByAltText(text, options as any);
+  }
+
+  /** Wrapper for page.getByTitle(...) */
+  protected byTitle(
+    text: string | RegExp,
+    options?: Parameters<Page['getByTitle']>[1]
+  ): Locator {
+    return this.page.getByTitle(text, options as any);
+  }
+
+  /** Wrapper for page.getByTestId(...) */
+  protected byTestId(testId: string): Locator {
+    return this.page.getByTestId(testId);
+  }
+
+  /** Generic wrapper for page.locator(cssOrOtherSelector) */
+  protected locator(
+    selector: Parameters<Page['locator']>[0],
+    options?: Parameters<Page['locator']>[1]
+  ): Locator {
+    return this.page.locator(selector as any, options as any);
+  }
+
+  /**
+   * Convenience helper for XPath selectors, equivalent to:
+   *   page.locator(`xpath=${xpathExpression}`)
+   */
+  protected locatorXPath(xpathExpression: string, options?: Parameters<Page['locator']>[1]): Locator {
+    return this.page.locator(`xpath=${xpathExpression}`, options as any);
   }
   
   /**
@@ -622,7 +701,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
   /**
    * Take screenshot
    */
-  async takeScreenshot(name?: string, timeout=10): Promise<string> {
+  async takeScreenshot(name?: string, timeout = 10): Promise<string> {
     if (this.screenshotHelper) {
       // Use ScreenshotHelper for proper file saving and test attachment
       return await this.screenshotHelper.takeScreenshot(name);
@@ -630,10 +709,78 @@ protected async unhighlight(locator: Locator): Promise<void> {
       // Fallback to basic screenshot without file saving
       const screenshotName = name || `screenshot-${Date.now()}`;
       this.logger.info(`Taking screenshot: ${screenshotName}`);
-      const buffer = await this.page.screenshot({ fullPage: true });
+      await this.page.screenshot({ fullPage: true });
       this.logger.warn('Screenshot taken but not saved to file (no TestInfo provided)');
       return `Screenshot taken: ${screenshotName}`;
     }
+  }
+
+  /**
+   * Perform a visual comparison against a stored baseline image.
+   * On first run (no baseline), the current screenshot becomes the baseline and the check passes.
+   *
+   * @param name Logical name of the screenshot (e.g. 'google-home')
+   * @param threshold Allowed difference (default 1% of pixels)
+   * @param thresholdType 'percent' (0–1) or absolute 'pixel' count
+   */
+  async compareScreenshot(
+    name: string,
+    threshold: number = 0.01,
+    thresholdType: 'percent' | 'pixel' = 'percent'
+  ): Promise<void> {
+    if (!this.screenshotHelper) {
+      this.logger.warn('ScreenshotHelper not initialized; visual comparison skipped');
+      return;
+    }
+
+    const result = await this.screenshotHelper.compareWithBaseline(name, {
+      threshold,
+      thresholdType,
+    });
+
+    // If baseline was just created, diffPixels will be zero and passed=true
+    this.logger.info(
+      `Visual compare for "${name}" – diffPixels: ${result.diffPixels}, diffRatio: ${
+        result.diffRatio * 100
+      }%, passed: ${result.passed}`
+    );
+
+    expect(
+      result.passed,
+      `Visual comparison failed for "${name}". See baseline: ${result.baselinePath}, actual: ${result.actualPath}, diff: ${result.diffPath}`
+    ).toBe(true);
+  }
+
+  /**
+   * Perform a visual comparison for a specific element/locator against a baseline image.
+   */
+  async compareElementScreenshot(
+    selector: SelectorDefinition,
+    name: string,
+    threshold: number = 0.01,
+    thresholdType: 'percent' | 'pixel' = 'percent'
+  ): Promise<void> {
+    if (!this.screenshotHelper) {
+      this.logger.warn('ScreenshotHelper not initialized; element visual comparison skipped');
+      return;
+    }
+
+    const locator = await this.getLocator(selector);
+    const result = await this.screenshotHelper.compareElementWithBaseline(locator, name, {
+      threshold,
+      thresholdType,
+    });
+
+    this.logger.info(
+      `Element visual compare for "${name}" – diffPixels: ${result.diffPixels}, diffRatio: ${
+        result.diffRatio * 100
+      }%, passed: ${result.passed}`
+    );
+
+    expect(
+      result.passed,
+      `Element visual comparison failed for "${name}". See baseline: ${result.baselinePath}, actual: ${result.actualPath}, diff: ${result.diffPath}`
+    ).toBe(true);
   }
 
   /**

@@ -22,11 +22,23 @@ export class SimplePage extends BasePage {
     async googleClick(): Promise<void> {
         await this.click(SimplePageLocators.clickSearchCombobox);
         await this.takeScreenshot('google-page-loaded');
+        // Optional visual regression check of the Google home page UI
+        //await this.compareScreenshot('google-home',10, 'percent');
+        
+
+    }
+
+    async googleClickFail(): Promise<void> {
+        await this.click(SimplePageLocators.failSearchCombobox);
+        await this.takeScreenshot('google-page-loaded');
             
     }
 
     async googleSearch(): Promise<void> {
-        await this.fill(SimplePageLocators.searchCombobox, 'playwright agent');
+        await this.waitForTimeout(2000);
+        await this.compareElementScreenshot(this.byLabel('Google Search').first(), 'google-search-button',200, 'pixel');
+
+        await this.fill(this.byTitle('Search'), 'playwright agent');
     }
 
     /**
@@ -41,6 +53,7 @@ export class SimplePage extends BasePage {
      */
     async startCapturingNetworkRequests(): Promise<void> {
         await this.captureNetworkRequests();
+    
     }
 
     /**

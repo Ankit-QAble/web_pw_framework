@@ -1,104 +1,60 @@
+// Minimal Jenkins declarative pipeline to run:
+// npx playwright test --config=playwright.service.config.ts --workers=20
 pipeline {
-    agent any
-    
-    environment {
-        CI = 'true'
-        JENKINS = 'true'
-        NODE_VERSION = '18'
-        PLAYWRIGHT_BROWSERS_PATH = '/var/lib/jenkins/.cache/ms-playwright'
+  agent {
+    docker {
+      // Official Playwright image with browsers preinstalled
+      image 'mcr.microsoft.com/playwright:v1.49.1-jammy'
+      args '--ipc=host'
     }
-    
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-        
-        stage('Setup Node.js') {
-            steps {
-                script {
-                    // Install Node.js if not available
-                    sh '''
-                        if ! command -v node &> /dev/null; then
-                            echo "Installing Node.js ${NODE_VERSION}"
-                            curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
-                            sudo apt-get install -y nodejs
-                        fi
-                        node --version
-                        npm --version
-                    '''
-                }
-            }
-        }
-        
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    sh '''
-                        echo "Installing npm dependencies..."
-                        npm ci
-                        
-                        echo "Installing Playwright browsers..."
-                        npx playwright install --with-deps chromium
-                        
-                        echo "Verifying Playwright installation..."
-                        npx playwright --version
-                    '''
-                }
-            }
-        }
-        
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh '''
-                        echo "Running Playwright tests..."
-                        npx playwright test --reporter=html,allure-playwright
-                    '''
-                }
-            }
-            post {
-                always {
-                    // Archive test results
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'playwright-report',
-                        reportFiles: 'index.html',
-                        reportName: 'Playwright HTML Report'
-                    ])
-                    
-                    // Archive Allure results
-                    allure([
-                        includeProperties: false,
-                        jdk: '',
-                        properties: [],
-                        reportBuildPolicy: 'ALWAYS',
-                        results: [[path: 'allure-results']]
-                    ])
-                    
-                    // Archive screenshots
-                    archiveArtifacts artifacts: 'screenshots/**/*', allowEmptyArchive: true
-                    archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
-                }
-            }
-        }
+  }
+
+  options {
+    timestamps()
+    ansiColor('xterm')
+  }
+
+  environment {
+    CI = 'true'
+    HEADLESS = 'true'
+    RUN = 'development' // change if you use another profile
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
-    
-    post {
-        always {
-            // Clean up workspace
-            cleanWs()
-        }
-        failure {
-            // Send notification on failure
-            emailext (
-                subject: "Test Execution Failed - ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
-                body: "Test execution failed. Please check the build logs and reports.",
-                to: "${env.CHANGE_AUTHOR_EMAIL ?: 'default@company.com'}"
-            )
-        }
+
+    stage('Install deps & browsers') {
+      steps {
+        sh '''
+          npm ci
+          npx playwright install --with-deps
+        '''
+      }
     }
+
+    stage('Run tests') {
+      steps {
+        sh 'npx playwright test --config=playwright.service.config.ts --workers=20'
+      }
+    }
+  }
+
+  post {
+    always {
+      // Publish JUnit results (enabled via CI=true in playwright.config.ts)
+      junit allowEmptyResults: true, keepLongStdio: true, testResults: 'junit.xml'
+
+      // Archive HTML report and other artifacts
+      archiveArtifacts allowEmptyArchive: true, artifacts: '''
+        playwright-report/**/*
+        allure-results/**/*
+        test-results/results.json
+        screenshots/**/*
+      '''
+    }
+  }
 }

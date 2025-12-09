@@ -1,8 +1,8 @@
 ================================================================================
-CONSOLE ERRORS REPORT
-Generated: 2025-11-27T12:20:44.494Z
+FAILED NETWORK REQUESTS REPORT
+Generated: 2025-12-03T13:49:00.411Z
 Page: SimplePage
-Total Errors: 0
+Total Failed Requests: 0
 ================================================================================
 
-✅ No console errors found!
+✅ No failed requests!

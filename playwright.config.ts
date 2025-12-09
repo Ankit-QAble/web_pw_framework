@@ -78,7 +78,7 @@ const PROFILES = {
     }
   },
   preprod: {
-    baseURL: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login',
+    baseURL: 'https://google.com',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
     headless: false,
     parallel: 1,
@@ -152,13 +152,13 @@ const PROFILES = {
     }
   },
   demo: {
-    baseURL: 'https://www.qable.io/blog',
+    baseURL: 'https://google.com',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
     headless: false,
-    parallel: 1,
+    parallel: 2,
     retries: 0,
-    screenshotOnFail: true,
-    videoOnFail: true,
+    screenshotOnFail: false,
+    videoOnFail: false,
     elementHighlight: true,
     mobile: {
       mobile: { 
@@ -171,7 +171,7 @@ const PROFILES = {
       suiteTitle: false,
     },
     reportEmail: {
-      email: true,
+      email: false,
       to: ['ankitpatel@qable.io'],
       subject: 'Preprod Test Report - Allure Results',
       body: 'Test execution completed for preprod environment. Allure report attached.',
@@ -621,16 +621,25 @@ export default defineConfig({
   /* Opt out of parallel tests on CI - but allow 2 workers for better resource utilization */
   workers: selectedProfile.parallel,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ['html'],
-    ['json', { outputFile: 'test-results/results.json' }],
-    ['allure-playwright', {
-      detail: true,
-      outputFolder: 'allure-results',
-      suiteTitle: false,
-    }],
-    ['list']
-  ],
+  reporter: (() => {
+    const reporters: any[] = [
+      ['html'],
+      ['json', { outputFile: 'test-results/results.json' }],
+      ['allure-playwright', {
+        detail: true,
+        outputFolder: 'allure-results',
+        suiteTitle: false,
+      }],
+      ['list'],
+    ];
+
+    // Add JUnit output for CI systems (e.g., Jenkins)
+    if (process.env.CI) {
+      reporters.push(['junit', { outputFile: 'junit.xml', suite: 'playwright' }]);
+    }
+
+    return reporters;
+  })(),
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */

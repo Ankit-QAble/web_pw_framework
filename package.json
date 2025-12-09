@@ -22,6 +22,7 @@
     "test:dev": "cross-env NODE_ENV=development npx playwright test",
     "test:preprod": "cross-env NODE_ENV=preprod npx playwright test",
     "test:preprod_test": "cross-env NODE_ENV=preprod npx playwright test test/specs/demo.spec.ts",
+    "test:demo": "cross-env NODE_ENV=demo npx playwright test test/specs/simpletest.spec.ts",
     "test:prod": "cross-env NODE_ENV=production npx playwright test",
     "test:run:dev": "cross-env RUN=development npx playwright test test/specs/login.spec.ts",
     "test:run:preprod": "cross-env RUN=preprod npx playwright test",
@@ -99,6 +100,8 @@
     "allure-playwright": "^2.9.0",
     "browserstack-node-sdk": "^1.45.0",
     "eslint": "^8.0.0",
+    "pixelmatch": "^7.1.0",
+    "pngjs": "^7.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.0.0"
   },
