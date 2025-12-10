@@ -19,6 +19,13 @@ function buildServiceConfig() {
     process.env.AZURE_PLAYWRIGHT_ENABLED === 'true' ||
     (!!accessToken && !!serviceUrl);
 
+  if (typeof (globalThis as any).crypto === 'undefined') {
+      // require is used to avoid ESM import issues in Playwright's TS runtime
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const nodeCrypto = require('node:crypto') || require('crypto');
+      (globalThis as any).crypto = nodeCrypto.webcrypto;
+  }
+
   if (!serviceEnabled) {
     console.warn('[playwright.service.config] Service disabled — running locally.');
     return config;
