@@ -38,7 +38,13 @@ pipeline {
 
     stage('Run tests') {
       steps {
-        sh 'npx playwright test --config=playwright.service.config.ts --workers=20'
+        withCredentials([
+          string(credentialsId: '3005e49f-702b-4c20-b270-d4fcf6f64ccb', variable: 'AZURE_TENANT_ID'),
+          string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
+          string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET')
+        ]) {
+          sh 'npx playwright test --config=playwright.service.config.ts --workers=20'
+        }
       }
     }
   }
