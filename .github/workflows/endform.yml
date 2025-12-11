@@ -1,12 +1,13 @@
 name: Run Playwright tests with Endform
+
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch: # Allow manual triggers
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+  workflow_dispatch:  # Only runs manually, not on push
 
 jobs:
   test:
