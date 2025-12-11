@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Playwright Demo Tests
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Run Playwright Tests
+    name: Run Playwright Demo Tests
     runs-on: ubuntu-latest
     
     steps:
@@ -29,9 +29,8 @@ jobs:
         run: npx playwright test --config=playwright.service.config.ts --workers=20 test/specs/demo.spec.ts
         env:
           CI: true
-          # Optional: Add Azure Playwright Service credentials if needed
-          # PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
-          # PLAYWRIGHT_SERVICE_AUTH_TOKEN: ${{ secrets.PLAYWRIGHT_SERVICE_AUTH_TOKEN }}
+          PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
+          PLAYWRIGHT_SERVICE_AUTH_TOKEN: ${{ secrets.PLAYWRIGHT_SERVICE_AUTH_TOKEN }}
           
       - name: Upload Playwright HTML Report
         uses: actions/upload-artifact@v4
@@ -40,4 +39,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-

@@ -25,6 +25,7 @@ function buildServiceConfig() {
       const nodeCrypto = require('node:crypto') || require('crypto');
       (globalThis as any).crypto = nodeCrypto.webcrypto;
   }
+  
 
   if (!serviceEnabled) {
     console.warn('[playwright.service.config] Service disabled — running locally.');
