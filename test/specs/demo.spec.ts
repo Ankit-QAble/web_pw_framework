@@ -33,6 +33,11 @@ test.describe('OrangeHRM Demo Suite', () => {
       const readyState = await baseTestContext.executeScript('return document.readyState;');
       logger.assertion('Document readyState should be complete', 'complete', readyState);
       expect(readyState).toBe('complete');
+      const credentials = demoPage.getValidCredentials();
+
+      await logger.step('Login with valid credentials', async () => {
+        await demoPage.loginWith(credentials);
+      });
     });
   });
 
@@ -45,12 +50,6 @@ test.describe('OrangeHRM Demo Suite', () => {
   });
 
   test('should login successfully and reach dashboard', async ({ logger }) => {
-    const credentials = demoPage.getValidCredentials();
-
-    await logger.step('Login with valid credentials', async () => {
-      await demoPage.loginWith(credentials);
-    });
-
     await logger.step('Verify dashboard is visible', async () => {
       await demoPage.verifyDashboardLoaded();
       const pageTitle = await baseTestContext.getPageTitle();
@@ -67,5 +66,8 @@ test.describe('OrangeHRM Demo Suite', () => {
       await baseTestContext.pressEscape();
       await baseTestContext.wait(300);
     });
+  });
+  test('should login successfully and reach dashboard_1', async ({ logger }) => {
+    console.log('Azure testing');
   });
 });

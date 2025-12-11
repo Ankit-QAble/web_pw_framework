@@ -67,7 +67,7 @@ export class DemoPage extends BasePage {
    */
   async enterPassword(password?: string): Promise<void> {
     const user = DataHelper.getData('test.json', 'testData');
-    await this.fill(DemoPageLocators.passwordField, user.password);
+    await this.fill(DemoPageLocators.passwordField, user.password2);
     this.logger.info('Password entered');
   }
 
