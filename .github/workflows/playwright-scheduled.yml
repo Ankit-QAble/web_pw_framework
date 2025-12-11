@@ -1,0 +1,81 @@
+name: Playwright Scheduled Tests
+
+on:
+  schedule:
+    # Runs every day at 11:00 PM IST (Asia/Kolkata) -> 17:30 UTC
+    - cron: '30 17 * * *'
+
+jobs:
+  test:
+    name: Run Scheduled Playwright Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+        
+      - name: Run Playwright tests
+        run: npx playwright test test/specs/demo.spec.ts --reporter=html,json,junit,allure-playwright
+        env:
+          CI: true
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: junit.xml
+          
+      - name: Publish Test Results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Playwright Test Results
+          path: junit.xml
+          reporter: jest-junit
+          fail-on-error: false
+          
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          npx allure generate allure-results --clean -o allure-report || echo "Allure report generation skipped"
+          
+      - name: Upload Playwright HTML Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-scheduled
+          path: playwright-report/
+          retention-days: 30
+          
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-scheduled
+          path: |
+            playwright-report/
+            test-results/
+            allure-results/
+            allure-report/
+            junit.xml
+          retention-days: 30
+          
+      - name: Generate Test Summary
+        if: always()
+        run: |
+          echo "## 🧪 Scheduled Playwright Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Test File:** test/specs/demo.spec.ts" >> $GITHUB_STEP_SUMMARY
+          echo "**Schedule:** Daily at 11:00 PM IST (17:30 UTC)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 **Reports Available:**" >> $GITHUB_STEP_SUMMARY
+          echo "- 🎭 [Playwright HTML Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) - Download artifact: playwright-report-scheduled" >> $GITHUB_STEP_SUMMARY
+          echo "- 📈 Allure Report - Download artifact: test-results-scheduled" >> $GITHUB_STEP_SUMMARY
+          echo "- 📄 JSON & JUnit Reports - Download artifact: test-results-scheduled" >> $GITHUB_STEP_SUMMARY
