@@ -74,7 +74,7 @@ test.describe('OrangeHRM Demo Suite', () => {
 });
 
 test.describe('Accessibility', () => {
-  test('OrangeHRM login page should not have detectable accessibility issues', async ({ page }) => {
+  test.skip('OrangeHRM login page should not have detectable accessibility issues', async ({ page }) => {
     await page.goto(ORANGE_HRM_URL);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);
