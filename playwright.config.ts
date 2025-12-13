@@ -56,8 +56,8 @@ const PROFILES = {
       
       // BrowserStack Configuration
       browserstack: {
-        user: 'ankitpatel_4ZJ9iA',
-        key: 'xxscKnMDQvxks5d6eADR',
+        user: envConfig.get('BROWSERSTACK_USER'),
+        key: envConfig.get('BROWSERSTACK_KEY'),
         capabilities: {
           'bstack:options': {
             os: 'Windows',
@@ -130,8 +130,8 @@ const PROFILES = {
       
       // BrowserStack Configuration
       browserstack: {
-        user: 'your-browserstack-username',
-        key: 'your-browserstack-access-key',
+        user: envConfig.get('BROWSERSTACK_USER'),
+        key: envConfig.get('BROWSERSTACK_KEY'),
         capabilities: {
           'bstack:options': {
             os: 'Windows',
@@ -204,8 +204,8 @@ const PROFILES = {
       
       // BrowserStack Configuration
       browserstack: {
-        user: 'your-browserstack-username',
-        key: 'your-browserstack-access-key',
+        user: envConfig.get('BROWSERSTACK_USER'),
+        key: envConfig.get('BROWSERSTACK_KEY'),
         capabilities: {
           'bstack:options': {
             os: 'Windows',
