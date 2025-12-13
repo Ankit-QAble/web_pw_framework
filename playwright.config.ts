@@ -622,6 +622,7 @@ export default defineConfig({
   workers: selectedProfile.parallel,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
+    ['list'],
     ['html'],
     ['json', { outputFile: 'test-results/report.json' }],
     ['./framework/reporters/EmailReporter.ts']

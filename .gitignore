@@ -21,9 +21,8 @@ traces/
 coverage/
 
 # Environment files
-23 # Environment files
-24 .env
-25 .env.local
+.env
+.env.local
 .env.development.local
 .env.test.local
 .env.production.local

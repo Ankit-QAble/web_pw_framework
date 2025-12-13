@@ -15,7 +15,7 @@ interface ExcelCredentialRow {
 
 const excelCredentials = DataHelper.loadExcelData<ExcelCredentialRow[]>('creds.xlsx', 'Test Cases');
 const primaryExcelCredential = excelCredentials[0];
-console.log(`Primary Excel Credential: ${primaryExcelCredential}`);
+console.log(`Primary Excel Credential: ${JSON.stringify(primaryExcelCredential)}`);
 
 export class DemoPage extends BasePage {
   constructor(page: Page, url?: string, testInfo?: TestInfo) {
@@ -66,8 +66,8 @@ export class DemoPage extends BasePage {
    * Enter password using BasePage fill helper
    */
   async enterPassword(password?: string): Promise<void> {
-    const user = DataHelper.getData('test.json', 'testData');
-    await this.fill(DemoPageLocators.passwordField, user.password2);
+    const resolvedPassword = password ?? primaryExcelCredential?.Password ?? 'admin123';
+    await this.fill(DemoPageLocators.passwordField, resolvedPassword);
     this.logger.info('Password entered');
   }
 
