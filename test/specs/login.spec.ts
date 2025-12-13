@@ -1,6 +1,5 @@
 import { test, expect } from '../../framework/core/BaseTest';
 import { LoginPage } from '../pages/LoginPage';
-import { envConfig } from '../../framework/utils/EnvConfig';
 
 // Real application URL from profile config
 const LOGIN_URL = (global as any).selectedProfile?.baseURL;
@@ -153,10 +152,6 @@ test.describe('Login Page Tests', () => {
       await logger.step('Upload sign document', async () => {
         await loginPage.uploadSignDocument();
       });
-
-      
-
-
 
       // Final verification - ensure we're on the expected page
       const currentUrl = page.url();

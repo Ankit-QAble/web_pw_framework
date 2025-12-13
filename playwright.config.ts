@@ -171,7 +171,7 @@ const PROFILES = {
       suiteTitle: false,
     },
     reportEmail: {
-      email: true,
+      email: false,
       to: [envConfig.get('EMAIL_TO_DEV')],
       subject: 'Preprod Test Report',
       body: 'Test execution completed for preprod environment. Allure report attached.',

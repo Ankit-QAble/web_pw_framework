@@ -1,0 +1,16 @@
+{
+  "url": "https://akspy-panel.sadad.qa/auth/login?returnUrl=%2Fdashboard%2Fonline-payment-default",
+  "credentials": {
+    "mobile": "56565656",
+    "password": "QAble@2020"
+  },
+  "otp": "333333",
+  "newProduct": {
+    "name": "Testign234",
+    "price": "5",
+    "quantity": "5",
+    "unitOption": "60",
+    "description": "Testing ato",
+    "imagePath": "test/data/shared_image.jpeg"
+  }
+}
