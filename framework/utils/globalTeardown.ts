@@ -9,6 +9,7 @@ async function globalTeardown(config: FullConfig) {
   const selectedProfile = (global as any).selectedProfile;
   console.log('Selected profile:', selectedProfile ? 'found' : 'not found');
   
+  /*
   if (selectedProfile?.reportEmail?.email && selectedProfile?.reportSmtp?.smtp) {
     console.log('Email configuration found, preparing Playwright report...');
     
@@ -34,6 +35,8 @@ async function globalTeardown(config: FullConfig) {
     console.log('- Email config exists:', !!selectedProfile?.reportEmail);
     console.log('- SMTP config exists:', !!selectedProfile?.reportSmtp);
   }
+  */
+  console.log('Global teardown completed. Email reporting is now handled by EmailReporter.');
 }
 
 export default globalTeardown;

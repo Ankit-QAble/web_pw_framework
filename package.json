@@ -24,7 +24,7 @@
     "test:preprod_test": "cross-env NODE_ENV=preprod npx playwright test test/specs/demo.spec.ts",
     "test:demo": "cross-env NODE_ENV=demo npx playwright test test/specs/simpletest.spec.ts",
     "test:prod": "cross-env NODE_ENV=production npx playwright test",
-    "test:run:dev": "cross-env RUN=development npx playwright test test/specs/login.spec.ts",
+    "test:run:dev": "cross-env RUN=demo npx playwright test test/specs/demo.spec.ts",
     "test:run:preprod": "cross-env RUN=preprod npx playwright test",
     "test:run:qable": "cross-env RUN=qable npx playwright test",
     "test:lambdatest": "npx playwright test",
@@ -76,7 +76,8 @@
     "test:outlook-email": "node scripts/test-outlook-email.js",
     "azure:token": "node scripts/get-azure-token.js",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:accessibility": "npx playwright test test/specs/demo.spec.ts --grep Accessibility"
   },
   "keywords": [
     "playwright",
@@ -88,6 +89,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
     "@azure/identity": "^4.13.0",
     "@azure/playwright": "^1.0.0",
     "@faker-js/faker": "^10.1.0",

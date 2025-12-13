@@ -64,13 +64,6 @@ export class EnvConfig {
   }
   
   /**
-   * Get base URL for the current environment
-   */
-  public getBaseUrl(): string {
-    return this.get('BASE_URL', 'https://aks-panel.sadad.qa/auth/login');
-  }
-  
-  /**
    * Switch to a different environment
    * @param env Environment name (development, preprod, production)
    */
@@ -93,29 +86,14 @@ export class EnvConfig {
       pass: string;
     };
   } {
-    const provider = this.get('EMAIL_PROVIDER', 'gmail').toLowerCase();
-    
-    // Default Gmail configuration
-    let defaultHost = 'smtp.gmail.com';
-    let defaultPort = '587';
-    let defaultUser = 'qable.gamer@gmail.com';
-    let defaultPass = 'wwch ebob wwmh vqua';
-    
-    // Outlook/Office 365 configuration
-    if (provider === 'outlook' || provider === 'office365' || provider === 'microsoft') {
-      defaultHost = 'smtp.office365.com';
-      defaultPort = '587';
-      defaultUser = this.get('SMTP_USER', 'your-email@outlook.com');
-      defaultPass = this.get('SMTP_PASS', 'your-password');
-    }
-    
+    // Read strictly from .env with minimal fallbacks
     return {
       smtp: true,
-      host: this.get('SMTP_HOST', defaultHost),
-      port: parseInt(this.get('SMTP_PORT', defaultPort)),
+      host: this.get('SMTP_HOST', 'smtp.gmail.com'),
+      port: parseInt(this.get('SMTP_PORT', '587')),
       auth: {
-        user: this.get('SMTP_USER', defaultUser),
-        pass: this.get('SMTP_PASS', defaultPass),
+        user: this.get('SMTP_USER', ''),
+        pass: this.get('SMTP_PASS', ''),
       },
     };
   }
@@ -172,14 +150,18 @@ Generated at: ${new Date().toLocaleString()}`;
   } {
     const provider = this.get('EMAIL_PROVIDER', 'gmail').toLowerCase();
     
+    // Allow .env to override specific provider settings
+    const host = this.get('SMTP_HOST', '');
+    const port = parseInt(this.get('SMTP_PORT', '0'));
+
     switch (provider) {
       case 'outlook':
       case 'office365':
       case 'microsoft':
         return {
           provider: 'outlook',
-          host: 'smtp.office365.com',
-          port: 587,
+          host: host || 'smtp.office365.com',
+          port: port || 587,
           secure: false, // Use STARTTLS
           requiresAppPassword: false, // Outlook uses regular password or app password
         };
@@ -187,8 +169,8 @@ Generated at: ${new Date().toLocaleString()}`;
       default:
         return {
           provider: 'gmail',
-          host: 'smtp.gmail.com',
-          port: 587,
+          host: host || 'smtp.gmail.com',
+          port: port || 587,
           secure: false, // Use STARTTLS
           requiresAppPassword: true, // Gmail requires app password
         };

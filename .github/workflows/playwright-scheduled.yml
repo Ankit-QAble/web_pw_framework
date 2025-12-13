@@ -73,6 +73,11 @@ jobs:
         with:
           name: logs-scheduled
           path: log/
+          # path: 
+            # log/console-errors_*.txt 
+            # log/console-logs_*.txt 
+            # log/network-errors_*.txt 
+            # log/network-requests_*.txt
           retention-days: 30
           if-no-files-found: ignore
           

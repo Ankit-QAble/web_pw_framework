@@ -78,7 +78,12 @@ export class EmailService {
   /**
    * Send test report email with Allure report attachment
    */
-  public async sendTestReport(emailConfig: EmailConfig, smtpConfig: SmtpConfig, providerConfig?: { provider: string; host: string; port: number; secure: boolean; requiresAppPassword: boolean }): Promise<void> {
+  public async sendTestReport(
+    emailConfig: EmailConfig, 
+    smtpConfig: SmtpConfig, 
+    providerConfig?: { provider: string; host: string; port: number; secure: boolean; requiresAppPassword: boolean },
+    providedStats?: { passed: number, failed: number, skipped: number, total: number }
+  ): Promise<void> {
     console.log('EmailService.sendTestReport called');
     console.log('Email config:', { email: emailConfig.email, to: emailConfig.to, subject: emailConfig.subject });
     console.log('SMTP config:', { smtp: smtpConfig.smtp, host: smtpConfig.host, port: smtpConfig.port, user: smtpConfig.auth.user });
@@ -127,8 +132,8 @@ export class EmailService {
       });
     }
 
-    // Get test statistics from Allure results
-    const testStats = this.getTestStatistics();
+    // Get test statistics
+    const testStats = providedStats || await this.getTestStatistics();
 
     const mailOptions = {
       from: smtpConfig.auth.user,
@@ -235,78 +240,126 @@ export class EmailService {
   }
 
   /**
-   * Get test statistics from test results directory
+   * Get test statistics by reading the JSON report
    */
-  private getTestStatistics(): { passed: number, failed: number, skipped: number, total: number } | undefined {
+  private async getTestStatistics(): Promise<{ passed: number, failed: number, skipped: number, total: number } | undefined> {
     try {
-      const testResultsPath = path.join(process.cwd(), 'test-results');
-      if (!fs.existsSync(testResultsPath)) {
-        console.log('Test results directory not found');
-        return undefined;
-      }
-
-      let passed = 0, failed = 0, skipped = 0, total = 0;
+      const jsonReportPath = path.join(process.cwd(), 'test-results', 'report.json');
       
-      // Read test results directories
-      const testDirs = fs.readdirSync(testResultsPath, { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => dirent.name);
-
-      testDirs.forEach(testDir => {
-        try {
-          // Each test directory represents one test execution
-          // For now, let's assume all tests passed since we're taking screenshots on successful tests
-          // In a more sophisticated implementation, we'd parse the actual test result files
-          const testDirPath = path.join(testResultsPath, testDir);
-          const attachmentsPath = path.join(testDirPath, 'attachments');
-          
-          // Check if there are attachments that might indicate failures (like error screenshots)
-          if (fs.existsSync(attachmentsPath)) {
-            const attachments = fs.readdirSync(attachmentsPath);
-            // Look for specific failure indicators in attachment names
-            const hasFailureIndicators = attachments.some(file => 
-              file.toLowerCase().includes('error') || 
-              file.toLowerCase().includes('failure') ||
-              file.toLowerCase().includes('failed')
-            );
-            
-            if (hasFailureIndicators) {
-              failed++;
-            } else {
-              // Regular screenshots on successful tests
-              passed++;
-            }
-          } else {
-            // No attachments - test passed
-            passed++;
-          }
-          total++;
-        } catch (error) {
-          console.warn(`Error processing test directory ${testDir}:`, error);
+      // Wait for the report file to be generated (max 5 seconds)
+      let retries = 10;
+      while (retries > 0) {
+        if (fs.existsSync(jsonReportPath)) {
+          break;
         }
-      });
-
-      // If we have a recent test run, let's try to get more accurate stats
-      // For the current run, we know from the terminal output that 1 test passed
-      if (total === 0) {
-        // Fallback: check if we have recent test execution
-        const playwrightReportPath = path.join(process.cwd(), 'playwright-report', 'index.html');
-        if (fs.existsSync(playwrightReportPath)) {
-          // If Playwright report exists, it means at least one test ran
-          // Based on the terminal output, we know 1 test passed in the recent run
-          passed = 1;
-          failed = 0;
-          skipped = 0;
-          total = 1;
-        }
+        console.log(`Waiting for JSON report generation... (${retries} retries left)`);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        retries--;
       }
+      
+      if (fs.existsSync(jsonReportPath)) {
+        console.log('Reading test statistics from JSON report...');
+        // Add a small delay to ensure file write is complete
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        const reportContent = fs.readFileSync(jsonReportPath, 'utf8');
+        const report = JSON.parse(reportContent);
+        
+        // Count stats from the JSON report structure
+        let passed = 0;
+        let failed = 0;
+        let skipped = 0;
+        let total = 0;
 
-      console.log(`Test statistics: ${passed} passed, ${failed} failed, ${skipped} skipped, ${total} total`);
-      return { passed, failed, skipped, total };
+        // Iterate through suites and specs to count results
+        const processSuite = (suite: any) => {
+          if (suite.specs) {
+            suite.specs.forEach((spec: any) => {
+              if (spec.tests && spec.tests.length > 0) {
+                // Get the last result of the test (in case of retries)
+                const lastResult = spec.tests[spec.tests.length - 1].results[0];
+                if (lastResult) {
+                  total++;
+                  if (lastResult.status === 'passed') passed++;
+                  else if (lastResult.status === 'failed' || lastResult.status === 'timedOut') failed++;
+                  else if (lastResult.status === 'skipped') skipped++;
+                }
+              }
+            });
+          }
+          if (suite.suites) {
+            suite.suites.forEach((childSuite: any) => processSuite(childSuite));
+          }
+        };
+
+        if (report.suites) {
+          report.suites.forEach((suite: any) => processSuite(suite));
+        }
+
+        console.log('Parsed test statistics:', { passed, failed, skipped, total });
+        return { passed, failed, skipped, total };
+      }
+      
+      console.warn('JSON report not found at:', jsonReportPath);
+      
+      // Fallback to the old logic if JSON report is missing
+      return this.getTestStatisticsFallback();
+      
     } catch (error) {
-      console.warn('Error getting test statistics:', error);
+      console.warn('Error reading test statistics:', error);
       return undefined;
     }
+  }
+
+  /**
+   * Fallback method to estimate statistics from directories (less accurate)
+   */
+  private getTestStatisticsFallback(): { passed: number, failed: number, skipped: number, total: number } | undefined {
+    const testResultsPath = path.join(process.cwd(), 'test-results');
+    if (!fs.existsSync(testResultsPath)) {
+      return undefined;
+    }
+    
+    let passed = 0, failed = 0, skipped = 0, total = 0;
+      
+    // Read test results directories
+    const testDirs = fs.readdirSync(testResultsPath, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name);
+
+    testDirs.forEach(testDir => {
+      try {
+        // Each test directory represents one test execution
+        const testDirPath = path.join(testResultsPath, testDir);
+        const attachmentsPath = path.join(testDirPath, 'attachments');
+        
+        // Check if there are attachments that might indicate failures (like error screenshots)
+        if (fs.existsSync(attachmentsPath)) {
+          const attachments = fs.readdirSync(attachmentsPath);
+          // Look for specific failure indicators in attachment names
+          const hasFailureIndicators = attachments.some(file => 
+            file.toLowerCase().includes('error') || 
+            file.toLowerCase().includes('failure') ||
+            file.toLowerCase().includes('failed')
+          );
+          
+          if (hasFailureIndicators) {
+            failed++;
+          } else {
+            // Regular screenshots on successful tests
+            passed++;
+          }
+        } else {
+          // No attachments - test passed
+          passed++;
+        }
+        total++;
+      } catch (error) {
+        console.warn(`Error processing test directory ${testDir}:`, error);
+      }
+    });
+    
+    return { passed, failed, skipped, total };
   }
 
   /**

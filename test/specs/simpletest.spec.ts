@@ -1,6 +1,6 @@
 import { SimplePage } from '../pages/simplePage';
 import { test, expect } from '../../framework/core/BaseTest';
-
+import AxeBuilder from '@axe-core/playwright';
 
 
 test.describe('Simple Test Suite @smoke', () => {
@@ -94,5 +94,13 @@ test.describe('Annotation test @Annotation', () => {
     await logger.step('Open the page', async () => {
       await simplePage.open();
     });
+  });
+});
+
+test.describe('Accessibility', () => {
+  test('Google base page should not have detectable accessibility issues', async ({ page }) => {
+    await page.goto('https://google.com');
+    const results = await new AxeBuilder({ page }).analyze();
+    expect(results.violations).toEqual([]);
   });
 });

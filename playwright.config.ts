@@ -24,7 +24,7 @@ const PROFILES = {
     },
     reportEmail: {
       email: false, // Set to true to enable email reporting and setup in utils/EmailService.ts
-      to: ['patelankitr123@gmail.com'],
+      to: [envConfig.get('EMAIL_TO_DEV')],
       subject: 'Automation Test Report',
       body: 'Test execution completed for development environment',
     },
@@ -35,8 +35,8 @@ const PROFILES = {
       
       // LambdaTest Configuration
       lambdatest: {
-        user: 'ankitpatelsadad',
-        key: 'LT_3R7SNKvxrQqDBZTeI3vCIxIy6jv1Ike3YpMRghc0ER4XDH6',
+        user: envConfig.get('LAMBDA_USER'),
+        key: envConfig.get('LAMBDA_KEY'),
         capabilities: {
           'LT:Options': {
             platform: 'Windows 10',
@@ -98,7 +98,7 @@ const PROFILES = {
     },
     reportEmail: {
       email: false,
-      to: ['patelankitr123@gmail.com'],
+      to: [envConfig.get('EMAIL_TO_DEV')],
       subject: 'Preprod Test Report - Allure Results',
       body: 'Test execution completed for preprod environment. Allure report attached.',
     },
@@ -152,10 +152,10 @@ const PROFILES = {
     }
   },
   demo: {
-    baseURL: 'https://google.com',
+    baseURL: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login',
     browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
     headless: false,
-    parallel: 2,
+    parallel: 3,
     retries: 0,
     screenshotOnFail: false,
     videoOnFail: false,
@@ -171,9 +171,9 @@ const PROFILES = {
       suiteTitle: false,
     },
     reportEmail: {
-      email: false,
-      to: ['ankitpatel@qable.io'],
-      subject: 'Preprod Test Report - Allure Results',
+      email: true,
+      to: [envConfig.get('EMAIL_TO_DEV')],
+      subject: 'Preprod Test Report',
       body: 'Test execution completed for preprod environment. Allure report attached.',
     },
     reportSmtp: envConfig.getSmtpConfig(),
@@ -621,29 +621,15 @@ export default defineConfig({
   /* Opt out of parallel tests on CI - but allow 2 workers for better resource utilization */
   workers: selectedProfile.parallel,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: (() => {
-    const reporters: any[] = [
-      ['html'],
-      ['json', { outputFile: 'test-results/results.json' }],
-      ['allure-playwright', {
-        detail: true,
-        outputFolder: 'allure-results',
-        suiteTitle: false,
-      }],
-      ['list'],
-    ];
-
-    // Add JUnit output for CI systems (e.g., Jenkins)
-    if (process.env.CI) {
-      reporters.push(['junit', { outputFile: 'junit.xml', suite: 'playwright' }]);
-    }
-
-    return reporters;
-  })(),
+  reporter: [
+    ['html'],
+    ['json', { outputFile: 'test-results/report.json' }],
+    ['./framework/reporters/EmailReporter.ts']
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: selectedProfile.baseURL || envConfig.getBaseUrl(),
+    baseURL: selectedProfile.baseURL,
 
     /* Browser headless mode - force headless in CI environments */
     headless: process.env.HEADLESS === 'true' ? true : process.env.HEADLESS === 'false' ? false : (process.env.CI ? true : selectedProfile.headless),

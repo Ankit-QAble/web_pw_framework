@@ -1,5 +1,6 @@
 import { test, expect, BaseTest } from '../../framework/core/BaseTest';
 import { DemoPage } from '../pages/DemoPage';
+import AxeBuilder from '@axe-core/playwright';
 
 const ORANGE_HRM_URL =
   process.env.ORANGE_HRM_URL ??
@@ -69,5 +70,13 @@ test.describe('OrangeHRM Demo Suite', () => {
   });
   test('should login successfully and reach dashboard_1', async ({ logger }) => {
     console.log('Azure testing');
+  });
+});
+
+test.describe('Accessibility', () => {
+  test('OrangeHRM login page should not have detectable accessibility issues', async ({ page }) => {
+    await page.goto(ORANGE_HRM_URL);
+    const results = await new AxeBuilder({ page }).analyze();
+    expect(results.violations).toEqual([]);
   });
 });
