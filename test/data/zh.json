@@ -1,0 +1,36 @@
+{
+  "zh": {
+    "page_title": "DHL 职位",
+    "hero_heading": "像我们这样的全球性企业，机会无穷无尽。因此，加入我们吧。",
+    "hero_subheading": "与我们一起工作。与我们共同成长。与我们在一起。发现你可以带来的积极影响，并创造一个惊人的 DHL 职业生涯。",
+    "section_our_locations": "我们的地点",
+    "section_our_locations_description": "我们是全世界国际化程度最高的公司，业务范围覆盖 220 多个国家和地区。在 DHL 的职业生涯真的可以带你到任何地方。",
+    "browse_jobs_label": "浏览工作",
+    "job_categories": {
+      " frontline_jobs": "一线职位",
+      "warehouse_jobs": "仓库职位",
+      "driver_jobs": "司机职位",
+      "delivery_jobs": "派送职位",
+      "operations_manager_jobs": "运营经理职位",
+      "office_jobs": "办公室职位",
+      "hr_jobs": "人力资源职位",
+      "marketing_jobs": "营销职位",
+      "it_jobs": "IT 职位",
+      "data_analytics_jobs": "数据分析职位",
+      "project_manager_jobs": "项目经理职位",
+      "students_and_graduates": "学生和毕业生",
+      "internships": "实习",
+      "apprenticeships": "学徒岗位",
+      "training_programs": "培训"
+    },
+    "footer_copyright": "2025 © Deutsche Post AG – 保留所有权利。",
+    "footer_links": {
+      "site_map": "站点地图",
+      "data_protection": "数据保护通知",
+      "applicant_data_protection": "求职者的数据保护声明",
+      "disclaimer": "免责声明",
+      "safety_notice": "安全建议",
+      "imprint": "刊头"
+    }
+  }
+}

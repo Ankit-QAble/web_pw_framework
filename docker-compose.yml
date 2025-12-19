@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  playwright-tests:
+    build: .
+    image: web-pw-framework-docker
+    container_name: playwright-tests
+    working_dir: /app
+    entrypoint: []
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ipc: host
+    environment:
+      - CI=true
+      # Add any other environment variables you need here
+    command: npx playwright test

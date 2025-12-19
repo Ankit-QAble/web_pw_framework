@@ -77,7 +77,9 @@
     "azure:token": "node scripts/get-azure-token.js",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write .",
-    "test:accessibility": "npx playwright test test/specs/demo.spec.ts --grep Accessibility"
+    "test:accessibility": "npx playwright test test/specs/demo.spec.ts --grep Accessibility",
+    "test:docker": "docker-compose run --rm playwright-tests npx playwright test",
+    "test:docker:demo": "docker-compose run --rm playwright-tests npx playwright test test/specs/dhl_careers.spec.ts"
   },
   "keywords": [
     "playwright",

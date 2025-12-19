@@ -812,9 +812,13 @@ protected async unhighlight(locator: Locator): Promise<void> {
   /**
    * Verify page title
    */
-  async verifyTitle(expectedTitle: string): Promise<void> {
+  async verifyTitle(expectedTitle: string, softAssert: boolean = false): Promise<void> {
     const actualTitle = await this.getTitle();
-    expect(actualTitle).toBe(expectedTitle);
+    if (softAssert) {
+      expect.soft(actualTitle).toBe(expectedTitle);
+    } else {
+      expect(actualTitle).toBe(expectedTitle);
+    }
     this.logger.info(`Title verified: ${expectedTitle}`);
   }
 
@@ -832,21 +836,59 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @param expectedText The text to compare against
    * @param exactMatch Whether to do exact match (default: true)
+   * @param softAssert Whether to perform a soft assertion (default: false)
    * @returns True if text matches, false otherwise
    */
-  async getTextAndCompare(selector: SelectorDefinition, expectedText: string, exactMatch: boolean = true): Promise<boolean> {
-    const actualText = await this.getText(selector);
+  async getTextAndCompare(selector: SelectorDefinition, expectedText: string, exactMatch: boolean = true, softAssert: boolean = false): Promise<boolean> {
+    if (expectedText === undefined || expectedText === null) {
+      const msg = `Expected text is undefined or null for selector: ${this.describeSelector(selector)}`;
+      this.logger.error(msg);
+      if (softAssert) {
+         expect.soft(expectedText as any, msg).toBeDefined();
+         return false;
+      }
+      throw new Error(msg);
+    }
+
+    let actualText = '';
+    try {
+      actualText = await this.getText(selector);
+    } catch (error) {
+      if (softAssert) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        // Using null as actual value to indicate failure to retrieve text
+        // This will fail the soft assertion
+        expect.soft(null, `Failed to get text from element: ${this.describeSelector(selector)}. Error: ${errorMessage}`).toBe(expectedText);
+        this.logger.error(`Soft assertion failed: Could not get text from element. ${errorMessage}`);
+        return false;
+      }
+      throw error;
+    }
+    
+    // Normalize text by removing zero-width spaces and other invisible characters if needed
+    // This helps with CMS content that often contains artifacts
+    const normalizedActual = actualText.replace(/[\u200B-\u200D\uFEFF]/g, '');
+    const normalizedExpected = expectedText.replace(/[\u200B-\u200D\uFEFF]/g, '');
+
     this.logger.info(`Comparing text for element: ${this.describeSelector(selector)}`);
-    this.logger.info(`Expected: "${expectedText}"`);
-    this.logger.info(`Actual: "${actualText}"`);
+    this.logger.info(`Expected: "${normalizedExpected}"`);
+    this.logger.info(`Actual: "${normalizedActual}"`);
     
     let isMatch: boolean;
     if (exactMatch) {
-      isMatch = actualText === expectedText;
+      isMatch = normalizedActual === normalizedExpected;
     } else {
-      isMatch = actualText.includes(expectedText);
+      isMatch = normalizedActual.includes(normalizedExpected);
     }
     
+    if (softAssert) {
+      if (exactMatch) {
+        expect.soft(normalizedActual, `Text mismatch! Expected: "${normalizedExpected}", Actual: "${normalizedActual}"`).toBe(normalizedExpected);
+      } else {
+        expect.soft(normalizedActual, `Text mismatch! Expected "${normalizedActual}" to contain "${normalizedExpected}"`).toContain(normalizedExpected);
+      }
+    }
+
     this.logger.info(`Text comparison result: ${isMatch ? 'MATCH' : 'NO MATCH'}`);
     return isMatch;
   }
