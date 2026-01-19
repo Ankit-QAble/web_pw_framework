@@ -23,6 +23,8 @@
     "test:preprod": "cross-env NODE_ENV=preprod npx playwright test",
     "test:preprod_test": "cross-env NODE_ENV=preprod npx playwright test test/specs/demo.spec.ts",
     "test:demo": "cross-env NODE_ENV=demo npx playwright test test/specs/simpletest.spec.ts",
+    "test:dev:example": "cross-env NODE_ENV=development npx playwright test test/specs/simpletest.spec.ts",
+    "test:preprod:example": "cross-env NODE_ENV=preprod npx playwright test test/specs/simpletest.spec.ts",
     "test:prod": "cross-env NODE_ENV=production npx playwright test",
     "test:run:dev": "cross-env RUN=demo npx playwright test test/specs/demo.spec.ts",
     "test:run:preprod": "cross-env RUN=preprod npx playwright test",
@@ -96,6 +98,7 @@
     "@azure/playwright": "^1.0.0",
     "@faker-js/faker": "^10.1.0",
     "@playwright/test": "^1.56.0",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.0.0",
     "@types/xlsx": "^0.0.36",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -104,10 +107,13 @@
     "allure-playwright": "^2.9.0",
     "browserstack-node-sdk": "^1.45.0",
     "eslint": "^8.0.0",
+    "js-yaml": "^4.1.1",
     "pixelmatch": "^7.1.0",
     "pngjs": "^7.0.0",
     "prettier": "^3.0.0",
-    "typescript": "^5.0.0"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "undici": "^6.19.8"
   },
   "dependencies": {
     "@types/nodemailer": "^7.0.1",

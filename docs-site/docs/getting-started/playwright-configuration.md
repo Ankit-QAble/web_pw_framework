@@ -48,8 +48,8 @@ development: {
   headless: false,
   parallel: 1,
   retries: 0,
-  screenshotOnFail: true,
-  videoOnFail: true,
+  screenshot: 'only-on-failure',
+  video: 'retain-on-failure',
   elementHighlight: true,
   // ... additional configuration
 }
@@ -69,8 +69,8 @@ preprod: {
   headless: false,
   parallel: 1,
   retries: 0,
-  screenshotOnFail: true,
-  videoOnFail: true,
+  screenshot: 'only-on-failure',
+  video: 'retain-on-failure',
   elementHighlight: true,
   reportEmail: {
     email: true,
@@ -96,8 +96,8 @@ qable: {
   headless: false,
   parallel: 1,
   retries: 0,
-  screenshotOnFail: true,
-  videoOnFail: true,
+  screenshot: 'only-on-failure',
+  video: 'retain-on-failure',
   elementHighlight: true,
   // ... additional configuration
 }
@@ -340,11 +340,11 @@ retries: selectedProfile.retries,
 ```typescript
 // Screenshots
 screenshot: (selectedProfile as any).grid?.isGrid ? 'off' : 
-           (selectedProfile.screenshotOnFail ? 'only-on-failure' : 'off'),
+           ((selectedProfile as any).screenshot || 'only-on-failure'),
 
 // Videos
 video: (selectedProfile as any).grid?.isGrid ? 'off' : 
-      (selectedProfile.videoOnFail ? 'retain-on-failure' : 'off'),
+      ((selectedProfile as any).video || 'retain-on-failure'),
 ```
 
 **Logic:**
@@ -468,8 +468,8 @@ interface Profile {
   headless: boolean;
   parallel: number;
   retries: number;
-  screenshotOnFail: boolean;
-  videoOnFail: boolean;
+  screenshot: 'on' | 'off' | 'only-on-failure';
+  video: 'on' | 'off' | 'retain-on-failure' | 'on-first-retry';
   elementHighlight: boolean;
   mobile?: {
     mobile: {
@@ -497,5 +497,3 @@ interface Profile {
   };
 }
 ```
-
-This configuration system provides maximum flexibility while maintaining simplicity for common use cases. The framework automatically handles complex scenarios like cloud testing, mobile simulation, and CI/CD optimizations based on your profile selection.

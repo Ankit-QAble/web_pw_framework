@@ -100,6 +100,9 @@ web_pw_framework/
 Explore our comprehensive documentation:
 
 - **[Getting Started](./getting-started/)** - Quick setup and basic usage
+- **[Framework Cheatsheet](./getting-started/FRAMEWORK_CHEATSHEET.md)** - Code snippets for common tasks
+- **[Console & Network Monitoring](./getting-started/CONSOLE_NETWORK_MONITORING.md)** - Guide for capturing logs and network traffic
+- **[Docker Setup](./getting-started/DOCKER_SETUP.md)** - Run tests in Docker containers
 - **[Azure Playwright Testing](./azure/)** - Cloud testing with Azure
 - **[BrowserStack Integration](./browserstack/)** - Cross-browser testing
 - **[GitHub Actions](./github-actions/)** - CI/CD workflows

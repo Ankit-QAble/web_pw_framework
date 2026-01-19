@@ -78,18 +78,19 @@ const config: Config = {
       title: 'Playwright Framework',
       logo: {
         alt: 'Playwright Framework Logo',
-        src: 'img/logo.svg',
+        src: 'img/qa_logo.png',
       },
       items: [
+        {to: '/', label: 'Home', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Documentation',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/about', label: 'About', position: 'left'},
         {
-          href: 'https://github.com/your-org/web_pw_framework',
+          href: 'https://github.com/Ankit-QAble/web_pw_framework',
           label: 'GitHub',
           position: 'right',
         },
@@ -99,11 +100,19 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Navigation',
           items: [
             {
-              label: 'Tutorial',
+              label: 'Home',
+              to: '/',
+            },
+            {
+              label: 'Documentation',
               to: '/docs/intro',
+            },
+            {
+              label: 'About',
+              to: '/about',
             },
           ],
         },
@@ -112,7 +121,7 @@ const config: Config = {
           items: [
             {
               label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              href: 'https://stackoverflow.com/questions/tagged/playwright',
             },
             {
               label: 'Discord',
@@ -133,7 +142,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/Ankit-QAble/web_pw_framework',
             },
           ],
         },

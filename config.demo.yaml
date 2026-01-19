@@ -1,0 +1,68 @@
+baseURL: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
+browser: 'chrome' # 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
+headless: false
+parallel: 3
+retries: 0
+screenshot: 'only-on-failure'
+video: 'retain-on-failure' # 'on', 'off', 'retain-on-failure', 'on-first-retry'
+elementHighlight: true
+mobile:
+  mobile: 
+    isMobile: false
+    device: 'pixel 9'
+report:
+  name: 'allure-playwright'
+  outputFolder: 'allure-results'
+  suiteTitle: false
+reportEmail:
+  email: false
+  to: ['${EMAIL_TO_DEV}']
+  subject: 'Preprod Test Report'
+  body: 'Test execution completed for preprod environment. Allure report attached.'
+reportSmtp:
+  smtp: true
+  host: '${SMTP_HOST:-smtp.gmail.com}'
+  port: ${SMTP_PORT:-587}
+  auth:
+    user: '${SMTP_USER}'
+    pass: '${SMTP_PASS}'
+grid:
+  isGrid: false
+  provider: 'lambdatest' # 'lambdatest' | 'browserstack'
+  
+  # LambdaTest Configuration
+  lambdatest:
+    user: 'ankitpatelsadad'
+    key: '<YOUR_LAMBDATEST_ACCESS_KEY>'
+    capabilities:
+      LT:Options:
+        platform: 'Windows 10'
+        browserName: 'Chrome'
+        browserVersion: 'latest'
+        resolution: '1920x1080'
+        name: 'Playwright Preprod Tests'
+        build: 'Preprod Build'
+        projectName: 'Web Framework'
+        console: true
+        network: true
+        visual: true
+        video: true
+  
+  # BrowserStack Configuration
+  browserstack:
+    user: '${BROWSERSTACK_USER}'
+    key: '${BROWSERSTACK_KEY}'
+    capabilities:
+      bstack:options:
+        os: 'Windows'
+        osVersion: '10'
+        browserName: 'chrome'
+        browserVersion: 'latest'
+        resolution: '1920x1080'
+        projectName: 'Web Framework'
+        buildName: 'Preprod Build'
+        sessionName: 'Playwright Preprod Tests'
+        local: false
+        networkLogs: true
+        consoleLogs: 'info'
+        video: true

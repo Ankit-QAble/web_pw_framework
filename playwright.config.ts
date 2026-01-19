@@ -1,235 +1,29 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as fs from 'fs';
+import * as yaml from 'js-yaml';
+import * as path from 'path';
 import { envConfig } from './framework/utils/EnvConfig';
+import { T } from '@faker-js/faker/dist/airline-DF6RqYmq';
 
 // Environment profiles inspired by user's desired schema
 // Select via RUN (preferred) or NODE_ENV. Defaults to 'development'.
-const PROFILES = {
-  development: {
-    baseURL: 'https://google.com',
-    browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'
-    headless: false,
-    parallel: 1, // workers
-    retries: 0,
-    screenshotOnFail: true,
-    videoOnFail: true,
-    elementHighlight: true,
-    mobile: {
-      mobile: {
-        isMobile: false,
-        device: 'pixel 7'
-        //viewportWidth: 875,
-        //viewportHeight: 667,
-        // Or use a device name instead: device: 'pixel 7'
-      },
-    },
-    reportEmail: {
-      email: false, // Set to true to enable email reporting and setup in utils/EmailService.ts
-      to: [envConfig.get('EMAIL_TO_DEV')],
-      subject: 'Automation Test Report',
-      body: 'Test execution completed for development environment',
-    },
-    reportSmtp: envConfig.getSmtpConfig(),
-    grid: {
-      isGrid: false,
-      provider: 'lambdatest', // 'lambdatest' | 'browserstack'
-      
-      // LambdaTest Configuration
-      lambdatest: {
-        user: envConfig.get('LAMBDA_USER'),
-        key: envConfig.get('LAMBDA_KEY'),
-        capabilities: {
-          'LT:Options': {
-            platform: 'Windows 10',
-            browserName: 'Chrome',
-            browserVersion: 'latest',
-            resolution: '1920x1080',
-            name: 'Playwright Login Tests',
-            build: 'Login Test',
-            projectName: 'Web Framework',
-            console: true,
-            network: true,
-            visual: true,
-            video: true,
-          }
-        }
-      },
-      
-      // BrowserStack Configuration
-      browserstack: {
-        user: envConfig.get('BROWSERSTACK_USER'),
-        key: envConfig.get('BROWSERSTACK_KEY'),
-        capabilities: {
-          'bstack:options': {
-            os: 'Windows',
-            osVersion: '10',
-            browserName: 'chrome',
-            browserVersion: 'latest',
-            resolution: '1920x1080',
-            projectName: 'Web Framework',
-            buildName: 'Development Build',
-            sessionName: 'Playwright Development Tests',
-            local: false,
-            networkLogs: true,
-            consoleLogs: 'info',
-            video: true,
-          }
-        }
-      }
-    }
-  },
-  preprod: {
-    baseURL: 'https://google.com',
-    browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
-    headless: false,
-    parallel: 1,
-    retries: 0,
-    screenshotOnFail: true,
-    videoOnFail: true,
-    elementHighlight: true,
-    mobile: {
-      mobile: { 
-        isMobile: false, 
-        device: 'pixel 9' },
-    },
-    report: {
-      name: 'allure-playwright',
-      outputFolder: 'allure-results',
-      suiteTitle: false,
-    },
-    reportEmail: {
-      email: false,
-      to: [envConfig.get('EMAIL_TO_DEV')],
-      subject: 'Preprod Test Report - Allure Results',
-      body: 'Test execution completed for preprod environment. Allure report attached.',
-    },
-    reportSmtp: envConfig.getSmtpConfig(),
-    grid: {
-      isGrid: false,
-      provider: 'lambdatest', // 'lambdatest' | 'browserstack'
-      
-      // LambdaTest Configuration
-      lambdatest: {
-        user: 'ankitpatel',
-        key: '<YOUR_LAMBDATEST_ACCESS_KEY>',
-        capabilities: {
-          'LT:Options': {
-            platform: 'Windows 10',
-            browserName: 'Chrome',
-            browserVersion: 'latest',
-            resolution: '1920x1080',
-            name: 'Playwright Preprod Tests',
-            build: 'Preprod Build',
-            projectName: 'Web Framework',
-            console: true,
-            network: true,
-            visual: true,
-            video: true,
-          }
-        }
-      },
-      
-      // BrowserStack Configuration
-      browserstack: {
-        user: envConfig.get('BROWSERSTACK_USER'),
-        key: envConfig.get('BROWSERSTACK_KEY'),
-        capabilities: {
-          'bstack:options': {
-            os: 'Windows',
-            osVersion: '10',
-            browserName: 'chrome',
-            browserVersion: 'latest',
-            resolution: '1920x1080',
-            projectName: 'Web Framework',
-            buildName: 'Preprod Build',
-            sessionName: 'Playwright Preprod Tests',
-            local: false,
-            networkLogs: true,
-            consoleLogs: 'info',
-            video: true,
-          }
-        }
-      }
-    }
-  },
-  demo: {
-    baseURL: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login',
-    browser: 'chrome', // 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
-    headless: false,
-    parallel: 3,
-    retries: 0,
-    screenshotOnFail: false,
-    videoOnFail: false,
-    elementHighlight: true,
-    mobile: {
-      mobile: { 
-        isMobile: false, 
-        device: 'pixel 9' },
-    },
-    report: {
-      name: 'allure-playwright',
-      outputFolder: 'allure-results',
-      suiteTitle: false,
-    },
-    reportEmail: {
-      email: false,
-      to: [envConfig.get('EMAIL_TO_DEV')],
-      subject: 'Preprod Test Report',
-      body: 'Test execution completed for preprod environment. Allure report attached.',
-    },
-    reportSmtp: envConfig.getSmtpConfig(),
-    grid: {
-      isGrid: false,
-      provider: 'lambdatest', // 'lambdatest' | 'browserstack'
-      
-      // LambdaTest Configuration
-      lambdatest: {
-        user: 'ankitpatelsadad',
-        key: '<YOUR_LAMBDATEST_ACCESS_KEY>',
-        capabilities: {
-          'LT:Options': {
-            platform: 'Windows 10',
-            browserName: 'Chrome',
-            browserVersion: 'latest',
-            resolution: '1920x1080',
-            name: 'Playwright Preprod Tests',
-            build: 'Preprod Build',
-            projectName: 'Web Framework',
-            console: true,
-            network: true,
-            visual: true,
-            video: true,
-          }
-        }
-      },
-      
-      // BrowserStack Configuration
-      browserstack: {
-        user: envConfig.get('BROWSERSTACK_USER'),
-        key: envConfig.get('BROWSERSTACK_KEY'),
-        capabilities: {
-          'bstack:options': {
-            os: 'Windows',
-            osVersion: '10',
-            browserName: 'chrome',
-            browserVersion: 'latest',
-            resolution: '1920x1080',
-            projectName: 'Web Framework',
-            buildName: 'Preprod Build',
-            sessionName: 'Playwright Preprod Tests',
-            local: false,
-            networkLogs: true,
-            consoleLogs: 'info',
-            video: true,
-          }
-        }
-      }
-    }
-  },
-} as const;
+function substituteEnvVars(content: string): string {
+  return content.replace(/\${([A-Z0-9_]+)(?::-([^}]+))?}/g, (match, key, defaultValue) => {
+    return envConfig.get(key, defaultValue || '');
+  });
+}
 
-type ProfileName = keyof typeof PROFILES;
-const selectedProfileName: ProfileName = (process.env.RUN as ProfileName) || (process.env.NODE_ENV as ProfileName) || 'development';
-const selectedProfile = { ...PROFILES[selectedProfileName] || PROFILES.development };
+const selectedProfileName = (process.env.RUN || process.env.NODE_ENV || 'development') as string;
+const configFileName = `config.${selectedProfileName}.yaml`;
+const configPath = path.join(process.cwd(), configFileName);
+
+if (!fs.existsSync(configPath)) {
+  throw new Error(`Configuration file not found: ${configFileName}. Please check your RUN or NODE_ENV environment variables.`);
+}
+
+const rawConfig = fs.readFileSync(configPath, 'utf8');
+const substitutedConfig = substituteEnvVars(rawConfig);
+const selectedProfile = yaml.load(substitutedConfig) as any;
 
 // Override browser from command line if BROWSER environment variable is set
 const commandLineBrowser = process.env.BROWSER;
@@ -625,7 +419,18 @@ export default defineConfig({
     ['list'],
     ['html'],
     ['json', { outputFile: 'test-results/report.json' }],
-    ['./framework/reporters/EmailReporter.ts']
+    ['./framework/reporters/EmailReporter.ts'],
+    ['json', {  outputFile: 'test-results.json' }],
+    [
+      './reporters/tesbo-uploader-v3',  // Uploads after run from json report
+      {
+        apiKey: 'hsthmhtskxiljdfosckqhcjfxeeroqgb', // Local API key for testing
+        apiKeyEnv: 'TESBO_API_KEY',
+        reportingPortalUrl: 'https://app.tesbo.io/api',  // Use HTTPS to avoid redirect/downgrade issues
+        runTitle: process.env.TESBO_RUN_TITLE || 'Local Playwright Test Run'
+      }
+    ]
+
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -639,10 +444,10 @@ export default defineConfig({
     trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
     
     /* Take screenshot on failure - disable on grid as LambdaTest handles it */
-    screenshot: (selectedProfile as any).grid?.isGrid ? 'off' : (selectedProfile.screenshotOnFail ? 'only-on-failure' : 'off'),
+    screenshot: (selectedProfile as any).grid?.isGrid ? 'off' : ((selectedProfile as any).screenshot || 'only-on-failure'),
     
     /* Record video on failure - disable on grid as LambdaTest handles it */
-    video: (selectedProfile as any).grid?.isGrid ? 'off' : (selectedProfile.videoOnFail ? 'retain-on-failure' : 'off'),
+    video: (selectedProfile as any).grid?.isGrid ? 'off' : ((selectedProfile as any).video || 'retain-on-failure'),
     
     /* Global timeout for each action - increase for CI */
     actionTimeout: process.env.CI ? 120000 : 90000,

@@ -13,8 +13,10 @@ build/
 
 # Test results
 test-results/
+test-results.json
 allure-results/
 allure-report/
+playwright-report/
 screenshots/
 videos/
 traces/
@@ -98,50 +100,3 @@ jspm_packages/
 
 # Output of 'npm pack'
 *.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# parcel-bundler cache
-.cache
-.parcel-cache
-
-# Next.js build output
-.next
-
-# Nuxt.js build / generate output
-.nuxt
-
-# Gatsby files
-.cache/
-public
-
-# Storybook build outputs
-.out
-.storybook-out
-
-# Temporary folders
-tmp/
-temp/
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Playwright
-/test-results/
-/playwright-report/
-/playwright/.cache/
-
-# Custom test data (if sensitive)
-# test/data/sensitive/
-
-# Generated results and built docs (sanitized locally before publishing)
-results.json
-docs-site/build/

@@ -1,0 +1,10 @@
+baseURL: 'https://google.com'
+browser: 'chrome' # 'chrome'|'chromium'|'firefox'|'webkit'|'chrome incognito'
+headless: false
+parallel: 1
+retries: 0
+screenshot: 'on'
+video: 'on'
+elementHighlight: true
+
+  

@@ -114,38 +114,18 @@ await this.typeTextSlowly('Slow Typing'); // 100ms delay
 
 ### Console & Network Monitoring
 
+> **Note:** For a dedicated guide on console and network monitoring, including helper wrappers, see the [Console & Network Monitoring](./CONSOLE_NETWORK_MONITORING.md) guide.
+
 ```typescript
 // Start capturing console logs (defaults to all levels if unspecified)
 await this.captureConsoleLogs(['error', 'warning']);
 
 // Start capturing network traffic
 await this.captureNetworkRequests();
-// or with filters: await this.captureNetworkRequests(/api/, 'POST');
-
-// ... perform test actions ...
-
-// Verify no console errors occurred
-const errors = this.getConsoleErrors();
-expect(errors.length).toBe(0);
-
-// Check network statistics
-const summary = this.getNetworkRequestSummary();
-console.log(`Total: ${summary.total}, Failed: ${summary.failed}`);
-
-// Get specific failed requests
-const failedReqs = this.getFailedNetworkRequests();
-if (failedReqs.length > 0) {
-  console.log(`Failed URL: ${failedReqs[0].url}`);
-}
 
 // Save capture reports to 'log/' folder
 await this.saveConsoleErrorsToFile('my-test-console-errors.txt');
 await this.saveFailedNetworkRequestsToFile('my-test-network-errors.txt');
-
-// Save ALL captured data (console logs, errors, network requests, failures)
-// Returns an object with paths to all generated files
-const reportPaths = await this.saveAllCapturedDataToFiles('my-test-report');
-console.log(`Full report saved at: ${reportPaths.consoleLogs}`);
 ```
 
 ## BaseTest & Fixtures
