@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 import { Logger } from './Logger';
 
@@ -75,6 +74,11 @@ export class VisualComparator {
     const height = Math.min(baselinePng.height, actualPng.height);
 
     const diffPng = new PNG({ width, height });
+
+    // Use dynamic import for pixelmatch to support both CommonJS and ESM
+    // We use Function constructor to bypass TypeScript transpilation of import() to require()
+    // which causes "require() of ES Module" error in CommonJS environment
+    const { default: pixelmatch } = await (new Function('return import("pixelmatch")')()) as typeof import('pixelmatch');
 
     const diffPixels = pixelmatch(
       baselinePng.data,
