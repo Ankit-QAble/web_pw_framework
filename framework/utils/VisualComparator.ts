@@ -75,14 +75,33 @@ export class VisualComparator {
 
     const diffPng = new PNG({ width, height });
 
+    const prepareForCompare = (png: PNG, targetWidth: number, targetHeight: number): PNG => {
+      if (png.width === targetWidth && png.height === targetHeight) {
+        return png;
+      }
+      const out = new PNG({ width: targetWidth, height: targetHeight });
+      const srcRowBytes = png.width * 4;
+      const dstRowBytes = targetWidth * 4;
+      for (let y = 0; y < targetHeight; y++) {
+        const srcOffset = y * srcRowBytes;
+        const dstOffset = y * dstRowBytes;
+        const slice = png.data.subarray(srcOffset, srcOffset + dstRowBytes);
+        out.data.set(slice, dstOffset);
+      }
+      return out;
+    };
+
+    const baselinePrepared = prepareForCompare(baselinePng, width, height);
+    const actualPrepared = prepareForCompare(actualPng, width, height);
+
     // Use dynamic import for pixelmatch to support both CommonJS and ESM
     // We use Function constructor to bypass TypeScript transpilation of import() to require()
     // which causes "require() of ES Module" error in CommonJS environment
     const { default: pixelmatch } = await (new Function('return import("pixelmatch")')()) as typeof import('pixelmatch');
 
     const diffPixels = pixelmatch(
-      baselinePng.data,
-      actualPng.data,
+      baselinePrepared.data,
+      actualPrepared.data,
       diffPng.data,
       width,
       height,
@@ -125,5 +144,3 @@ export class VisualComparator {
     }
   }
 }
-
-

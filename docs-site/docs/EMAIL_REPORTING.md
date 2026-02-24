@@ -12,47 +12,57 @@ This framework includes email reporting functionality that automatically sends t
 
 ## Configuration
 
-### 1. Update Email Settings in `playwright.config.ts`
+### 1. Update Email Settings in YAML config files
 
-```typescript
-const PROFILES = {
-  development: {
-    // ... other settings
-    reportEmail: {
-      email: true, // Enable/disable email reporting
-      to: ['your-email@company.com'],
-      subject: 'Automation Test Report',
-      body: 'Test execution completed for development environment',
-    },
-    reportSmtp: {
-      smtp: true, // Enable/disable SMTP
-      host: 'smtp.gmail.com', // SMTP server host
-      port: 587, // SMTP port (587 for TLS, 465 for SSL)
-      auth: {
-        user: 'your-email@gmail.com', // Your email
-        pass: 'your-app-password', // App-specific password
-      },
-    }
-  },
-  preprod: {
-    // ... other settings
-    reportEmail: {
-      email: true,
-      to: ['team-lead@company.com', 'qa-team@company.com'],
-      subject: 'Preprod Test Report - Allure Results',
-      body: 'Test execution completed for preprod environment. Allure report attached.',
-    },
-    reportSmtp: {
-      smtp: true,
-      host: 'smtp.gmail.com',
-      port: 587,
-      auth: {
-        user: 'your-email@gmail.com',
-        pass: 'your-app-password',
-      },
-    }
-  }
-}
+Email settings now live in the per-environment YAML files (for example `config.development.yaml`, `config.preprod.yaml`, `config.demo.yaml`) that are loaded by `playwright.config.ts`.
+
+```yaml
+# config.development.yaml
+baseURL: 'https://qable.io/blog'
+browser: 'chrome'
+headless: false
+parallel: 3
+retries: 0
+
+reportEmail:
+  email: true # Enable/disable email reporting
+  to:
+    - 'your-email@company.com'
+  subject: 'Automation Test Report'
+  body: 'Test execution completed for development environment'
+
+reportSmtp:
+  smtp: true # Enable/disable SMTP
+  host: 'smtp.gmail.com' # SMTP server host
+  port: 587 # SMTP port (587 for TLS, 465 for SSL)
+  auth:
+    user: 'your-email@gmail.com' # Your email
+    pass: 'your-app-password' # App-specific password
+
+---
+
+# config.preprod.yaml (example)
+baseURL: 'https://google.com'
+browser: 'chrome'
+headless: false
+parallel: 1
+retries: 0
+
+reportEmail:
+  email: true
+  to:
+    - 'team-lead@company.com'
+    - 'qa-team@company.com'
+  subject: 'Preprod Test Report - Allure Results'
+  body: 'Test execution completed for preprod environment. Allure report attached.'
+
+reportSmtp:
+  smtp: true
+  host: 'smtp.gmail.com'
+  port: 587
+  auth:
+    user: 'your-email@gmail.com'
+    pass: 'your-app-password'
 ```
 
 ### 2. SMTP Provider Setup

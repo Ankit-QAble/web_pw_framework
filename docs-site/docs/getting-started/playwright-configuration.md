@@ -8,7 +8,7 @@ This guide explains the comprehensive Playwright configuration system in this fr
 
 ## Overview
 
-The `playwright.config.ts` file provides a flexible, environment-driven configuration system that supports:
+The framework uses per-environment YAML files (`config.<profile>.yaml`, for example `config.development.yaml`) that are loaded by `playwright.config.ts`. This configuration system supports:
 
 - **Multiple Environment Profiles** (development, preprod, qable)
 - **Cloud Testing Integration** (LambdaTest, BrowserStack)
@@ -38,7 +38,61 @@ NODE_ENV=preprod npm test
 npm test  # Uses development profile
 ```
 
+### YAML configuration files
+
+The selected profile name maps directly to a YAML file in the project root:
+
+```text
+RUN=development  -> config.development.yaml
+RUN=preprod      -> config.preprod.yaml
+RUN=demo         -> config.demo.yaml
+```
+
+If the corresponding `config.<profile>.yaml` file does not exist, test startup will fail with a clear error message. Make sure you add a YAML file for any new profile you introduce.
+
+Each YAML file defines the same fields as the `Profile` interface shown later. A simplified example for the development profile looks like:
+
+```yaml
+# config.development.yaml
+baseURL: 'https://qable.io/blog'
+browser: 'chrome' # 'chrome'|'chromium'|'firefox'|'webkit'
+headless: false
+parallel: 3 # workers
+retries: 0
+screenshot: 'on'
+video: 'on' # 'on', 'off', 'retain-on-failure', 'on-first-retry'
+elementHighlight: true
+
+mobile:
+  mobile:
+    isMobile: false
+    device: 'pixel 7'
+
+reportEmail:
+  email: false # Set to true to enable email reporting
+  to: ['${EMAIL_TO_DEV}']
+  subject: 'Automation Test Report'
+  body: 'Test execution completed for development environment'
+
+reportSmtp:
+  smtp: true
+  host: '${SMTP_HOST:-smtp.gmail.com}'
+  port: ${SMTP_PORT:-587}
+  auth:
+    user: '${SMTP_USER}'
+    pass: '${SMTP_PASS}'
+
+grid:
+  isGrid: false
+  provider: 'lambdatest' # 'lambdatest' | 'browserstack'
+  # provider-specific capabilities live under `lambdatest` / `browserstack`
+```
+
+Environment variables in the YAML support expressions like `${EMAIL_TO_DEV}` or `${SMTP_PORT:-587}`, which are resolved at runtime before Playwright reads the configuration.
+
 ### Available Profiles
+
+In the repository, these profiles are defined in YAML files (`config.development.yaml`, `config.preprod.yaml`, `config.demo.yaml`). The examples below use TypeScript objects to document the shape of each profile.
 
 #### Development Profile
 ```typescript
@@ -88,25 +142,36 @@ preprod: {
 - Allure reporting configured
 - SMTP configuration included
 
-#### Qable Profile
+#### Demo Profile
 ```typescript
-qable: {
-  baseURL: 'https://www.qable.io/blog',
+demo: {
+  baseURL: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login',
   browser: 'chrome',
   headless: false,
-  parallel: 1,
+  parallel: 3,
   retries: 0,
   screenshot: 'only-on-failure',
   video: 'retain-on-failure',
   elementHighlight: true,
-  // ... additional configuration
+  mobile: {
+    mobile: {
+      isMobile: false,
+      device: 'pixel 9',
+    },
+  },
+  report: {
+    name: 'allure-playwright',
+    outputFolder: 'allure-results',
+    suiteTitle: false,
+  },
+  // Email + SMTP + grid settings are configured the same way as in YAML example above
 }
 ```
 
 **Key Features:**
-- External website testing
-- Similar configuration to preprod
-- Optimized for third-party testing
+- Demo application testing
+- Similar configuration options to preprod
+- Optimized for external/demo environments
 
 ## Browser Configuration
 

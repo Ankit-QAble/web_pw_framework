@@ -373,16 +373,38 @@ if ((selectedProfile as any).grid?.isGrid) {
   console.log('💻 Grid Mode: DISABLED - Tests will run locally');
 }
 
-// Build projects conditionally: if mobile specified and isMobile==true, use that; else use desktop from profile
+// Build projects conditionally: keep project names stable (chromium/firefox/webkit) for IDE compatibility
 const isMobileMode = ((selectedProfile as any).mobile?.mobile ?? (selectedProfile as any).mobile)?.isMobile;
-const computedProjects = isMobileMode
-  ? [
-      {
-        name: 'mobile-profile',
-        use: resolveMobileUse((selectedProfile as any).mobile),
-      },
-    ]
-  : [mapBrowserToProject(selectedProfile.browser, (selectedProfile as any).grid)];
+const gridCfg = (selectedProfile as any).grid;
+const baseProject = mapBrowserToProject(selectedProfile.browser, gridCfg);
+let computedProjects: any[] = [];
+
+if (isMobileMode) {
+  computedProjects = [{
+    ...baseProject,
+    use: {
+      ...(baseProject as any).use,
+      ...resolveMobileUse((selectedProfile as any).mobile),
+    },
+  }];
+} else {
+  // If BROWSER is explicitly set, keep a single project. Otherwise:
+  // - Respect the browser from the selected profile by default
+  // - Allow opting into all three browsers via RUN_ALL_BROWSERS=true
+  const cliBrowser = (process.env.BROWSER || '').toLowerCase();
+  const runAllBrowsers = (process.env.RUN_ALL_BROWSERS || '').toLowerCase() === 'true';
+  if (cliBrowser) {
+    computedProjects = [mapBrowserToProject(cliBrowser, gridCfg)];
+  } else if (runAllBrowsers) {
+    computedProjects = [
+      mapBrowserToProject('chromium', gridCfg),
+      mapBrowserToProject('firefox', gridCfg),
+      mapBrowserToProject('webkit', gridCfg),
+    ];
+  } else {
+    computedProjects = [baseProject];
+  }
+}
 
 // Log mobile configuration if enabled
 if (isMobileMode) {
@@ -424,9 +446,9 @@ export default defineConfig({
     [
       './reporters/tesbo-uploader-v3',  // Uploads after run from json report
       {
-        apiKey: 'hsthmhtskxiljdfosckqhcjfxeeroqgb', // Local API key for testing
+        apiKey: 'tesbo_vChVaxeIW18DY_-6QVZa_WylpAN6JXd5', // Local API key for testing
         apiKeyEnv: 'TESBO_API_KEY',
-        reportingPortalUrl: 'https://app.tesbo.io/api',  // Use HTTPS to avoid redirect/downgrade issues
+        reportingPortalUrl: 'https://whitebox.bettercases.ai/',  // Use HTTPS to avoid redirect/downgrade issues
         runTitle: process.env.TESBO_RUN_TITLE || 'Local Playwright Test Run'
       }
     ]

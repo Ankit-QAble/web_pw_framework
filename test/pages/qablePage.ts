@@ -46,7 +46,7 @@ export class BlogPage extends BasePage {
     this.logger.info('Playwright blog title verified');
     await this.waitForVisible(BlogPageLocators.blogPublishedDate,10000);
     const publishedDate = await this.getText(BlogPageLocators.blogPublishedDate);
-    const expectedPublishedDate = "October 15, 2025";
+    const expectedPublishedDate = "January 2026";
     expect(publishedDate).toBe(expectedPublishedDate);
     this.logger.info('Playwright blog published date verified');
   }

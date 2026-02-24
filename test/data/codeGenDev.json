@@ -1,0 +1,9 @@
+{
+  "baseUrl": "https://playwright.dev/",
+  "homeHeading": "Playwright enables reliable end-to-end testing for modern web apps.",
+  "docs": {
+    "githubRepoLinkText": "GitHub repository",
+    "gettingStartedButtonText": "Getting Started",
+    "installationHeadingText": "Installation"
+  }
+}

@@ -10,11 +10,24 @@ The project follows a strict Page Object Model structure to separate concerns be
 - **Directory**: `test/locators`
 - **Rule**: All element selectors must be stored in this directory.
 - **Constraint**: Do not hardcode selectors inside Page classes or Spec files. Use the locator classes.
+Example:
+```typescript
+export const BlogPageLocators = {
+    searchBox: "//input[@id='search-input']",
+    blogPublishedDate: "//span[@id='current-month-year']"
+  };
+```
 
 ### Page Methods
 - **Directory**: `test/pages`
-- **Rule**: All interaction logic (clicking, typing, verifying) belongs here.
+- **Rule**: All interaction logic (clicking, typing, verifying) belongs here from 'BasePage' only.
 - **Constraint**: Page classes should extend `BasePage` and use locators imported from the `locators` folder.
+
+### Page Constructor & Navigation
+- **Rule**: Page class constructor must accept optional `url` and `testInfo`.
+- **Default URL**: If `url` is not provided, use `(global as any).selectedProfile?.baseURL` or `process.env.BASE_URL`.
+- **Navigation**: Implement `open()` to call `navigate()` and `waitForPageLoad()` from `BasePage`.
+- **Assertions & Waits**: Prefer `BasePage` helpers like `waitForVisible`, `expectVisible`, `getTextAndCompare`, `waitUntilElementClickable`.
 
 ### Test Specs
 - **Directory**: `test/specs`

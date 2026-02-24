@@ -1,0 +1,11 @@
+{
+  "url": "https://www.saucedemo.com/",
+  "credentials": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "expected": {
+    "headerText": "Swag Labs",
+    "priceContains": "$29.99"
+  }
+}

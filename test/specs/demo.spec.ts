@@ -16,16 +16,11 @@ test.describe('OrangeHRM Demo Suite', () => {
     await demoPage.clearBrowserData();
     await demoPage.setViewportSize(1440, 900);
 
-    await logger.step('Open OrangeHRM login page', async () => {
+    await logger.step(`Open OrangeHRM login page = ${ORANGE_HRM_URL}`, async () => {
       await demoPage.open();
       const readyState = await demoPage.executeScript('return document.readyState;');
       logger.assertion('Document readyState should be complete', 'complete', readyState);
       expect(readyState).toBe('complete');
-      const credentials = demoPage.getValidCredentials();
-
-      await logger.step('Login with valid credentials', async () => {
-        await demoPage.loginWith(credentials);
-      });
     });
   });
 
@@ -38,6 +33,10 @@ test.describe('OrangeHRM Demo Suite', () => {
   });
 
   test('should login successfully and reach dashboard', async ({ logger }) => {
+      const credentials = demoPage.getValidCredentials();
+    await logger.step(`Login with valid credentials = ${JSON.stringify(credentials)}`, async () => {
+      await demoPage.loginWith(credentials);
+      });
     await logger.step('Verify dashboard is visible', async () => {
       await demoPage.verifyDashboardLoaded();
       const pageTitle = await demoPage.getTitle();

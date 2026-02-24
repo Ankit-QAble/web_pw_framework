@@ -298,9 +298,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param selector The selector string or locator object
    * @returns True if element is visible
    */
-  protected async isVisible(selector: SelectorDefinition): Promise<boolean> {
+  protected async isVisible(selector: SelectorDefinition, timeout?: number): Promise<boolean> {
     const locator = await this.getLocator(selector);
-    return await locator.isVisible();
+    return await locator.isVisible({ timeout: timeout ?? 1000});
   }
   
   /**

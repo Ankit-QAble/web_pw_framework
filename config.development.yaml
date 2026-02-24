@@ -1,7 +1,7 @@
-baseURL: 'https://google.com'
+baseURL: 'https://www.saucedemo.com/'
 browser: 'chrome' # 'chrome'|'chromium'|'firefox'|'webkit'
 headless: false
-parallel: 1 # workers
+parallel: 4 # workers
 retries: 0
 screenshot: 'on'
 video: 'on' # 'on', 'off', 'retain-on-failure', 'on-first-retry'

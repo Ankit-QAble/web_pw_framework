@@ -24,6 +24,8 @@
     "test:preprod_test": "cross-env NODE_ENV=preprod npx playwright test test/specs/demo.spec.ts",
     "test:demo": "cross-env NODE_ENV=demo npx playwright test test/specs/simpletest.spec.ts",
     "test:dev:example": "cross-env NODE_ENV=development npx playwright test test/specs/simpletest.spec.ts",
+    "test:dev:swaglab": "cross-env NODE_ENV=development npx playwright test test/specs/swagLabsLogin.spec.ts",
+    "test:dev:demo": "cross-env NODE_ENV=development npx playwright test test/specs/demo.spec.ts",
     "test:preprod:example": "cross-env NODE_ENV=preprod npx playwright test test/specs/simpletest.spec.ts",
     "test:prod": "cross-env NODE_ENV=production npx playwright test",
     "test:run:dev": "cross-env RUN=demo npx playwright test test/specs/demo.spec.ts",

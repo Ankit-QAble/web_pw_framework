@@ -246,10 +246,15 @@ export class ScreenshotHelper {
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const testName = this.testInfo.title.replace(/[^a-zA-Z0-9]/g, '_');
+    const projectName =
+      (this.testInfo.project?.name || 'default').replace(/[^a-zA-Z0-9]/g, '_');
+    const vp = this.page.viewportSize();
+    const viewportTag = vp ? `${vp.width}x${vp.height}` : 'auto';
+    const idPrefix = `${testName}_${projectName}_${viewportTag}_${sanitizedName}`;
 
-    const baselinePath = path.join(baselineDir, `${testName}_${sanitizedName}.png`);
-    const actualPath = path.join(actualDir, `${testName}_${sanitizedName}_${timestamp}.png`);
-    const diffPath = path.join(diffDir, `${testName}_${sanitizedName}_${timestamp}_diff.png`);
+    const baselinePath = path.join(baselineDir, `${idPrefix}.png`);
+    const actualPath = path.join(actualDir, `${idPrefix}_${timestamp}.png`);
+    const diffPath = path.join(diffDir, `${idPrefix}_${timestamp}_diff.png`);
 
     const { threshold, thresholdType, ...screenshotOptions } = options;
 
