@@ -1,0 +1,18 @@
+{
+  "AugData": {
+    "username": "abin@mailinator.com",
+    "password": "Test1234",
+    "productCode": "S12SDEHLIT",
+    "productPrice": " $156.11 ",
+    "INRPrice": "₹14,393.34"
+  },
+  "paymentData": {
+    "cardNumber": "5118-7000-0000-0003",
+    "expiryDate": "05/30",
+    "cvv": "123",
+    "OTP": "123456",
+    "cardName": "Augmont Automation"
+  }
+}
+
+

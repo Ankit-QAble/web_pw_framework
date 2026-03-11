@@ -32,6 +32,14 @@ export interface NetworkRequestEntry {
 }
 
 type PageAriaRole = Parameters<Page['getByRole']>[0];
+type NetworkRequestSummary = {
+  total: number;
+  successful: number;
+  failed: number;
+  pending: number;
+  averageDuration: number;
+  methods: Record<string, number>;
+};
 
 export abstract class BasePage {
   protected page: Page;
@@ -144,42 +152,42 @@ export abstract class BasePage {
     return selector;
   }
   /** Apply a temporary red highlight by saving previous inline style in dataset._prevStyle. */
-protected async highlight(locator: Locator): Promise<void> {
-  // Check if element highlighting is enabled
-  const shouldHighlight = (global as any).selectedProfile?.elementHighlight;
-  
-  if (!shouldHighlight) {
-    return; // Skip highlighting if disabled
+  protected async highlight(locator: Locator): Promise<void> {
+    // Check if element highlighting is enabled
+    const shouldHighlight = (global as any).selectedProfile?.elementHighlight;
+    
+    if (!shouldHighlight) {
+      return; // Skip highlighting if disabled
+    }
+    
+    await locator.evaluate((el) => {
+      const elh = el as any;
+      // save previous inline style so we can restore later
+      elh.setAttribute('data-_prevStyle', elh.getAttribute('style') || '');
+      elh.style.backgroundColor = 'yellow';
+      elh.style.border = '2px solid red';
+      elh.style.outline = 'none';
+      elh.style.transition = 'background-color 120ms ease, border 120ms ease';
+      elh.scrollIntoView({ block: 'center', inline: 'center', behavior: 'auto' });
+    }).catch(() => { /* ignore if element detached */ });
   }
-  
-  await locator.evaluate((el) => {
-    const elh = el as any;
-    // save previous inline style so we can restore later
-    elh.setAttribute('data-_prevStyle', elh.getAttribute('style') || '');
-    elh.style.backgroundColor = 'yellow';
-    elh.style.border = '2px solid red';
-    elh.style.outline = 'none';
-    elh.style.transition = 'background-color 120ms ease, border 120ms ease';
-    elh.scrollIntoView({ block: 'center', inline: 'center', behavior: 'auto' });
-  }).catch(() => { /* ignore if element detached */ });
-}
 
-/** Restore previous inline style saved by `highlight`. Safe to call anytime. */
-protected async unhighlight(locator: Locator): Promise<void> {
-  // Check if element highlighting is enabled
-  const shouldHighlight = (global as any).selectedProfile?.elementHighlight;
-  
-  if (!shouldHighlight) {
-    return; // Skip unhighlighting if disabled
+  /** Restore previous inline style saved by `highlight`. Safe to call anytime. */
+  protected async unhighlight(locator: Locator): Promise<void> {
+    // Check if element highlighting is enabled
+    const shouldHighlight = (global as any).selectedProfile?.elementHighlight;
+    
+    if (!shouldHighlight) {
+      return; // Skip unhighlighting if disabled
+    }
+    
+    await locator.evaluate((el) => {
+      const elh = el as any;
+      const prev = elh.getAttribute('data-_prevStyle') || '';
+      elh.setAttribute('style', prev);
+      elh.removeAttribute('data-_prevStyle');
+    }).catch(() => { /* ignore if element detached or already removed */ });
   }
-  
-  await locator.evaluate((el) => {
-    const elh = el as any;
-    const prev = elh.getAttribute('data-_prevStyle') || '';
-    elh.setAttribute('style', prev);
-    elh.removeAttribute('data-_prevStyle');
-  }).catch(() => { /* ignore if element detached or already removed */ });
-}
   
   /**
    * Click on an element
@@ -189,8 +197,14 @@ protected async unhighlight(locator: Locator): Promise<void> {
   protected async click(selector: SelectorDefinition, timeout: number = 5000): Promise<void> {
     const locator = await this.getLocator(selector);
     this.logger.info(`Clicking on element: ${this.describeSelector(selector)}`);
-    //await locator.waitFor({ state: 'visible', timeout });
-    await locator.click();
+    await locator.waitFor({ state: 'visible', timeout });
+    await this.highlight(locator);
+    try {
+      await locator.click();
+      if (this.page) await this.page.waitForTimeout(150);
+    } finally {
+      await this.unhighlight(locator);
+    }
   }
   
   /**
@@ -300,7 +314,13 @@ protected async unhighlight(locator: Locator): Promise<void> {
    */
   protected async isVisible(selector: SelectorDefinition, timeout?: number): Promise<boolean> {
     const locator = await this.getLocator(selector);
-    return await locator.isVisible({ timeout: timeout ?? 1000});
+    const visible = await locator.isVisible({ timeout: timeout ?? 500 });
+    if (visible) {
+      await this.highlight(locator);
+      if (this.page) await this.page.waitForTimeout(120);
+      await this.unhighlight(locator);
+    }
+    return visible;
   }
   
   /**
@@ -310,7 +330,33 @@ protected async unhighlight(locator: Locator): Promise<void> {
    */
   protected async getText(selector: SelectorDefinition): Promise<string> {
     const locator = await this.getLocator(selector);
-    return await locator.textContent() || '';
+    await this.highlight(locator);
+    try {
+      const text = await locator.textContent();
+      if (this.page) await this.page.waitForTimeout(120);
+      return text || '';
+    } finally {
+      await this.unhighlight(locator);
+    }
+  }
+
+  async getTextValue(
+    selector: SelectorDefinition,
+    options?: { timeout?: number; trim?: boolean; normalizeWhitespace?: boolean }
+  ): Promise<string> {
+    const locator = await this.getLocator(selector);
+    if (options?.timeout !== undefined) {
+      await locator.waitFor({ state: 'visible', timeout: options.timeout });
+    }
+
+    let text = await this.getText(selector);
+    if (options?.normalizeWhitespace) {
+      text = text.replace(/\s+/g, ' ');
+    }
+    if (options?.trim !== false) {
+      text = text.trim();
+    }
+    return text;
   }
   
   /**
@@ -324,6 +370,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
     try {
       await locator.waitFor({ state: 'visible', timeout });
       this.logger.info(`Element is now visible: ${this.describeSelector(selector)}`);
+      await this.highlight(locator);
+      if (this.page) await this.page.waitForTimeout(120);
+      await this.unhighlight(locator);
     } catch (error) {
       const message = `Element not visible within ${timeout ?? 30000}ms: ${this.describeSelector(selector)}`;
       this.logger.error(message, error as Error);
@@ -372,6 +421,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
     try {
       await locator.waitFor({ state: 'visible', timeout });
       await expect(locator).toBeEnabled({ timeout });
+      await this.highlight(locator);
+      if (this.page) await this.page.waitForTimeout(120);
+      await this.unhighlight(locator);
     } catch (error) {
       const message = `Element not clickable within ${timeout ?? 30000}ms: ${this.describeSelector(selector)}`;
       this.logger.error(message, error as Error);
@@ -386,7 +438,13 @@ protected async unhighlight(locator: Locator): Promise<void> {
    */
   protected async expectVisible(selector: SelectorDefinition, message?: string): Promise<void> {
     const locator = await this.getLocator(selector);
-    await expect(locator, message).toBeVisible();
+    await this.highlight(locator);
+    try {
+      await expect(locator, message).toBeVisible();
+      if (this.page) await this.page.waitForTimeout(120);
+    } finally {
+      await this.unhighlight(locator);
+    }
   }
   
   /**
@@ -397,7 +455,13 @@ protected async unhighlight(locator: Locator): Promise<void> {
   protected async selectOption(selector: SelectorDefinition, value: string): Promise<void> {
     const locator = await this.getLocator(selector);
     this.logger.info(`Selecting option: ${value} from dropdown: ${this.describeSelector(selector)}`);
-    await locator.selectOption(value);
+    await this.highlight(locator);
+    try {
+      await locator.selectOption(value);
+      if (this.page) await this.page.waitForTimeout(120);
+    } finally {
+      await this.unhighlight(locator);
+    }
   }
 
   /**
@@ -456,7 +520,13 @@ protected async unhighlight(locator: Locator): Promise<void> {
       const elementLocator = frame.locator(elementSelector);
       
       await elementLocator.waitFor({ state: 'visible', timeout });
-      await elementLocator.click();
+      await this.highlight(elementLocator);
+      try {
+        await elementLocator.click();
+        if (this.page) await this.page.waitForTimeout(150);
+      } finally {
+        await this.unhighlight(elementLocator);
+      }
       
       this.logger.info(`Successfully clicked element in iframe: ${elementSelector}`);
     } catch (error) {
@@ -482,7 +552,13 @@ protected async unhighlight(locator: Locator): Promise<void> {
       const elementLocator = frame.locator(elementSelector);
       
       await elementLocator.waitFor({ state: 'visible', timeout });
-      await elementLocator.fill(value);
+      await this.highlight(elementLocator);
+      try {
+        await elementLocator.fill(value);
+        if (this.page) await this.page.waitForTimeout(150);
+      } finally {
+        await this.unhighlight(elementLocator);
+      }
       
       this.logger.info(`Successfully filled element in iframe: ${elementSelector}`);
     } catch (error) {
@@ -507,6 +583,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
       const elementLocator = frame.locator(elementSelector);
       
       await elementLocator.waitFor({ state: 'visible', timeout });
+      await this.highlight(elementLocator);
+      if (this.page) await this.page.waitForTimeout(120);
+      await this.unhighlight(elementLocator);
       this.logger.info(`Element is now visible in iframe: ${elementSelector}`);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
@@ -526,7 +605,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
    */
   protected async uploadFileViaButtonInFrame(iframeSelector: string | { name?: string; url?: string | RegExp }, buttonSelector: string, filePath: string | string[], timeout: number = 10000): Promise<void> {
     const files = Array.isArray(filePath) ? filePath : [filePath];
-    this.logger.info(`Uploading file(s) via button click inside iframe`);
+    this.logger.info('Uploading file(s) via button click inside iframe');
     this.logger.info(`Iframe: ${typeof iframeSelector === 'string' ? iframeSelector : JSON.stringify(iframeSelector)}`);
     this.logger.info(`Button: ${buttonSelector}`);
     this.logger.info(`File(s) to upload: ${files.join(', ')}`);
@@ -701,7 +780,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
   /**
    * Take screenshot
    */
-  async takeScreenshot(name?: string, timeout = 10): Promise<string> {
+  async takeScreenshot(name?: string): Promise<string> {
     if (this.screenshotHelper) {
       // Use ScreenshotHelper for proper file saving and test attachment
       return await this.screenshotHelper.takeScreenshot(name);
@@ -735,7 +814,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
 
     const result = await this.screenshotHelper.compareWithBaseline(name, {
       threshold,
-      thresholdType,
+      thresholdType
     });
 
     // If baseline was just created, diffPixels will be zero and passed=true
@@ -768,7 +847,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
     const locator = await this.getLocator(selector);
     const result = await this.screenshotHelper.compareElementWithBaseline(locator, name, {
       threshold,
-      thresholdType,
+      thresholdType
     });
 
     this.logger.info(
@@ -804,9 +883,9 @@ protected async unhighlight(locator: Locator): Promise<void> {
   /**
    * Wait for a specified timeout (static wait - cannot be interrupted)
    */
-  async waitForTimeout(timeout: number): Promise<void> {
+  waitForTimeout(timeout: number): Promise<void> {
     this.logger.info(`Waiting for ${timeout}ms`);
-    return new Promise(resolve => setTimeout(resolve, timeout));
+    return new Promise((resolve) => { setTimeout(resolve, timeout); });
   }
 
   /**
@@ -825,7 +904,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
   /**
    * Verify current URL contains text
    */
-  async verifyUrlContains(expectedText: string): Promise<void> {
+  verifyUrlContains(expectedText: string): void {
     const currentUrl = this.getCurrentUrl();
     expect(currentUrl).toContain(expectedText);
     this.logger.info(`URL contains: ${expectedText}`);
@@ -844,8 +923,8 @@ protected async unhighlight(locator: Locator): Promise<void> {
       const msg = `Expected text is undefined or null for selector: ${this.describeSelector(selector)}`;
       this.logger.error(msg);
       if (softAssert) {
-         expect.soft(expectedText as any, msg).toBeDefined();
-         return false;
+        expect.soft(expectedText as any, msg).toBeDefined();
+        return false;
       }
       throw new Error(msg);
     }
@@ -893,6 +972,59 @@ protected async unhighlight(locator: Locator): Promise<void> {
     return isMatch;
   }
 
+  async compareTextValue(
+    actualText: string,
+    expectedText: string,
+    exactMatch: boolean = true,
+    softAssert: boolean = false
+  ): Promise<boolean> {
+    await Promise.resolve();
+
+    if (expectedText === undefined || expectedText === null) {
+      const msg = 'Expected text is undefined or null';
+      this.logger.error(msg);
+      if (softAssert) {
+        expect.soft(expectedText as any, msg).toBeDefined();
+        return false;
+      }
+      throw new Error(msg);
+    }
+
+    const normalizedActual = (actualText ?? '').replace(/[\u200B-\u200D\uFEFF]/g, '');
+    const normalizedExpected = expectedText.replace(/[\u200B-\u200D\uFEFF]/g, '');
+
+    this.logger.info('Comparing text value');
+    this.logger.info(`Expected: "${normalizedExpected}"`);
+    this.logger.info(`Actual: "${normalizedActual}"`);
+
+    const isMatch = exactMatch
+      ? normalizedActual === normalizedExpected
+      : normalizedActual.includes(normalizedExpected);
+
+    if (softAssert) {
+      if (exactMatch) {
+        expect.soft(normalizedActual, `Text mismatch! Expected: "${normalizedExpected}", Actual: "${normalizedActual}"`).toBe(
+          normalizedExpected
+        );
+      } else {
+        expect
+          .soft(normalizedActual, `Text mismatch! Expected "${normalizedActual}" to contain "${normalizedExpected}"`)
+          .toContain(normalizedExpected);
+      }
+    } else if (exactMatch) {
+      expect(normalizedActual, `Text mismatch! Expected: "${normalizedExpected}", Actual: "${normalizedActual}"`).toBe(
+        normalizedExpected
+      );
+    } else {
+      expect(normalizedActual, `Text mismatch! Expected "${normalizedActual}" to contain "${normalizedExpected}"`).toContain(
+        normalizedExpected
+      );
+    }
+
+    this.logger.info(`Text comparison result: ${isMatch ? 'MATCH' : 'NO MATCH'}`);
+    return isMatch;
+  }
+
   /**
    * Get text from element and assert it matches expected text
    * @param selector The selector string or locator object
@@ -901,7 +1033,14 @@ protected async unhighlight(locator: Locator): Promise<void> {
    */
   async verifyText(selector: SelectorDefinition, expectedText: string, exactMatch: boolean = true): Promise<void> {
     const locator = await this.getLocator(selector);
-    const actualText = await this.getText(selector);
+    await this.highlight(locator);
+    let actualText = '';
+    try {
+      actualText = await this.getText(selector);
+      if (this.page) await this.page.waitForTimeout(120);
+    } finally {
+      await this.unhighlight(locator);
+    }
     
     this.logger.info(`Verifying text for element: ${this.describeSelector(selector)}`);
     this.logger.info(`Expected: "${expectedText}"`);
@@ -913,7 +1052,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
       expect(actualText).toContain(expectedText);
     }
     
-    this.logger.info(`Text verification passed`);
+    this.logger.info('Text verification passed');
   }
 
   /**
@@ -990,23 +1129,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
     this.logger.info(`Executing script: ${scriptDescription}`);
 
     if (typeof script === 'string') {
-      const trimmedScript = script.trim();
-      if (!trimmedScript) {
-        throw new Error('Script cannot be empty');
-      }
-
-      const withoutReturn = trimmedScript.startsWith('return ')
-        ? trimmedScript.replace(/^return\s+/, '')
-        : trimmedScript;
-
-      const expression = withoutReturn.replace(/;+\s*$/, '');
-
-      // Evaluate arbitrary expression within browser context
-      // eslint-disable-next-line no-new-func
-      return await this.page.evaluate(
-        (expr) => new Function(`return (${expr});`)(),
-        expression
-      );
+      throw new Error('String script execution is disabled for security and lint compliance');
     }
 
     return await this.page.evaluate(script as (...innerArgs: any[]) => T, ...args);
@@ -1015,7 +1138,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
   /**
    * Handle dialog (alert, confirm, prompt)
    */
-  async handleDialog(accept: boolean = true, promptText?: string): Promise<void> {
+  handleDialog(accept: boolean = true, promptText?: string): void {
     this.page.on('dialog', async dialog => {
       this.logger.info(`Dialog appeared: ${dialog.message()}`);
       if (dialog.type() === 'prompt' && promptText) {
@@ -1415,7 +1538,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param logLevels Optional array of log levels to capture (default: all levels)
    * @returns Promise that resolves when capturing is started
    */
-  async captureConsoleLogs(logLevels: Array<'log' | 'debug' | 'info' | 'warning' | 'error'> = ['log', 'debug', 'info', 'warning', 'error']): Promise<void> {
+  captureConsoleLogs(logLevels: Array<'log' | 'debug' | 'info' | 'warning' | 'error'> = ['log', 'debug', 'info', 'warning', 'error']): void {
     if (this.isCapturingConsole) {
       this.logger.warn('Console log capturing is already active');
       return;
@@ -1447,19 +1570,14 @@ protected async unhighlight(locator: Locator): Promise<void> {
         // Log to framework logger based on console type
         const logMessage = `[Browser Console ${type.toUpperCase()}] ${text}${location.url ? ` (${location.url}:${location.lineNumber})` : ''}`;
         
-        switch (type) {
-          case 'error':
-            this.logger.error(logMessage);
-            break;
-          case 'warning':
-            this.logger.warn(logMessage);
-            break;
-          case 'info':
-          case 'debug':
-            this.logger.debug(logMessage);
-            break;
-          default:
-            this.logger.info(logMessage);
+        if (type === 'error') {
+          this.logger.error(logMessage);
+        } else if (type === 'warning') {
+          this.logger.warn(logMessage);
+        } else if (type === 'info' || type === 'debug') {
+          this.logger.debug(logMessage);
+        } else {
+          this.logger.info(logMessage);
         }
       }
     });
@@ -1522,7 +1640,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * @param filterByMethod Optional HTTP method to filter requests
    * @returns Promise that resolves when capturing is started
    */
-  async captureNetworkRequests(filterByUrl?: string | RegExp, filterByMethod?: string): Promise<void> {
+  captureNetworkRequests(filterByUrl?: string | RegExp, filterByMethod?: string): void {
     if (this.isCapturingNetwork) {
       this.logger.warn('Network request capturing is already active');
       return;
@@ -1531,7 +1649,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
     this.networkRequests = [];
     this.isCapturingNetwork = true;
 
-    this.page.on('request', async (request) => {
+    this.page.on('request', (request) => {
       const url = request.url();
       const method = request.method();
 
@@ -1689,14 +1807,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
    * Get summary of captured network requests
    * @returns Summary object with counts and statistics
    */
-  getNetworkRequestSummary(): {
-    total: number;
-    successful: number;
-    failed: number;
-    pending: number;
-    averageDuration: number;
-    methods: Record<string, number>;
-  } {
+  getNetworkRequestSummary(): NetworkRequestSummary {
     const total = this.networkRequests.length;
     const successful = this.getSuccessfulNetworkRequests().length;
     const failed = this.getFailedNetworkRequests().length;
@@ -1754,7 +1865,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
 
     const logs = this.getConsoleLogs();
     let content = '='.repeat(80) + '\n';
-    content += `CONSOLE LOGS CAPTURE REPORT\n`;
+    content += 'CONSOLE LOGS CAPTURE REPORT\n';
     content += `Generated: ${new Date().toISOString()}\n`;
     content += `Page: ${this.constructor.name}\n`;
     content += `Total Logs Captured: ${logs.length}\n`;
@@ -1786,7 +1897,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
     });
 
     try {
-      fs.writeFileSync(filePath, content, 'utf8');
+      await fs.promises.writeFile(filePath, content, 'utf8');
       this.logger.info(`Console logs saved to: ${filePath}`);
       return filePath;
     } catch (error) {
@@ -1808,7 +1919,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
 
     const errors = this.getConsoleErrors();
     let content = '='.repeat(80) + '\n';
-    content += `CONSOLE ERRORS REPORT\n`;
+    content += 'CONSOLE ERRORS REPORT\n';
     content += `Generated: ${new Date().toISOString()}\n`;
     content += `Page: ${this.constructor.name}\n`;
     content += `Total Errors: ${errors.length}\n`;
@@ -1828,7 +1939,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
     }
 
     try {
-      fs.writeFileSync(filePath, content, 'utf8');
+      await fs.promises.writeFile(filePath, content, 'utf8');
       this.logger.info(`Console errors saved to: ${filePath}`);
       return filePath;
     } catch (error) {
@@ -1850,7 +1961,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
 
     const requests = this.getNetworkRequests();
     let content = '='.repeat(80) + '\n';
-    content += `NETWORK REQUESTS CAPTURE REPORT\n`;
+    content += 'NETWORK REQUESTS CAPTURE REPORT\n';
     content += `Generated: ${new Date().toISOString()}\n`;
     content += `Page: ${this.constructor.name}\n`;
     content += `Total Requests Captured: ${requests.length}\n`;
@@ -1876,7 +1987,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
         content += `    Timestamp: ${req.timestamp.toISOString()}\n`;
         
         if (req.requestHeaders && Object.keys(req.requestHeaders).length > 0) {
-          content += `    Request Headers:\n`;
+          content += '    Request Headers:\n';
           Object.entries(req.requestHeaders).forEach(([key, value]) => {
             content += `      ${key}: ${value}\n`;
           });
@@ -1887,7 +1998,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
         }
         
         if (req.responseHeaders && Object.keys(req.responseHeaders).length > 0) {
-          content += `    Response Headers:\n`;
+          content += '    Response Headers:\n';
           Object.entries(req.responseHeaders).forEach(([key, value]) => {
             content += `      ${key}: ${value}\n`;
           });
@@ -1920,7 +2031,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
     });
 
     try {
-      fs.writeFileSync(filePath, content, 'utf8');
+      await fs.promises.writeFile(filePath, content, 'utf8');
       this.logger.info(`Network requests saved to: ${filePath}`);
       return filePath;
     } catch (error) {
@@ -1942,7 +2053,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
 
     const failed = this.getFailedNetworkRequests();
     let content = '='.repeat(80) + '\n';
-    content += `FAILED NETWORK REQUESTS REPORT\n`;
+    content += 'FAILED NETWORK REQUESTS REPORT\n';
     content += `Generated: ${new Date().toISOString()}\n`;
     content += `Page: ${this.constructor.name}\n`;
     content += `Total Failed Requests: ${failed.length}\n`;
@@ -1959,7 +2070,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
         }
         content += `    Timestamp: ${req.timestamp.toISOString()}\n`;
         if (req.requestHeaders && Object.keys(req.requestHeaders).length > 0) {
-          content += `    Request Headers:\n`;
+          content += '    Request Headers:\n';
           Object.entries(req.requestHeaders).forEach(([key, value]) => {
             content += `      ${key}: ${value}\n`;
           });
@@ -1969,7 +2080,7 @@ protected async unhighlight(locator: Locator): Promise<void> {
     }
 
     try {
-      fs.writeFileSync(filePath, content, 'utf8');
+      await fs.promises.writeFile(filePath, content, 'utf8');
       this.logger.info(`Failed network requests saved to: ${filePath}`);
       return filePath;
     } catch (error) {
