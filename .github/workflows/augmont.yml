@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Run Playwright Tests
+    name: Augmont order payment Test
     runs-on: ubuntu-latest
     
     steps:
@@ -26,10 +26,9 @@ jobs:
         run: npx playwright install --with-deps
         
       - name: Run Playwright tests
-        run: npx playwright test --config=playwright.config.ts --workers=2 test/specs/ai/orderPayment.spec.ts
+        run: NODE_ENV=Augmont npx playwright test --config=playwright.config.ts --workers=2 test/specs/ai/orderPayment.spec.ts
         env:
           CI: true
-          RUN: Augmont
           
       - name: Upload Playwright HTML Report
         uses: actions/upload-artifact@v4
