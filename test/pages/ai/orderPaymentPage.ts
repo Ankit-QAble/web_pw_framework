@@ -33,7 +33,7 @@ export class orderPaymentPage extends BasePage {
   }
 
   async verifySubTotal(): Promise<void> {
-    await this.wait(2000);
+    await this.wait(3000);
     const totalPrice = await this.getText(locators.totalPrice);
     await this.compareTextValue(this.orderPrice ?? '', totalPrice, false);
   }
