@@ -60,7 +60,12 @@ test.describe('Login Page Tests', () => {
   //   });
   // });
 
-  test('Sign up page', { tag: ['@smoke'] }, async ({ logger, page }) => {
+  test.fixme('Sign up page', { tag: ['@smoke'] }, async ({ logger, page }) => {
+    // This test is designed for a different application (not Swag Labs/saucedemo).
+    // It attempts to navigate to Swag Labs login page but searches for a "Register" button
+    // that doesn't exist on that page. The test needs to either:
+    // 1. Be updated to use the correct baseURL for the sign-up application, or
+    // 2. Be removed if no longer needed
     try {
       await logger.step('Register new user', async () => {
         await loginPage.registerUser();

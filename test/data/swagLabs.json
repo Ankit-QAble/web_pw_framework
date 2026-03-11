@@ -1,11 +1,19 @@
 {
   "url": "https://www.saucedemo.com/",
   "credentials": {
-    "username": "standard_user",
-    "password": "secret_sauce"
+    "standard_user": "standard_user",
+    "locked_out_user": "secret_sauce",
+    "problem_user": "secret_sauce",
+    "performance_glitch_user": "secret_sauce",
+    "error_user": "secret_sauce",
+    "password_user": "secret_sauce"
   },
   "expected": {
     "headerText": "Swag Labs",
-    "priceContains": "$29.99"
+    "priceContains": "$29.99",
+    "usernameRequired": "Username is required",
+    "passwordRequired": "Password is required",
+    "invalidCredentials": "Username and password do not match",
+    "lockedOut": "Epic sadface: Sorry, this user has been locked out."
   }
 }

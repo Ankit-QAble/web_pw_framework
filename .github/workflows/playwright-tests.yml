@@ -26,7 +26,7 @@ jobs:
         run: npx playwright install --with-deps
         
       - name: Run Playwright tests
-        run: npx playwright test --config=playwright.service.config.ts --workers=20 test/specs/demo.spec.ts
+        run: npx playwright test --config=playwright.service.config.ts --workers=2 test/specs/demo.spec.ts
         env:
           CI: true
           # Optional: Add Azure Playwright Service credentials if needed

@@ -9,7 +9,7 @@ const ORANGE_HRM_URL =
 test.describe('OrangeHRM Demo Suite', () => {
   let demoPage: DemoPage;
 
-  test.beforeEach(async ({ page, context, logger }, testInfo) => {
+  test.beforeEach(async ({ page, logger }, testInfo) => {
     demoPage = new DemoPage(page, ORANGE_HRM_URL, testInfo);
     
     // Setup actions
@@ -18,7 +18,7 @@ test.describe('OrangeHRM Demo Suite', () => {
 
     await logger.step(`Open OrangeHRM login page = ${ORANGE_HRM_URL}`, async () => {
       await demoPage.open();
-      const readyState = await demoPage.executeScript('return document.readyState;');
+      const readyState = await demoPage.executeScript(() => (globalThis as any).document.readyState);
       logger.assertion('Document readyState should be complete', 'complete', readyState);
       expect(readyState).toBe('complete');
     });
@@ -33,16 +33,16 @@ test.describe('OrangeHRM Demo Suite', () => {
   });
 
   test('should login successfully and reach dashboard', async ({ logger }) => {
-      const credentials = demoPage.getValidCredentials();
+    const credentials = demoPage.getValidCredentials();
     await logger.step(`Login with valid credentials = ${JSON.stringify(credentials)}`, async () => {
       await demoPage.loginWith(credentials);
-      });
+    });
     await logger.step('Verify dashboard is visible', async () => {
       await demoPage.verifyDashboardLoaded();
       const pageTitle = await demoPage.getTitle();
       expect(pageTitle).toContain('OrangeHRM');
 
-      const urlPath = await demoPage.executeScript('return window.location.pathname;');
+      const urlPath = await demoPage.executeScript(() => (globalThis as any).location.pathname);
       logger.assertion('URL path should contain dashboard', '/web/index.php/dashboard/index', urlPath);
       expect(String(urlPath)).toContain('/web/index.php/dashboard/index');
     });
@@ -53,8 +53,26 @@ test.describe('OrangeHRM Demo Suite', () => {
       await demoPage.wait(300);
     });
   });
-  test('should login successfully and reach dashboard_1', async ({ logger }) => {
-    console.log('Azure testing');
+  test('Test fail on dashboard', async ({ logger }) => {
+    const credentials = demoPage.getValidCredentials();
+    await logger.step(`Login with valid credentials = ${JSON.stringify(credentials)}`, async () => {
+      await demoPage.loginWith(credentials);
+    });
+    await logger.step('Verify dashboard is visible', async () => {
+      await demoPage.verifyDashboardLoaded();
+      const pageTitle = await demoPage.getTitle();
+      expect(pageTitle).toContain('OrangeHRM');
+
+      const urlPath = await demoPage.executeScript(() => (globalThis as any).location.pathname);
+      logger.assertion('URL path should contain dashboard', '/web/index.php/dashboard/index', urlPath);
+      expect(String(urlPath)).toContain('/web/index.php/dashboard/index');
+    });
+
+    await logger.step('Validate user menu interactions', async () => {
+      await demoPage.openUserMenuF();
+      expect(await demoPage.isLogoutOptionVisible()).toBeTruthy();
+      await demoPage.wait(300);
+    });
   });
 });
 

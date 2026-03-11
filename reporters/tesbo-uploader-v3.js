@@ -19,6 +19,13 @@ class BetterCasesUploaderV2 {
     this.jsonPath = options.jsonPath || "test-results.json";
     this.timeoutMs = Number(options.timeoutMs || process.env.BETTERCASES_UPLOAD_TIMEOUT_MS || 120000);
     this.runTitle = options.runTitle || process.env.TESBO_RUN_TITLE || process.env.BETTERCASES_RUN_TITLE || "Playwright Run";
+    this.runTitleStrategy = options.runTitleStrategy || process.env.TESBO_RUN_TITLE_STRATEGY || "auto";
+    // Legacy HTML report data (disabled by default as we now focus on test-results)
+    this.reportDataDir = options.reportDataDir || process.env.PLAYWRIGHT_REPORT_DATA_DIR || "playwright-report/data";
+    this.attachReportDataTo = options.attachReportDataTo || (process.env.TESBO_ATTACH_REPORT_DATA_TO || "none"); // "first" | "each" | "none"
+    // New: Upload every artifact from Playwright test-results folder
+    this.resultsDir = options.resultsDir || process.env.PLAYWRIGHT_RESULTS_DIR || "test-results";
+    this.attachResultsDirTo = options.attachResultsDirTo || (process.env.TESBO_ATTACH_RESULTS_DIR_TO || "each"); // "first" | "each" | "none"
   }
 
   onBegin() {}
@@ -65,7 +72,7 @@ class BetterCasesUploaderV2 {
     }));
 
     const payload = {
-      runName: this.runTitle,
+      runName: this._resolveRunTitle(extracted, report),
       status: "COMPLETED",
       sourceType: "PLAYWRIGHT",
       branchName: process.env.GITHUB_REF_NAME || process.env.CI_COMMIT_REF_NAME,
@@ -81,10 +88,73 @@ class BetterCasesUploaderV2 {
     if (!runId) return;
 
     let uploadedArtifacts = 0;
+    const uploadedPaths = new Set();
     for (const test of extracted) {
       for (const artifact of test.artifacts) {
-        const ok = await this._uploadArtifact(runId, test.caseId, artifact.kind, artifact.filePath);
+        const absPath = path.isAbsolute(artifact.filePath) ? artifact.filePath : path.join(process.cwd(), artifact.filePath);
+        const normPath = path.normalize(absPath);
+        const ok = await this._uploadArtifact(runId, test.caseId, artifact.kind, normPath);
         if (ok) uploadedArtifacts += 1;
+        uploadedPaths.add(normPath);
+      }
+    }
+
+    // Optionally attach Playwright HTML report data files (playwright-report/data)
+    // This helps preserve UI report artifacts (hashed images, videos, trace zips).
+    const reportDataFiles = await this._collectReportDataFiles(this.reportDataDir);
+    if (reportDataFiles.length && this.attachReportDataTo !== "none") {
+      if (this.attachReportDataTo === "first" && extracted.length) {
+        const firstCaseId = extracted[0].caseId;
+        for (const filePath of reportDataFiles) {
+          const kind = this._detectKind("", "", filePath);
+          if (!kind) continue;
+          const ok = await this._uploadArtifact(runId, firstCaseId, kind, filePath);
+          if (ok) uploadedArtifacts += 1;
+        }
+      } else if (this.attachReportDataTo === "each" && extracted.length) {
+        for (const test of extracted) {
+          for (const filePath of reportDataFiles) {
+            const kind = this._detectKind("", "", filePath);
+            if (!kind) continue;
+            const ok = await this._uploadArtifact(runId, test.caseId, kind, filePath);
+            if (ok) uploadedArtifacts += 1;
+          }
+        }
+      }
+    }
+
+    // NEW: Attach ALL files from test-results (recursively), de-duplicating those already uploaded
+    const resultsFiles = await this._collectFilesRecursive(this.resultsDir);
+    if (resultsFiles.length && this.attachResultsDirTo !== "none") {
+      if (this.attachResultsDirTo === "first" && extracted.length) {
+        const firstCaseId = extracted[0].caseId;
+        for (const filePath of resultsFiles) {
+          const abs = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
+          const norm = path.normalize(abs);
+          if (uploadedPaths.has(norm)) continue;
+          const kind = this._detectKind("", "", norm);
+          if (!kind) continue;
+          const ok = await this._uploadArtifact(runId, firstCaseId, kind, norm);
+          if (ok) {
+            uploadedArtifacts += 1;
+            uploadedPaths.add(norm);
+          }
+        }
+      } else if (this.attachResultsDirTo === "each" && extracted.length) {
+        for (const test of extracted) {
+          for (const filePath of resultsFiles) {
+            const abs = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
+            const norm = path.normalize(abs);
+            if (uploadedPaths.has(norm)) continue;
+            const kind = this._detectKind("", "", norm);
+            if (!kind) continue;
+            const ok = await this._uploadArtifact(runId, test.caseId, kind, norm);
+            if (ok) {
+              uploadedArtifacts += 1;
+              uploadedPaths.add(norm);
+            }
+          }
+        }
       }
     }
 
@@ -138,6 +208,81 @@ class BetterCasesUploaderV2 {
       return false;
     }
     return true;
+  }
+
+  _resolveRunTitle(extracted, report) {
+    const strategy = String(this.runTitleStrategy || "").toLowerCase();
+    if (strategy === "static") return this.runTitle;
+    const specs = Array.from(new Set((extracted || []).map(t => t.specName).filter(Boolean)));
+    if (strategy === "spec" && specs.length) {
+      return path.basename(specs[0]);
+    }
+    if (strategy === "folder" && specs.length) {
+      const baseTestDir = this._resolveBaseTestDir(report);
+      const folder = this._firstLevelFolderUnder(specs, baseTestDir);
+      if (folder) return folder;
+      const dirs = specs.map(s => path.dirname(s));
+      const common = this._commonDir(dirs);
+      const name = common ? path.basename(common) : "Multiple";
+      return `${name} (${specs.length} specs)`;
+    }
+    if (specs.length === 1) {
+      return path.basename(specs[0]);
+    }
+    if (specs.length > 1) {
+      const baseTestDir = this._resolveBaseTestDir(report);
+      const folder = this._firstLevelFolderUnder(specs, baseTestDir);
+      if (folder) return folder;
+      const dirs = specs.map(s => path.dirname(s));
+      const common = this._commonDir(dirs);
+      const name = common ? path.basename(common) : "Multiple";
+      return `${name} (${specs.length} specs)`;
+    }
+    return this.runTitle;
+  }
+
+  _commonDir(dirs) {
+    if (!Array.isArray(dirs) || !dirs.length) return "";
+    const partsArr = dirs.map(d => path.normalize(d).split(path.sep));
+    const first = partsArr[0];
+    let i = 0;
+    while (i < first.length) {
+      const segment = first[i];
+      if (!partsArr.every(p => p[i] === segment)) break;
+      i++;
+    }
+    return i ? first.slice(0, i).join(path.sep) : "";
+  }
+
+  _resolveBaseTestDir(report) {
+    const cfgDir = report?.config?.testDir;
+    if (typeof cfgDir === "string" && cfgDir.trim()) {
+      const abs = path.isAbsolute(cfgDir) ? cfgDir : path.join(process.cwd(), cfgDir);
+      return path.relative(process.cwd(), abs);
+    }
+    return "test/specs";
+  }
+
+  _firstLevelFolderUnder(specs, baseTestDir) {
+    try {
+      const folders = new Set();
+      for (const spec of specs) {
+        const rel = path.relative(baseTestDir, spec);
+        const parts = rel.split(path.sep).filter(Boolean);
+        if (parts.length >= 2) {
+          // parts[0] is first-level folder under baseTestDir
+          folders.add(parts[0]);
+        } else if (parts.length === 1) {
+          // spec directly under baseTestDir, no subfolder
+        }
+      }
+      if (folders.size === 1) {
+        return Array.from(folders)[0];
+      }
+      return "";
+    } catch {
+      return "";
+    }
   }
 
   _extractJsonTests(json) {
@@ -231,6 +376,48 @@ class BetterCasesUploaderV2 {
       return "video";
     }
     return null;
+  }
+
+  async _collectReportDataFiles(dir) {
+    try {
+      const abs = path.isAbsolute(dir) ? dir : path.join(process.cwd(), dir);
+      const stat = await fs.promises.stat(abs).catch(() => null);
+      if (!stat || !stat.isDirectory()) return [];
+      const files = await fs.promises.readdir(abs);
+      const out = [];
+      for (const f of files) {
+        const p = path.join(abs, f);
+        const st = await fs.promises.stat(p).catch(() => null);
+        if (st && st.isFile()) out.push(p);
+      }
+      return out;
+    } catch {
+      return [];
+    }
+  }
+
+  async _collectFilesRecursive(dir) {
+    try {
+      const abs = path.isAbsolute(dir) ? dir : path.join(process.cwd(), dir);
+      const stat = await fs.promises.stat(abs).catch(() => null);
+      if (!stat || !stat.isDirectory()) return [];
+      const out = [];
+      async function walk(current) {
+        const entries = await fs.promises.readdir(current, { withFileTypes: true });
+        for (const entry of entries) {
+          const p = path.join(current, entry.name);
+          if (entry.isDirectory()) {
+            await walk(p);
+          } else if (entry.isFile()) {
+            out.push(p);
+          }
+        }
+      }
+      await walk(abs);
+      return out;
+    } catch {
+      return [];
+    }
   }
 
   _mapStatus(status) {
@@ -348,7 +535,7 @@ class BetterCasesUploaderV2 {
 
   _mimeFromExt(filePath, kind) {
     const ext = path.extname(filePath).toLowerCase();
-    if (kind === "trace") return "application/zip";
+    if (kind === "trace") return "application/octet-stream";
     if (kind === "screenshot") {
       if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg";
       if (ext === ".gif") return "image/gif";

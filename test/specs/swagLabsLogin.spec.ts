@@ -5,7 +5,7 @@ import swagData from '../data/swagLabs.json';
 test.describe('Swag Labs Login', () => {
   let swagPage: SwagLabsPage;
 
-  test.beforeEach(async ({ page }, testInfo) => {
+  test.beforeEach(({ page }, testInfo) => {
     swagPage = new SwagLabsPage(page, swagData.url, testInfo);
   });
 
@@ -15,7 +15,7 @@ test.describe('Swag Labs Login', () => {
     });
 
     await logger.step('Login with standard user', async () => {
-      await swagPage.login(swagData.credentials.username, swagData.credentials.password);
+      await swagPage.login(swagData.credentials.standard_user, swagData.credentials.password_user);
     });
 
     await logger.step('Wait for inventory to be visible', async () => {
@@ -38,7 +38,7 @@ test.describe('Swag Labs Login', () => {
 test.describe('Swag Labs Login', () => {
   let swagPage: SwagLabsPage;
 
-  test.beforeEach(async ({ page }, testInfo) => {
+  test.beforeEach(({ page }, testInfo) => {
     swagPage = new SwagLabsPage(page, swagData.url, testInfo);
   });
 
@@ -48,7 +48,7 @@ test.describe('Swag Labs Login', () => {
     });
 
     await logger.step('Login with standard user', async () => {
-      await swagPage.login(swagData.credentials.username, swagData.credentials.password);
+      await swagPage.login(swagData.credentials.standard_user, swagData.credentials.password_user);
     });
 
     await logger.step('Wait for inventory to be visible', async () => {
@@ -66,7 +66,7 @@ test.describe('Swag Labs Login', () => {
 test.describe('Swag Labs Login', () => {
   let swagPage: SwagLabsPage;
 
-  test.beforeEach(async ({ page }, testInfo) => {
+  test.beforeEach(({ page }, testInfo) => {
     swagPage = new SwagLabsPage(page, swagData.url, testInfo);
   });
 
@@ -76,7 +76,7 @@ test.describe('Swag Labs Login', () => {
     });
 
     await logger.step('Login with standard user', async () => {
-      await swagPage.login(swagData.credentials.username, swagData.credentials.password);
+      await swagPage.login(swagData.credentials.standard_user, swagData.credentials.password_user);
     });
 
     await logger.step('Wait for inventory to be visible', async () => {
@@ -93,7 +93,7 @@ test.describe('Swag Labs Login', () => {
 test.describe('Swag Labs Login', () => {
   let swagPage: SwagLabsPage;
 
-  test.beforeEach(async ({ page }, testInfo) => {
+  test.beforeEach(({ page }, testInfo) => {
     swagPage = new SwagLabsPage(page, swagData.url, testInfo);
   });
 
@@ -103,7 +103,7 @@ test.describe('Swag Labs Login', () => {
     });
 
     await logger.step('Login with standard user', async () => {
-      await swagPage.login(swagData.credentials.username, swagData.credentials.password);
+      await swagPage.login(swagData.credentials.standard_user, swagData.credentials.password_user);
     });
 
     await logger.step('Wait for inventory to be visible', async () => {

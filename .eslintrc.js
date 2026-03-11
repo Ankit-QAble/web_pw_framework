@@ -8,7 +8,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   extends: [
     'eslint:recommended',
-    '@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   rules: {
     // TypeScript specific rules
@@ -17,7 +17,6 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-non-null-assertion': 'warn',
-    '@typescript-eslint/prefer-const': 'error',
     '@typescript-eslint/no-var-requires': 'error',
     
     // General rules
@@ -30,7 +29,7 @@ module.exports = {
     
     // Code style
     'indent': ['error', 2],
-    'quotes': ['error', 'single'],
+    'quotes': ['error', 'single', { avoidEscape: true }],
     'semi': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
     'object-curly-spacing': ['error', 'always'],
@@ -56,7 +55,7 @@ module.exports = {
     'no-await-in-loop': 'warn',
     
     // Error handling
-    'no-empty-catch': 'error',
+    'no-empty': 'error',
     'no-promise-executor-return': 'error',
   },
   env: {

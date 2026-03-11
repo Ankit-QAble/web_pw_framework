@@ -30,7 +30,7 @@ jobs:
         run: npx playwright install --with-deps
         
       - name: Run Playwright tests
-        run: npx playwright test test/specs/demo.spec.ts --reporter=html,json,junit,allure-playwright
+        run: npx playwright test test/specs/login --reporter=html,json,junit,allure-playwright
         env:
           CI: true
           PLAYWRIGHT_JUNIT_OUTPUT_NAME: junit.xml

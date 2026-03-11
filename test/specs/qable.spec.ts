@@ -1,10 +1,9 @@
-import { test, expect } from '../../framework/core/BaseTest';
+import { test } from '../../framework/core/BaseTest';
 import { BlogPage } from '../pages/qablePage';
-import { envConfig } from '../../framework/utils/EnvConfig';
 
 // Real application URL from profile config
 const LOGIN_URL = (global as any).selectedProfile?.baseURL;
-console.log(`🔍 LOGIN_URL from selectedProfile.baseURL: ${LOGIN_URL}`);
+console.log('🔍 LOGIN_URL from selectedProfile.baseURL: ' + LOGIN_URL);
 
 test.describe('Blog Page Tests', () => {
   let blogPage: BlogPage;
@@ -25,19 +24,19 @@ test.describe('Blog Page Tests', () => {
     let retryCount = 0;
     const maxRetries = (global as any).selectedProfile?.retries || 0;
     
-    console.log(`🔍 Starting navigation with maxRetries: ${maxRetries}`);
+    console.log('🔍 Starting navigation with maxRetries: ' + maxRetries);
     
     // Always attempt navigation at least once, even if maxRetries is 0
     do {
       try {
-        console.log(`🔍 Calling navigateToInsights() - attempt ${retryCount + 1}`);
+        console.log('🔍 Calling navigateToInsights() - attempt ' + (retryCount + 1));
         await blogPage.navigateToInsights();
-        console.log(`🔍 navigateToInsights() completed successfully`);
+        console.log('🔍 navigateToInsights() completed successfully');
         break; // Success, exit retry loop
       } catch (error) {
         retryCount++;
         const errorMessage = error instanceof Error ? error.message : String(error);
-        console.log(`Navigation attempt ${retryCount} failed: ${errorMessage}`);
+        console.log('Navigation attempt ' + retryCount + ' failed: ' + errorMessage);
         
         if (retryCount > maxRetries) {
           throw error; // Final attempt failed
@@ -46,7 +45,7 @@ test.describe('Blog Page Tests', () => {
         // Wait before retry (only if we're going to retry)
         if (retryCount <= maxRetries) {
           await page.waitForTimeout(2000);
-          console.log(`Retrying navigation (attempt ${retryCount + 1}/${maxRetries + 1})...`);
+          console.log('Retrying navigation (attempt ' + (retryCount + 1) + '/' + (maxRetries + 1) + ')...');
         }
       }
     } while (retryCount <= maxRetries);
@@ -1684,7 +1683,7 @@ test.describe('Blog Page Tests', () => {
     });
   });
 
-  test('#200 Search playwright blog @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
+  test('#180 Search playwright blog @smoke', { tag: ['@smoke'] }, async ({ logger }) => {
     await logger.step('Enter valid blog title', async () => {
       await blogPage.enterBlogTitle();
     });
@@ -1693,4 +1692,3 @@ test.describe('Blog Page Tests', () => {
     });
   });
 });
-

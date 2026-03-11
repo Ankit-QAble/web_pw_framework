@@ -1,0 +1,10 @@
+{
+  "credentials": {
+    "username": "ankit216",
+    "password": "QAble@2020"
+  },
+  "expected": {
+    "unitPrice": "$6.70",
+    "totalPrice": "$13.40"
+  }
+}

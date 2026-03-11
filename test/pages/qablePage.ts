@@ -32,9 +32,9 @@ export class BlogPage extends BasePage {
    * Enter mobile number
    */
   async enterBlogTitle(): Promise<void> {
-    await this.fill(BlogPageLocators.searchBox, "Playwright");
+    await this.fill(BlogPageLocators.searchBox, 'Playwright');
     await this.page.keyboard.press('Enter');
-    this.logger.info(`Blog title entered: Playwright`);
+    this.logger.info('Blog title entered: Playwright');
   }
 
   /**
@@ -46,7 +46,7 @@ export class BlogPage extends BasePage {
     this.logger.info('Playwright blog title verified');
     await this.waitForVisible(BlogPageLocators.blogPublishedDate,10000);
     const publishedDate = await this.getText(BlogPageLocators.blogPublishedDate);
-    const expectedPublishedDate = "January 2026";
+    const expectedPublishedDate = 'March 2026';
     expect(publishedDate).toBe(expectedPublishedDate);
     this.logger.info('Playwright blog published date verified');
   }

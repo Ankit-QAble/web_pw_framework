@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import { envConfig } from './framework/utils/EnvConfig';
-import { T } from '@faker-js/faker/dist/airline-DF6RqYmq';
 
 // Environment profiles inspired by user's desired schema
 // Select via RUN (preferred) or NODE_ENV. Defaults to 'development'.
@@ -47,7 +46,7 @@ if (commandLineMobileDevice || commandLineViewportWidth || commandLineViewportHe
     // Disable grid when mobile device is specified (mobile tests should run locally)
     if ((selectedProfile as any).grid) {
       (selectedProfile as any).grid.isGrid = false;
-      console.log(`📱 Disabled grid mode for mobile testing`);
+      console.log('📱 Disabled grid mode for mobile testing');
     }
     console.log(`📱 Mobile device overridden from command line: ${commandLineMobileDevice}`);
   }
@@ -60,7 +59,7 @@ if (commandLineMobileDevice || commandLineViewportWidth || commandLineViewportHe
     // Disable grid when using custom viewport (mobile mode)
     if ((selectedProfile as any).grid && !commandLineMobileDevice) {
       (selectedProfile as any).grid.isGrid = false;
-      console.log(`📱 Disabled grid mode for mobile viewport testing`);
+      console.log('📱 Disabled grid mode for mobile viewport testing');
     }
     if (commandLineViewportWidth) {
       (selectedProfile as any).mobile.mobile.viewportWidth = parseInt(commandLineViewportWidth);
@@ -96,7 +95,7 @@ function buildGridCapabilities(gridConfig: any, browser: string) {
       'LT:Options': {
         ...capabilities,
         user: providerConfig.user,
-        accessKey: providerConfig.key,
+        accessKey: providerConfig.key
       }
     };
   }
@@ -109,7 +108,7 @@ function buildGridCapabilities(gridConfig: any, browser: string) {
       'bstack:options': {
         ...capabilities,
         userName: providerConfig.user,
-        accessKey: providerConfig.key,
+        accessKey: providerConfig.key
       }
     };
   }
@@ -135,8 +134,8 @@ function mapBrowserToProject(browser: string, gridConfig?: any) {
       wsEndpoint = `wss://cdp.lambdatest.com/playwright?capabilities=${capabilitiesStr}`;
       projectName = 'lambdatest-grid';
       
-      console.log(`   Provider: LambdaTest`);
-      console.log(`   WebSocket Endpoint: wss://cdp.lambdatest.com/playwright?capabilities=...`);
+      console.log('   Provider: LambdaTest');
+      console.log('   WebSocket Endpoint: wss://cdp.lambdatest.com/playwright?capabilities=...');
       console.log(`   Credentials: Embedded in capabilities JSON (user: ${providerConfig.user})`);
     } else if (provider === 'browserstack') {
       // BrowserStack WebSocket endpoint
@@ -144,8 +143,8 @@ function mapBrowserToProject(browser: string, gridConfig?: any) {
       wsEndpoint = `wss://cdp.browserstack.com/playwright?caps=${capabilitiesStr}`;
       projectName = 'browserstack-grid';
       
-      console.log(`   Provider: BrowserStack`);
-      console.log(`   WebSocket Endpoint: wss://cdp.browserstack.com/playwright?caps=...`);
+      console.log('   Provider: BrowserStack');
+      console.log('   WebSocket Endpoint: wss://cdp.browserstack.com/playwright?caps=...');
       console.log(`   Credentials: Embedded in capabilities JSON (user: ${providerConfig.user})`);
     } else {
       throw new Error(`Unsupported grid provider: ${provider}`);
@@ -155,7 +154,7 @@ function mapBrowserToProject(browser: string, gridConfig?: any) {
       name: projectName,
       use: {
         connectOptions: {
-          wsEndpoint: wsEndpoint,
+          wsEndpoint: wsEndpoint
         }
       }
     };
@@ -304,7 +303,7 @@ const MOBILE_DEVICE_ALIASES: Record<string, keyof typeof devices> = {
   'galaxy s9+': 'Galaxy S9+',
   'iphone12': 'iPhone 12',
   'iphone 14 pro': 'iPhone 14 Pro',
-  'ipad mini': 'iPad Mini',
+  'ipad mini': 'iPad Mini'
 };
 
 function resolveMobileUse(mobile: any) {
@@ -320,13 +319,11 @@ function resolveMobileUse(mobile: any) {
     }
   }
   // Exclude control fields when spreading overrides
-  const { 
-    isMobile: _ignoreIsMobile, 
-    device: _ignoreDevice, 
-    viewportWidth: _ignoreVW,
-    viewportHeight: _ignoreVH,
-    ...overrides 
-  } = m || {};
+  const overrides: Record<string, unknown> = { ...(m || {}) };
+  delete (overrides as any).isMobile;
+  delete (overrides as any).device;
+  delete (overrides as any).viewportWidth;
+  delete (overrides as any).viewportHeight;
   
   // Support custom viewport dimensions from environment or config
   const customViewportWidth = process.env.VIEWPORT_WIDTH 
@@ -346,7 +343,7 @@ function resolveMobileUse(mobile: any) {
     ...(Object.keys(viewport).length > 0 ? { viewport } : {}),
     // enforce mobile characteristics
     isMobile: true,
-    hasTouch: true,
+    hasTouch: true
   };
 }
 
@@ -384,8 +381,8 @@ if (isMobileMode) {
     ...baseProject,
     use: {
       ...(baseProject as any).use,
-      ...resolveMobileUse((selectedProfile as any).mobile),
-    },
+      ...resolveMobileUse((selectedProfile as any).mobile)
+    }
   }];
 } else {
   // If BROWSER is explicitly set, keep a single project. Otherwise:
@@ -399,7 +396,7 @@ if (isMobileMode) {
     computedProjects = [
       mapBrowserToProject('chromium', gridCfg),
       mapBrowserToProject('firefox', gridCfg),
-      mapBrowserToProject('webkit', gridCfg),
+      mapBrowserToProject('webkit', gridCfg)
     ];
   } else {
     computedProjects = [baseProject];
@@ -411,7 +408,7 @@ if (isMobileMode) {
   const mobileConfig = (selectedProfile as any).mobile?.mobile ?? (selectedProfile as any).mobile;
   const deviceName = mobileConfig?.device || 'default';
   const viewport = mobileConfig?.viewport || {};
-  console.log(`📱 Mobile Mode: ENABLED`);
+  console.log('📱 Mobile Mode: ENABLED');
   console.log(`   Device: ${deviceName}`);
   if (viewport.width || mobileConfig?.viewportWidth) {
     console.log(`   Viewport: ${viewport.width || mobileConfig?.viewportWidth}x${viewport.height || mobileConfig?.viewportHeight}`);
@@ -440,6 +437,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html'],
+    ['allure-playwright', { detail: true, outputFolder: 'allure-results', suiteTitle: false }],
     ['json', { outputFile: 'test-results/report.json' }],
     ['./framework/reporters/EmailReporter.ts'],
     ['json', {  outputFile: 'test-results.json' }],
@@ -462,20 +460,23 @@ export default defineConfig({
     /* Browser headless mode - force headless in CI environments */
     headless: process.env.HEADLESS === 'true' ? true : process.env.HEADLESS === 'false' ? false : (process.env.CI ? true : selectedProfile.headless),
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
+    trace: (selectedProfile as any).grid?.isGrid
+      ? 'off'
+      : (String(((selectedProfile as any).Artifacts) || '').toLowerCase() === 'on' ? 'on' : 'retain-on-failure'),
     
-    /* Take screenshot on failure - disable on grid as LambdaTest handles it */
-    screenshot: (selectedProfile as any).grid?.isGrid ? 'off' : ((selectedProfile as any).screenshot || 'only-on-failure'),
+    screenshot: (selectedProfile as any).grid?.isGrid
+      ? 'off'
+      : (String(((selectedProfile as any).Artifacts) || '').toLowerCase() === 'on' ? 'on' : 'only-on-failure'),
     
-    /* Record video on failure - disable on grid as LambdaTest handles it */
-    video: (selectedProfile as any).grid?.isGrid ? 'off' : ((selectedProfile as any).video || 'retain-on-failure'),
+    video: (selectedProfile as any).grid?.isGrid
+      ? 'off'
+      : (String(((selectedProfile as any).Artifacts) || '').toLowerCase() === 'on' ? 'on' : 'retain-on-failure'),
     
-    /* Global timeout for each action - increase for CI */
-    actionTimeout: process.env.CI ? 120000 : 90000,
+    /* Global timeout for each action - reduce for local to speed up failures */
+    actionTimeout: process.env.CI ? 120000 : 30000,
     
-    /* Global timeout for navigation - increase for CI */
-    navigationTimeout: process.env.CI ? 180000 : 90000,
+    /* Global timeout for navigation - reduce for local to speed up failures */
+    navigationTimeout: process.env.CI ? 180000 : 45000
 
     /* Element highlighting for debugging - handled in BasePage.ts */
 
@@ -484,7 +485,7 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
-  projects: computedProjects,
+  projects: computedProjects
 
   /* Run your local dev server before starting the tests */
   // webServer: {

@@ -1,6 +1,7 @@
 import { test as base, Page, BrowserContext } from '@playwright/test';
 import { Logger } from '../utils/Logger';
 import { ScreenshotHelper } from '../utils/ScreenshotHelper';
+import * as fs from 'fs';
 
 export interface TestFixtures {
   logger: Logger;
@@ -13,6 +14,13 @@ export const test = base.extend<TestFixtures>({
     logger.info(`Starting test: ${testInfo.title}`);
     await use(logger);
     logger.info(`Test completed: ${testInfo.title}`);
+    const tracePath = testInfo.outputPath('trace.zip');
+    if (fs.existsSync(tracePath)) {
+      await testInfo.attach('trace', {
+        path: tracePath,
+        contentType: 'application/zip',
+      });
+    }
   },
 
   screenshotHelper: async ({ page }, use, testInfo) => {

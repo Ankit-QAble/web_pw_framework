@@ -1,4 +1,4 @@
- export const DemoPageLocators = {
+export const DemoPageLocators = {
   loginContainer: [
     '.orangehrm-login-slot-wrapper',
     '.orangehrm-login-form',
@@ -48,6 +48,10 @@
   userDropdownTrigger: [
     '.oxd-userdropdown-name',
     '//p[contains(@class,"oxd-userdropdown-name")]'
+  ],
+  userDropdownTriggerr: [
+    '.oxd-userdropdown-namee',
+    '//p[contains(@class,"oxd-userdropdown-namee")]'
   ],
   logoutLink: [
     'a[href$="/auth/logout"]',
